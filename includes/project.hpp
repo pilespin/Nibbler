@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/15 18:48:50 by pilespin          #+#    #+#             */
-/*   Updated: 2016/05/15 19:25:58 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/08 20:47:32 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define PROJECT_H
 
 #include <iostream>
+#include <SDL2/SDL.h>
 
 #endif
