@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <iostream>
+#include <project.hpp>
 
 class Sdl {
 
@@ -25,10 +25,12 @@ public:
 	int				getValue() const;
 	SDL_Window		*getWindow() const;
 	SDL_Renderer 	*getRenderer() const;
-	void			empty();
 
-	void		createWindow();
-	void		createRenderer();
+	void			createWindow();
+	void			createRenderer();
+	SDL_Surface		*loadImage(std::string path);
+	void			DrawImageInRenderer(SDL_Surface *img, int x, int y);
+	void			empty();
 
 	class Error : public std::exception {
 	public:

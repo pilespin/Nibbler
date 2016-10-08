@@ -16,7 +16,6 @@ NAME	=	a.out
 
 CC		=	g++ -std=c++11
 SDL		=	$(shell pkg-config --cflags --libs sdl2)
-LIB		=	-lGL
 FLAGS	=	-Wall -Wextra -Werror
 
 SDIR	=	src/
@@ -44,7 +43,7 @@ compil:
 	@make $(NAME)
 
 $(NAME): $(OBJ) $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) $(SDL) $(LIB)
+	@$(CC) -o $(NAME) $(OBJ) $(SDL)
 	@echo "\033[37m END $(NAME)\033[0m"
 
 $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR) 

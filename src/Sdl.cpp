@@ -33,8 +33,8 @@ std::ostream &operator<<(std::ostream &o, Sdl &c) {
 	return (o);
 }
 ///////////////////////////////////////////////////////////////////////////////
-int				Sdl::getValue() const	{	return (this->_val);	}
-SDL_Window		*Sdl::getWindow() const	{	return (this->window);	}
+int				Sdl::getValue() const		{	return (this->_val);	}
+SDL_Window		*Sdl::getWindow() const		{	return (this->window);	}
 SDL_Renderer	*Sdl::getRenderer() const	{	return (this->renderer);	}
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -65,6 +65,32 @@ void	Sdl::createRenderer() {
 		SDL_Quit();
 		throw Error("Error when creating renderer");
 	}
+}
+
+SDL_Surface	*Sdl::loadImage(std::string path) {
+
+	SDL_Surface     *bmp = SDL_LoadBMP(path.c_str());
+    if (!bmp){
+        SDL_DestroyRenderer(this->renderer);
+        SDL_DestroyWindow(this->window);
+        std::cout << SDL_GetError() << std::endl;
+        SDL_Quit();
+		throw Error("Error when creating window");
+    }
+	return (bmp);
+}
+
+void	Sdl::DrawImageInRenderer(SDL_Surface *img, int x, int y) {
+
+	SDL_Texture	*texture;
+	SDL_Rect	dest;
+
+	texture = SDL_CreateTextureFromSurface(this->renderer, img);
+	dest.x = x;
+	dest.y = y;
+	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+	SDL_RenderCopy(this->renderer, texture, NULL, &dest);
+	SDL_DestroyTexture(texture);
 }
 
 void	Sdl::empty() {

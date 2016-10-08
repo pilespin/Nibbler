@@ -13,7 +13,6 @@
 #include <project.hpp>
 #include "Sdl.hpp"
 
-
 int main()
 {
     Sdl sdl = Sdl();
@@ -21,65 +20,39 @@ int main()
 
     sdl.createWindow();
     sdl.createRenderer();
+    SDL_SetRenderDrawColor(sdl.getRenderer(), 175, 95, 255, 255); //BackGround
 
-
-    // // std::string     imagePath = getResourcePath("Lesson1") + "hello.bmp";
-    // SDL_Surface     *bmp = SDL_LoadBMP("hello.bmp");
-    // if (!bmp){
-    //     SDL_DestroyRenderer(ren);
-    //     SDL_DestroyWindow(win);
-    //     std::cout << SDL_GetError() << std::endl;
-    //     SDL_Quit();
-    //     return 1;
-    // }
-
-    // SDL_Texture     *tex = SDL_CreateTextureFromSurface(ren, bmp);
-    // SDL_FreeSurface(bmp);
-    // if (!tex){
-    //     SDL_DestroyRenderer(ren);
-    //     SDL_DestroyWindow(win);
-    //     std::cout << SDL_GetError() << std::endl;
-    //     SDL_Quit();
-    //     return 1;
-    // }
-
-
-    bool        end = false;
+    bool        quit = false;
     SDL_Event   event;
 
-    SDL_SetRenderDrawColor(sdl.getRenderer(), 175, 95, 255, 255);
-    while(!end)
+    int x = 50;
+    int y = 50;
+
+    while(!quit)
     {
         SDL_WaitEvent(&event);
 
-        if (event.window.event == SDL_WINDOWEVENT_CLOSE)
-            end = true;
+        if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
+            event.key.keysym.sym == SDLK_ESCAPE)
+            quit = true;
+        // if (event.type == SDL_MOUSEBUTTONDOWN){
+        //     quit = true;
+        // }
+        if (event.key.keysym.sym == SDLK_LEFT)
+            x--;
+        if (event.key.keysym.sym == SDLK_RIGHT)
+            x++;
+        if (event.key.keysym.sym == SDLK_UP)
+            y--;
+        if (event.key.keysym.sym == SDLK_DOWN)
+            y++;
 
         SDL_RenderClear(sdl.getRenderer());
-        // SDL_RenderCopy(sdl.getRenderer(), tex, NULL, NULL);
 
-        // SDL_Texture *texture;
-        // SDL_Rect    dest;
-
-        // SDL_Surface     *bmp2 = SDL_LoadBMP("de.png");
-
-        // texture = SDL_CreateTextureFromSurface(ren, bmp2);
-        // dest.x = 50;
-        // dest.y = 50;
-        // SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
-        // SDL_RenderCopy(ren, texture, NULL, &dest);
-        // SDL_DestroyTexture(texture);
+        sdl.DrawImageInRenderer(sdl.loadImage("img/squareGreen.bmp"), x, y);
+        // sdl.DrawImageInRenderer(sdl.loadImage("grey.jpg"), 250, 250);
 
         SDL_RenderPresent(sdl.getRenderer());
-
-
-        // //First clear the renderer
-        // SDL_RenderClear(ren);
-        // //Draw the texture
-        // SDL_RenderCopy(ren, tex, NULL, NULL);
-        // //Update the screen
-        // SDL_RenderPresent(ren);
-        // //Take a quick break after all that hard work
 
     }
     SDL_DestroyWindow(sdl.getWindow());
