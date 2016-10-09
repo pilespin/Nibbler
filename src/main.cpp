@@ -16,24 +16,23 @@
 int main()
 {
     void    *lib;
-    dynSdl  pMaker;
     
     lib = dlopen("./libmysdl.so", RTLD_LAZY);
-    if(lib == NULL)
+    if(!lib)
     {
         std::cerr << "dlopen : "<< dlerror() << std::endl; 
         exit(EXIT_FAILURE);
     }
     
     void *func = dlsym(lib, "make_sdl");
-    if (func == NULL)
+    if (!func)
     {
         std::cerr << "dlsym : " << dlerror() << std::endl;
         exit(EXIT_FAILURE);
     }
 
-    pMaker = (dynSdl)func;
-    Sdl *sdl = pMaker();
+    dynSdl  pMaker = (dynSdl)func;
+    Sdl     *sdl = pMaker();
 
     int test = sdl->getValue();
     std::cerr << "int: " << test << std::endl;

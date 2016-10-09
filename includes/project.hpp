@@ -16,8 +16,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <map>
-
 #include <dlfcn.h>
-#include <stdio.h>
 
 #endif

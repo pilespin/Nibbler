@@ -15,8 +15,14 @@
 NAME	=	a.out
 
 CC		=	g++ -std=c++11
-# SDL		=	$(shell pkg-config --cflags --libs sdl2)
-SDL		=	-framework SDL2
+
+OS := $(shell uname)
+ifeq ($(OS), Darwin)
+	SDL	=	-framework SDL2
+else
+	SDL	=	$(shell pkg-config --cflags --libs sdl2)
+endif
+
 FLAGS	=	-Wall -Wextra -Werror
 
 SDIR	=	src/
@@ -53,7 +59,7 @@ $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 	@echo "\033[32m ok \033[33m $@\033[0m"
 
 dynlib:
-	@$(CC) -shared -o libmysdl.so src/Sdl.cpp $(SDL) $(FOLDER) 
+	@$(CC) -shared -o libmysdl.so src/Sdl.cpp $(SDL) $(FOLDER) -fPIC
 	@echo "\033[32m ok \033[33m dynlib \033[0m"
 
 clean:
