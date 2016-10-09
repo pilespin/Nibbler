@@ -13,9 +13,14 @@
 #include <project.hpp>
 #include "Sdl.hpp"
 
-Sdl::Sdl() 						{	this->_val = 0;	}
+Sdl::Sdl() {
+	this->_val = 0;
+	this->windowSizeX = 640;
+	this->windowSizeY = 480;
+	this->windowName = "Hello";
+}
 
-Sdl::~Sdl()						{}
+Sdl::~Sdl()					{}
 
 Sdl::Sdl(Sdl const &src)	{	*this = src;	}
 
@@ -33,18 +38,43 @@ std::ostream &operator<<(std::ostream &o, Sdl &c) {
 	return (o);
 }
 ///////////////////////////////////////////////////////////////////////////////
-int				Sdl::getValue() const		{	return (this->_val);	}
-SDL_Window		*Sdl::getWindow() const		{	return (this->window);	}
+int				Sdl::getValue() const		{	return (this->_val);		}
+SDL_Window		*Sdl::getWindow() const		{	return (this->window);		}
 SDL_Renderer	*Sdl::getRenderer() const	{	return (this->renderer);	}
+void			Sdl::setWindowName(std::string name) {
+	if (name.length() > 0)
+		this->windowName = name;
+	else
+		throw Error("Error: Image not found");
+
+}
+
+SDL_Surface		*Sdl::getImage(std::string name) {	
+	if (this->img[name])
+		return (this->img[name]);
+	else
+	{
+		std::cerr << "Image not found: " << name << std::endl;
+		throw Error("Error: Image not found");
+	}
+}
+
+void			Sdl::setWindowSize(int x, int y) {
+	if (x > 0 && x < 16000 && y > 0 && y < 16000)
+	{
+		this->windowSizeX = x;
+		this->windowSizeY = y;
+	}
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 void	Sdl::createWindow() {
 
-	this->window = SDL_CreateWindow("Hello",
+	this->window = SDL_CreateWindow(this->windowName.c_str(),
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		800, 
-		600, 
+		this->windowSizeX, 
+		this->windowSizeY, 
 		SDL_WINDOW_SHOWN);
 
 	if(!window)
@@ -67,7 +97,7 @@ void	Sdl::createRenderer() {
 	}
 }
 
-SDL_Surface	*Sdl::loadImage(std::string path) {
+SDL_Surface	*Sdl::loadImage(std::string path, std::string newname) {
 
 	SDL_Surface     *bmp = SDL_LoadBMP(path.c_str());
     if (!bmp){
@@ -77,6 +107,12 @@ SDL_Surface	*Sdl::loadImage(std::string path) {
         SDL_Quit();
 		throw Error("Error when creating window");
     }
+
+	if (newname.length() > 0 && !this->img[newname])
+    	this->img[newname] = bmp;
+    else
+		throw Error("Error: An image with the same name already exist");
+
 	return (bmp);
 }
 

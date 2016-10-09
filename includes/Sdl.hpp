@@ -25,10 +25,14 @@ public:
 	int				getValue() const;
 	SDL_Window		*getWindow() const;
 	SDL_Renderer 	*getRenderer() const;
+	SDL_Surface		*getImage(std::string name);
+
+	void			setWindowSize(int x, int y);
+	void			setWindowName(std::string name);
 
 	void			createWindow();
 	void			createRenderer();
-	SDL_Surface		*loadImage(std::string path);
+	SDL_Surface		*loadImage(std::string path, std::string newname);
 	void			DrawImageInRenderer(SDL_Surface *img, int x, int y);
 	void			empty();
 
@@ -45,7 +49,12 @@ public:
 	};
 
 private:
+	std::map< std::string, SDL_Surface * > 	img;
+
 	int 			_val;
+	std::string		windowName;
+	int 			windowSizeX;
+	int 			windowSizeY;
 	SDL_Window 		*window;
 	SDL_Renderer	*renderer;
 };

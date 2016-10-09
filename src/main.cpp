@@ -16,11 +16,14 @@
 int main()
 {
     Sdl sdl = Sdl();
-    (void)sdl;
 
+    sdl.setWindowSize(1024, 768);
+    sdl.setWindowName("Nibbler");
     sdl.createWindow();
     sdl.createRenderer();
     SDL_SetRenderDrawColor(sdl.getRenderer(), 175, 95, 255, 255); //BackGround
+
+    sdl.loadImage("img/squareGreen.bmp", "squareGreen");
 
     bool        quit = false;
     SDL_Event   event;
@@ -49,8 +52,7 @@ int main()
 
         SDL_RenderClear(sdl.getRenderer());
 
-        sdl.DrawImageInRenderer(sdl.loadImage("img/squareGreen.bmp"), x, y);
-        // sdl.DrawImageInRenderer(sdl.loadImage("grey.jpg"), 250, 250);
+        sdl.DrawImageInRenderer(sdl.getImage("squareGreen"), x, y);
 
         SDL_RenderPresent(sdl.getRenderer());
 
