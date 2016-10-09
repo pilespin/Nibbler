@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:53:16 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/08 21:18:32 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/09 19:19:42 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,49 +15,32 @@
 
 int main()
 {
-    Sdl sdl = Sdl();
-
-    sdl.setWindowSize(1024, 768);
-    sdl.setWindowName("Nibbler");
-    sdl.createWindow();
-    sdl.createRenderer();
-    SDL_SetRenderDrawColor(sdl.getRenderer(), 175, 95, 255, 255); //BackGround
-
-    sdl.loadImage("img/squareGreen.bmp", "squareGreen");
-
-    bool        quit = false;
-    SDL_Event   event;
-
-    int x = 50;
-    int y = 50;
-
-    while(!quit)
+    void    *lib;
+    dynSdl  pMaker;
+    
+    lib = dlopen("./libmysdl.so", RTLD_LAZY);
+    if(lib == NULL)
     {
-        SDL_WaitEvent(&event);
-
-        if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
-            event.key.keysym.sym == SDLK_ESCAPE)
-            quit = true;
-        // if (event.type == SDL_MOUSEBUTTONDOWN){
-        //     quit = true;
-        // }
-        if (event.key.keysym.sym == SDLK_LEFT)
-            x--;
-        if (event.key.keysym.sym == SDLK_RIGHT)
-            x++;
-        if (event.key.keysym.sym == SDLK_UP)
-            y--;
-        if (event.key.keysym.sym == SDLK_DOWN)
-            y++;
-
-        SDL_RenderClear(sdl.getRenderer());
-
-        sdl.DrawImageInRenderer(sdl.getImage("squareGreen"), x, y);
-
-        SDL_RenderPresent(sdl.getRenderer());
-
+        std::cerr << "dlopen : "<< dlerror() << std::endl; 
+        exit(EXIT_FAILURE);
     }
-    SDL_DestroyWindow(sdl.getWindow());
-    SDL_Quit();
-    return 0;
+    
+    void *func = dlsym(lib, "make_sdl");
+    if (func == NULL)
+    {
+        std::cerr << "dlsym : " << dlerror() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    pMaker = (dynSdl)func;
+    Sdl *sdl = pMaker();
+
+    int test = sdl->getValue();
+    std::cerr << "int: " << test << std::endl;
+    
+    sdl->start();
+
+    dlclose(lib);
+
+    return (0);
 }

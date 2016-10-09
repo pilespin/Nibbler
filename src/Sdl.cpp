@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/08 21:18:54 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/09 19:17:38 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,53 @@ void			Sdl::setWindowSize(int x, int y) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 
+void	Sdl::start() {
+
+	this->setWindowSize(1024, 768);
+	this->setWindowName("Nibbler");
+	this->createWindow();
+	this->createRenderer();
+    SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
+
+    this->loadImage("img/squareGreen.bmp", "squareGreen");
+
+    bool        quit = false;
+    SDL_Event   event;
+
+    int x = 50;
+    int y = 50;
+
+    while(!quit)
+    {
+    	SDL_WaitEvent(&event);
+
+    	if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
+    		event.key.keysym.sym == SDLK_ESCAPE)
+    		quit = true;
+        // if (event.type == SDL_MOUSEBUTTONDOWN){
+        //     quit = true;
+        // }
+    	if (event.key.keysym.sym == SDLK_LEFT)
+    		x--;
+    	if (event.key.keysym.sym == SDLK_RIGHT)
+    		x++;
+    	if (event.key.keysym.sym == SDLK_UP)
+    		y--;
+    	if (event.key.keysym.sym == SDLK_DOWN)
+    		y++;
+
+    	SDL_RenderClear(this->getRenderer());
+
+    	this->DrawImageInRenderer(this->getImage("squareGreen"), x, y);
+
+    	SDL_RenderPresent(this->getRenderer());
+
+    }
+    SDL_DestroyWindow(this->getWindow());
+    SDL_Quit();
+
+}
+
 void	Sdl::createWindow() {
 
 	this->window = SDL_CreateWindow(this->windowName.c_str(),
@@ -100,17 +147,17 @@ void	Sdl::createRenderer() {
 SDL_Surface	*Sdl::loadImage(std::string path, std::string newname) {
 
 	SDL_Surface     *bmp = SDL_LoadBMP(path.c_str());
-    if (!bmp){
-        SDL_DestroyRenderer(this->renderer);
-        SDL_DestroyWindow(this->window);
-        std::cout << SDL_GetError() << std::endl;
-        SDL_Quit();
+	if (!bmp){
+		SDL_DestroyRenderer(this->renderer);
+		SDL_DestroyWindow(this->window);
+		std::cout << SDL_GetError() << std::endl;
+		SDL_Quit();
 		throw Error("Error when creating window");
-    }
+	}
 
 	if (newname.length() > 0 && !this->img[newname])
-    	this->img[newname] = bmp;
-    else
+		this->img[newname] = bmp;
+	else
 		throw Error("Error: An image with the same name already exist");
 
 	return (bmp);
@@ -131,4 +178,12 @@ void	Sdl::DrawImageInRenderer(SDL_Surface *img, int x, int y) {
 
 void	Sdl::empty() {
 
+}
+
+extern "C"
+{
+    Sdl *make_sdl()
+    {
+		return new Sdl();
+    }
 }
