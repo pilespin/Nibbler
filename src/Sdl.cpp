@@ -182,7 +182,7 @@ void	Sdl::empty() {
 
 extern "C"
 {
-    Sdl *make_sdl()
+    void *make_class()
     {
 		return new Sdl();
     }

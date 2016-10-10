@@ -60,6 +60,4 @@ private:
 	SDL_Renderer	*renderer;
 };
 
-typedef Sdl *(*dynSdl)();
-
 std::ostream &operator<<(std::ostream &o, Sdl &c);

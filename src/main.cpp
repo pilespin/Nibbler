@@ -11,35 +11,21 @@
 /* ************************************************************************** */
 
 #include <project.hpp>
+#include "DynamicLib.hpp"
 #include "Sdl.hpp"
 
 int main()
 {
-    void    *lib;
-    
-    lib = dlopen("./libmysdl.so", RTLD_LAZY);
-    if(!lib)
-    {
-        std::cerr << "dlopen : "<< dlerror() << std::endl; 
-        exit(EXIT_FAILURE);
-    }
-    
-    void *func = dlsym(lib, "make_sdl");
-    if (!func)
-    {
-        std::cerr << "dlsym : " << dlerror() << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    DynamicLib libsdl = DynamicLib();
 
-    dynSdl  pMaker = (dynSdl)func;
-    Sdl     *sdl = pMaker();
+    Sdl *sdl = reinterpret_cast<Sdl*>(libsdl.createClass("./libmysdl.so"));
 
     int test = sdl->getValue();
     std::cerr << "int: " << test << std::endl;
     
     sdl->start();
 
-    dlclose(lib);
+    libsdl.closeLib();
 
     return (0);
 }

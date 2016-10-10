@@ -33,7 +33,7 @@ H_EXT	=	hpp
 FOLDER	=	-I $(HDIR)
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
-SRCA	=	main.cpp
+SRCA	=	main.cpp DynamicLib.cpp
 
 SRCH	=	$(shell cd $(HDIR) && ls -1 *.$(H_EXT))
 SRCO	=	$(SRCA:$(F_EXT)=.o)
