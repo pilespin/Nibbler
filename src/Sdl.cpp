@@ -6,18 +6,21 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/09 19:17:38 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/10 19:51:57 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <project.hpp>
 #include "Sdl.hpp"
+#include "Shared.hpp"
 
 Sdl::Sdl() {
 	this->_val = 0;
 	this->windowSizeX = 640;
 	this->windowSizeY = 480;
 	this->windowName = "Hello";
+	this->shared = NULL;
+
 }
 
 Sdl::~Sdl()					{}
@@ -38,9 +41,10 @@ std::ostream &operator<<(std::ostream &o, Sdl &c) {
 	return (o);
 }
 ///////////////////////////////////////////////////////////////////////////////
-int				Sdl::getValue() const		{	return (this->_val);		}
-SDL_Window		*Sdl::getWindow() const		{	return (this->window);		}
-SDL_Renderer	*Sdl::getRenderer() const	{	return (this->renderer);	}
+int				Sdl::getValue() const			{	return (this->_val);		}
+SDL_Window		*Sdl::getWindow() const			{	return (this->window);		}
+SDL_Renderer	*Sdl::getRenderer() const		{	return (this->renderer);	}
+void			Sdl::setShared(Shared *shared)	{	this->shared = shared;		}
 void			Sdl::setWindowName(std::string name) {
 	if (name.length() > 0)
 		this->windowName = name;
@@ -81,38 +85,42 @@ void	Sdl::start() {
     bool        quit = false;
     SDL_Event   event;
 
-    int x = 50;
-    int y = 50;
-
     while(!quit)
     {
-    	SDL_WaitEvent(&event);
+    	this->shared->mutex.lock();
 
-    	if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
-    		event.key.keysym.sym == SDLK_ESCAPE)
-    		quit = true;
         // if (event.type == SDL_MOUSEBUTTONDOWN){
         //     quit = true;
         // }
-    	if (event.key.keysym.sym == SDLK_LEFT)
-    		x--;
-    	if (event.key.keysym.sym == SDLK_RIGHT)
-    		x++;
-    	if (event.key.keysym.sym == SDLK_UP)
-    		y--;
-    	if (event.key.keysym.sym == SDLK_DOWN)
-    		y++;
+    	while (SDL_PollEvent(&event)) {
+         // handle your event here
+    		if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
+    			event.key.keysym.sym == SDLK_ESCAPE)
+    		{
+    			quit = true;
+    			shared->setCommand(eCommand::Escape);
+    		}
+    		else if (event.key.keysym.sym == SDLK_LEFT)
+    			shared->setCommand(eCommand::Left);
+    		else if (event.key.keysym.sym == SDLK_RIGHT)
+    			shared->setCommand(eCommand::Right);
+    		else if (event.key.keysym.sym == SDLK_UP)
+    			shared->setCommand(eCommand::Up);
+    		else if (event.key.keysym.sym == SDLK_DOWN)
+    			shared->setCommand(eCommand::Down);
+    	}
+
 
     	SDL_RenderClear(this->getRenderer());
 
-    	this->DrawImageInRenderer(this->getImage("squareGreen"), x, y);
+    	this->DrawImageInRenderer(this->getImage("squareGreen"), this->shared->getX(), this->shared->getY());
+    	this->shared->mutex.unlock();
 
     	SDL_RenderPresent(this->getRenderer());
 
     }
     SDL_DestroyWindow(this->getWindow());
     SDL_Quit();
-
 }
 
 void	Sdl::createWindow() {
@@ -182,8 +190,8 @@ void	Sdl::empty() {
 
 extern "C"
 {
-    void *make_class()
-    {
+	void *make_class()
+	{
 		return new Sdl();
-    }
+	}
 }

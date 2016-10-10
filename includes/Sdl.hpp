@@ -6,12 +6,13 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/09 19:18:30 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/10 16:00:33 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+#include "Shared.hpp"
 #include <project.hpp>
 
 class Sdl {
@@ -29,6 +30,7 @@ public:
 
 	virtual void			setWindowSize(int x, int y);
 	virtual void			setWindowName(std::string name);
+	virtual void			setShared(Shared *shared);
 
 	virtual void			createWindow();
 	virtual void			createRenderer();
@@ -52,6 +54,7 @@ public:
 private:
 	std::map< std::string, SDL_Surface * > 	img;
 
+	Shared 			*shared;
 	int 			_val;
 	std::string		windowName;
 	int 			windowSizeX;

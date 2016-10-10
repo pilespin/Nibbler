@@ -6,26 +6,41 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:53:16 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/09 19:19:42 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/10 19:52:14 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <project.hpp>
 #include "DynamicLib.hpp"
+#include "Shared.hpp"
+#include "Core.hpp"
 #include "Sdl.hpp"
+
+Shared      *shared;
+Core        *core;
+
+void foo()
+{
+    core->start();
+}
 
 int main()
 {
-    DynamicLib libsdl = DynamicLib();
+    shared = new Shared();
+    core = new Core(shared);
+
+    (void)core;
+    (void)shared;
+
+    DynamicLib  libsdl = DynamicLib();
 
     Sdl *sdl = reinterpret_cast<Sdl*>(libsdl.createClass("./libmysdl.so"));
 
-    int test = sdl->getValue();
-    std::cerr << "int: " << test << std::endl;
-    
+    sdl->setShared(shared);
+    std::thread first(foo);
     sdl->start();
-
-    libsdl.closeLib();
+    
+    first.join();
 
     return (0);
 }

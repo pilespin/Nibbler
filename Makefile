@@ -6,7 +6,7 @@
 #    By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/15 18:31:49 by pilespin          #+#    #+#              #
-#    Updated: 2016/10/09 19:01:58 by pilespin         ###   ########.fr        #
+#    Updated: 2016/10/10 17:29:16 by pilespin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 	
 NAME	=	a.out
 
-CC		=	g++ -std=c++11
+CC		=	g++ -std=c++11 -g
 
 OS := $(shell uname)
 ifeq ($(OS), Darwin)
@@ -33,7 +33,7 @@ H_EXT	=	hpp
 FOLDER	=	-I $(HDIR)
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
-SRCA	=	main.cpp DynamicLib.cpp
+SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp
 
 SRCH	=	$(shell cd $(HDIR) && ls -1 *.$(H_EXT))
 SRCO	=	$(SRCA:$(F_EXT)=.o)

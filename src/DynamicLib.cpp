@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   DynamicLib.cpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/10/10 14:32:15 by pilespin          #+#    #+#             */
+/*   Updated: 2016/10/10 14:35:06 by pilespin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "DynamicLib.hpp"
 
@@ -35,7 +46,7 @@ void	*DynamicLib::createClass(std::string pathLib) {
 
     func = dlsym(this->lib, "make_class");
     if (!func)
-		throw Error("Error: an error occured when loading function on library");
+		throw Error("Error: an error occured when loading function in library");
 
 	typedef void *(*ptr)();
 
