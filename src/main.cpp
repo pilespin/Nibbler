@@ -16,7 +16,6 @@
 #include "Core.hpp"
 #include "Sdl.hpp"
 
-Shared      *shared;
 Core        *core;
 
 void foo()
@@ -26,14 +25,13 @@ void foo()
 
 int main()
 {
+    Shared      *shared;
+
     shared = new Shared();
     core = new Core(shared);
 
-    (void)core;
-    (void)shared;
-
     DynamicLib  libsdl = DynamicLib();
-
+    
     Sdl *sdl = reinterpret_cast<Sdl*>(libsdl.createClass("./libmysdl.so"));
 
     sdl->setShared(shared);

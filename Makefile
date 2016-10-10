@@ -24,6 +24,7 @@ else
 endif
 
 FLAGS	=	-Wall -Wextra -Werror
+LIB		=	-ldl -lpthread
 
 SDIR	=	src/
 HDIR	=	includes/
@@ -51,11 +52,11 @@ compil:
 	@make $(NAME)
 
 $(NAME): $(OBJ) $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) -ldl $(FOLDER) 
+	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(FOLDER)
 	@echo "\033[37m END $(NAME)\033[0m"
 
 $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR) 
-	@$(CC) -c $< -o $@ $(FLAGS) $(FOLDER) 
+	@$(CC) -c $< -o $@ $(FLAGS) $(FOLDER)
 	@echo "\033[32m ok \033[33m $@\033[0m"
 
 dynlib:

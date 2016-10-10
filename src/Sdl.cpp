@@ -88,18 +88,19 @@ void	Sdl::start() {
     while(!quit)
     {
     	this->shared->mutex.lock();
+    	
+    	while (SDL_PollEvent(&event))
+    	{
 
-        // if (event.type == SDL_MOUSEBUTTONDOWN){
-        //     quit = true;
-        // }
-    	while (SDL_PollEvent(&event)) {
-         // handle your event here
     		if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
     			event.key.keysym.sym == SDLK_ESCAPE)
     		{
     			quit = true;
     			shared->setCommand(eCommand::Escape);
     		}
+            // if (event.type == SDL_MOUSEBUTTONDOWN){
+        	//     quit = true;
+        	// }
     		else if (event.key.keysym.sym == SDLK_LEFT)
     			shared->setCommand(eCommand::Left);
     		else if (event.key.keysym.sym == SDLK_RIGHT)
