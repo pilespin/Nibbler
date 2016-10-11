@@ -15,6 +15,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
+*.dSYM
 *.dll
 
 # Fortran module files

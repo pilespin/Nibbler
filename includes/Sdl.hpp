@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/10 16:00:33 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/11 14:52:08 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ private:
 	Shared 			*shared;
 	int 			_val;
 	std::string		windowName;
+	int 			squareSize;
 	int 			windowSizeX;
 	int 			windowSizeY;
 	SDL_Window 		*window;

@@ -6,13 +6,36 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 15:44:03 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/10 19:28:21 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/11 18:03:41 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Shared.hpp"
 
 Shared::Shared() 						{	this->_val = 0;	}
+Shared::Shared(int sizeX, int sizeY) : mapSizeX(sizeX), mapSizeY(sizeY)	{
+	std::cout << "sizeX: " << sizeX << std::endl;
+	std::cout << "sizeY: " << sizeY << std::endl;
+
+	this->map = new int*[sizeY];
+	int i = -1;
+	while (++i < sizeY)
+	{
+		std::cout << "I: " << i << std::endl;
+		this->map[i] = new int[sizeX];
+	}
+    	//////////////////////////////////debug//////
+	// std::cout << "----------------------" << std::endl;
+	// i = -1;
+	// while (++i < sizeY)
+	// {
+	// 	int j = -1;
+	// 	while (++j < sizeX)
+	// 		this->map[i][j] = 0;
+	// }
+	// std::cout << "----------------------" << std::endl;
+    	//////////////////////////////////debug//////
+}
 
 Shared::~Shared()						{}
 
@@ -33,24 +56,8 @@ std::ostream &operator<<(std::ostream &o, Shared &c) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 int		Shared::getValue() const	{	return (this->_val);	}
-int		Shared::getX() const		{	return (this->x);	}
-int		Shared::getY() const		{	return (this->y);	}
 void	Shared::setCommand(eCommand command) {
-	// mutex.lock();
 	this->command = command;
-	// mutex.unlock();
-}
-
-void	Shared::setX(int x) {
-	// mutex.lock();
-	this->x = x;
-	// mutex.unlock();
-}
-
-void	Shared::setY(int y) {
-	// mutex.lock();
-	this->y = y;
-	// mutex.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

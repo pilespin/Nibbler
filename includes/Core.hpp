@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/10 16:41:20 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/11 15:42:25 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ public:
 
 	class Error : public std::exception {
 	public:
-		Error(std::string str) { 
-			this->line += str; 
+		Error(std::string str) {
+			this->line += str;
 		}
 		virtual const char *what() const throw() {
 			return (this->line.c_str());
@@ -41,8 +41,10 @@ public:
 	};
 
 private:
-	int _val;
-	Shared *shared;
+	int 	_val;
+	int		headX;
+	int		headY;
+	Shared 	*shared;
 };
 
 std::ostream &operator<<(std::ostream &o, Core &c);

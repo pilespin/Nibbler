@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/10 19:56:38 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/11 18:04:12 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ Core::Core() 						{	this->_val = 0;	}
 
 Core::Core(Shared	*shared) {
 	this->shared = shared;
-	this->shared->x = 500;
-	this->shared->y = 50;
+	this->headY = 5;
+	this->headX = 5;
 }
 
 Core::~Core()						{}
@@ -50,30 +50,35 @@ void	Core::start() {
 		this->shared->mutex.lock();
 		if (this->shared->command == eCommand::Up)
 		{
-			this->shared->y--;
-			this->shared->command = eCommand::None;
+			this->shared->map[this->headY][this->headX] = 0;
+			this->headY--;
+			this->shared->map[this->headY][this->headX] = 1;
 		}
 		else if (this->shared->command == eCommand::Down)
 		{
-			this->shared->command = eCommand::None;
-			this->shared->y++;
+			this->shared->map[this->headY][this->headX] = 0;
+			this->headY++;
+			this->shared->map[this->headY][this->headX] = 1;
 		}
 		else if (this->shared->command == eCommand::Left)
 		{
-			this->shared->command = eCommand::None;
-			this->shared->x--;
+			this->shared->map[this->headY][this->headX] = 0;
+			this->headX--;
+			this->shared->map[this->headY][this->headX] = 1;
 		}
 		else if (this->shared->command == eCommand::Right)
 		{
-			this->shared->command = eCommand::None;
-			this->shared->x++;
+			this->shared->map[this->headY][this->headX] = 0;
+			this->headX++;
+			this->shared->map[this->headY][this->headX] = 1;
 		}
 		else if (this->shared->command == eCommand::Escape)
 		{
 			exit(0);
 		}
+		// this->shared->command = eCommand::None;
 		this->shared->mutex.unlock();
-		std::this_thread::sleep_for (std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 }
 

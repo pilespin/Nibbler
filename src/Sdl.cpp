@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/10 19:51:57 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/11 18:01:14 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 Sdl::Sdl() {
 	this->_val = 0;
+	this->squareSize = 25;
 	this->windowSizeX = 640;
 	this->windowSizeY = 480;
 	this->windowName = "Hello";
@@ -69,12 +70,16 @@ void			Sdl::setWindowSize(int x, int y) {
 		this->windowSizeX = x;
 		this->windowSizeY = y;
 	}
+	else
+		throw Error("Error: Window size is too small or too big");
 }
 ///////////////////////////////////////////////////////////////////////////////
 
 void	Sdl::start() {
 
-	this->setWindowSize(1024, 768);
+	int i;
+	int j;
+	this->setWindowSize(this->shared->mapSizeX * this->squareSize, this->shared->mapSizeY * this->squareSize);
 	this->setWindowName("Nibbler");
 	this->createWindow();
 	this->createRenderer();
@@ -91,7 +96,6 @@ void	Sdl::start() {
     	
     	while (SDL_PollEvent(&event))
     	{
-
     		if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
     			event.key.keysym.sym == SDLK_ESCAPE)
     		{
@@ -114,11 +118,32 @@ void	Sdl::start() {
 
     	SDL_RenderClear(this->getRenderer());
 
-    	this->DrawImageInRenderer(this->getImage("squareGreen"), this->shared->getX(), this->shared->getY());
-    	this->shared->mutex.unlock();
+    	j = -1;
+    	while (++j < this->shared->mapSizeY)
+    	{
+    		i = -1;
+    		while (++i < this->shared->mapSizeX)
+    		{
+    			if (this->shared->map[j][i] == 1)
+    				this->DrawImageInRenderer(this->getImage("squareGreen"), i*this->squareSize, j*this->squareSize);
+    		}
+    	}
 
+    	this->shared->mutex.unlock();
     	SDL_RenderPresent(this->getRenderer());
 
+    	//////////////////////////////////debug//////
+    	std::cout << "----------------------" << std::endl;
+    	j = -1;
+    	while (++j < this->shared->mapSizeY)
+    	{
+    		i = -1;
+    		while (++i < this->shared->mapSizeX)
+    			std::cout << this->shared->map[j][i] << " ";
+    		std::cout << std::endl;
+    	}
+    	std::cout << "----------------------" << std::endl;
+    	//////////////////////////////////debug//////
     }
     SDL_DestroyWindow(this->getWindow());
     SDL_Quit();
