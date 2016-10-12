@@ -14,6 +14,18 @@ public:
 	int			getValue() const;
 	void		empty();
 
+	class Error : public std::exception {
+	public:
+		Error(std::string str) { 
+			this->line += str; 
+		}
+		virtual const char *what() const throw() {
+			return (this->line.c_str());
+		}
+	private:
+		std::string line;
+	};
+
 private:
 	int _val;
 };

@@ -17,31 +17,61 @@
 #include "Sdl.hpp"
 
 Core        *core;
+Shared      *shared;
+bool         g_exit = false;
 
-void foo()
+void ThreadAlgo()
 {
-    core->start();
+    try
+    {
+        core->start();
+    }
+    catch (std::exception &e)
+    {
+        std::cerr << "Exception: " << e.what() << std::endl;
+        g_exit = true;   
+    }
+}
+
+void ThreadSdl()
+{
+    try
+    {
+        DynamicLib  libsdl = DynamicLib();
+        
+        Sdl *sdl = reinterpret_cast<Sdl*>(libsdl.createClass("./libmysdl.so"));
+
+        sdl->setShared(shared);
+        sdl->start();
+    }
+    catch (std::exception &e)
+    {
+        std::cerr << "Exception: " << e.what() << std::endl;
+        g_exit = true;   
+    }
 }
 
 int main()
 {
-    Shared      *shared;
+    try
+    {
+        shared = new Shared(20, 10);
+        core = new Core(shared);
 
-    shared = new Shared(20, 10);
-    core = new Core(shared);
-
-    DynamicLib  libsdl = DynamicLib();
-    
-    Sdl *sdl = reinterpret_cast<Sdl*>(libsdl.createClass("./libmysdl.so"));
-
-    // shared->mapSizeX = 10;
-    // shared->mapSizeY = 10;
-
-    sdl->setShared(shared);
-    std::thread first(foo);
-    sdl->start();
-    
-    first.join();
+        std::thread Talgo(ThreadAlgo);
+        std::thread TSdl(ThreadSdl);
+        
+        while (1)
+        {
+            if (g_exit)
+                exit(0);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+    }
+    catch (std::exception &e)
+    {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
 
     return (0);
 }

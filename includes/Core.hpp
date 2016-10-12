@@ -27,6 +27,7 @@ public:
 	int			getValue() const;
 	void		empty();
 	void		start();
+	void		setOnMap(int x, int y, int value);
 
 	class Error : public std::exception {
 	public:

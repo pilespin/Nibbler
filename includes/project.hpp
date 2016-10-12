@@ -23,4 +23,7 @@ enum eCommand {Up, Down, Left, Right, Escape, None};
 #include <mutex>
 #include <chrono>
 
+#define SNAKE	1
+#define OFF 	0
+
 #endif

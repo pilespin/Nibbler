@@ -27,10 +27,10 @@ public:
 
 	void		empty();
 
-public:
+public: // private ////////////////////////////////////////////////////
 	Shared();
 	int 		_val;
-	std::mutex 	mutex; 
+	std::mutex 	mutex;
 	int			**map;
 	eCommand 	command;
 	int 		mapSizeX;

@@ -45,41 +45,65 @@ int		Core::getValue() const	{	return (this->_val);	}
 
 void	Core::start() {
 
+	this->setOnMap(this->headX, this->headY, SNAKE);
 	while (1)
 	{
+
+		//////////////////////////////////debug//////
+    	std::cout << "----------------------" << std::endl;
+    	int j = -1;
+    	while (++j < this->shared->mapSizeY)
+    	{
+    		int i = -1;
+    		while (++i < this->shared->mapSizeX)
+    			std::cout << this->shared->map[j][i] << " ";
+    		std::cout << std::endl;
+    	}
+    	std::cout << "----------------------" << std::endl;
+    	//////////////////////////////////debug//////
 		this->shared->mutex.lock();
 		if (this->shared->command == eCommand::Up)
 		{
-			this->shared->map[this->headY][this->headX] = 0;
+			this->setOnMap(this->headY, this->headX, OFF);
 			this->headY--;
-			this->shared->map[this->headY][this->headX] = 1;
+			this->setOnMap(this->headY, this->headX, SNAKE);
 		}
 		else if (this->shared->command == eCommand::Down)
 		{
-			this->shared->map[this->headY][this->headX] = 0;
+			this->setOnMap(this->headY, this->headX, OFF);
 			this->headY++;
-			this->shared->map[this->headY][this->headX] = 1;
+			this->setOnMap(this->headY, this->headX, SNAKE);
 		}
 		else if (this->shared->command == eCommand::Left)
 		{
-			this->shared->map[this->headY][this->headX] = 0;
+			this->setOnMap(this->headY, this->headX, OFF);
 			this->headX--;
-			this->shared->map[this->headY][this->headX] = 1;
+			this->setOnMap(this->headY, this->headX, SNAKE);
 		}
 		else if (this->shared->command == eCommand::Right)
 		{
-			this->shared->map[this->headY][this->headX] = 0;
+			this->setOnMap(this->headY, this->headX, OFF);
 			this->headX++;
-			this->shared->map[this->headY][this->headX] = 1;
+			this->setOnMap(this->headY, this->headX, SNAKE);
 		}
 		else if (this->shared->command == eCommand::Escape)
 		{
 			exit(0);
 		}
-		// this->shared->command = eCommand::None;
 		this->shared->mutex.unlock();
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
+}
+
+void	Core::setOnMap(int x, int y, int value) {
+
+	if (x >= 0 && x <= this->shared->mapSizeX && 
+		y >= 0 && y <= this->shared->mapSizeY)
+	{
+		this->shared->map[x][y] = value;
+	}
+	else
+		throw Error("Error: Value is out of map");
 }
 
 void	Core::empty() {

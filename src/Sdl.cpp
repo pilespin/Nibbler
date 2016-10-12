@@ -101,6 +101,7 @@ void	Sdl::start() {
     		{
     			quit = true;
     			shared->setCommand(eCommand::Escape);
+				std::cout << "GoodBye" << std::endl;
     		}
             // if (event.type == SDL_MOUSEBUTTONDOWN){
         	//     quit = true;
@@ -114,7 +115,6 @@ void	Sdl::start() {
     		else if (event.key.keysym.sym == SDLK_DOWN)
     			shared->setCommand(eCommand::Down);
     	}
-
 
     	SDL_RenderClear(this->getRenderer());
 
@@ -131,19 +131,8 @@ void	Sdl::start() {
 
     	this->shared->mutex.unlock();
     	SDL_RenderPresent(this->getRenderer());
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-    	//////////////////////////////////debug//////
-    	std::cout << "----------------------" << std::endl;
-    	j = -1;
-    	while (++j < this->shared->mapSizeY)
-    	{
-    		i = -1;
-    		while (++i < this->shared->mapSizeX)
-    			std::cout << this->shared->map[j][i] << " ";
-    		std::cout << std::endl;
-    	}
-    	std::cout << "----------------------" << std::endl;
-    	//////////////////////////////////debug//////
     }
     SDL_DestroyWindow(this->getWindow());
     SDL_Quit();

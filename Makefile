@@ -12,9 +12,7 @@
 
 .PHONY: all compil clean fclean re run
 	
-NAME	=	a.out
-
-CC		=	g++ -std=c++11 -g
+NAME	=	nibbler
 
 OS := $(shell uname)
 ifeq ($(OS), Darwin)
@@ -23,6 +21,7 @@ else
 	SDL	=	$(shell pkg-config --cflags --libs sdl2)
 endif
 
+CC		=	g++ -std=c++11 -g
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
 
