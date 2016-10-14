@@ -6,13 +6,14 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 13:59:47 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/10 14:35:01 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/14 17:06:29 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <project.hpp>
+#include "IGraphic.hpp"
 
 class DynamicLib {
 
@@ -23,10 +24,10 @@ public:
 	DynamicLib &operator=(DynamicLib const &rhs);
 
 	int			getValue() const;
-	void		*getClass() const;
+	IGraphic	*getClass() const;
 
 	void		empty();
-	void		*createClass(std::string pathLib);
+	IGraphic	*createClass(std::string pathLib);
 	void		closeLib();
 
 	class Error : public std::exception {
@@ -42,9 +43,9 @@ public:
 	};
 
 private:
-	int 	_val;
-	void	*lib;
-	void	*ptrClass;
+	int 		_val;
+	void		*lib;
+	IGraphic	*ptrClass;
 };
 
 std::ostream &operator<<(std::ostream &o, DynamicLib &c);

@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:53:16 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/14 16:51:14 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/14 17:11:20 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@ int main()
     {
         Core        *core;
         Shared      *shared;
+        IGraphic    *graf;
 
         shared = new Shared(20, 10);
         core = new Core(shared);
 
         DynamicLib  libsdl = DynamicLib();
         
-        IGraphic *graf = reinterpret_cast<Sdl*>(libsdl.createClass("./libmysdl.so"));
+        graf = libsdl.createClass("./libmysdl.so");
 
         graf->setShared(shared);
         graf->init();

@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/14 16:51:05 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/14 17:01:42 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ void	Sdl::empty() {
 
 extern "C"
 {
-	void *make_class()
+	IGraphic *make_class()
 	{
 		return new Sdl();
 	}

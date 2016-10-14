@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:32:15 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/10 14:35:06 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/14 17:07:15 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ std::ostream &operator<<(std::ostream &o, DynamicLib &c) {
 	return (o);
 }
 ///////////////////////////////////////////////////////////////////////////////
-int		DynamicLib::getValue() const	{	return (this->_val);		}
-void	*DynamicLib::getClass() const	{	return (this->ptrClass);	}
+int			DynamicLib::getValue() const	{	return (this->_val);		}
+IGraphic	*DynamicLib::getClass() const	{	return (this->ptrClass);	}
 ///////////////////////////////////////////////////////////////////////////////
 
-void	*DynamicLib::createClass(std::string pathLib) {
+IGraphic	*DynamicLib::createClass(std::string pathLib) {
 
 	void    *func;
 
@@ -48,7 +48,7 @@ void	*DynamicLib::createClass(std::string pathLib) {
     if (!func)
 		throw Error("Error: an error occured when loading function in library");
 
-	typedef void *(*ptr)();
+	typedef IGraphic *(*ptr)();
 
     ptr     pMaker = (ptr)func;
     this->ptrClass = pMaker();

@@ -6,7 +6,7 @@
 #    By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/15 18:31:49 by pilespin          #+#    #+#              #
-#    Updated: 2016/10/14 16:51:26 by pilespin         ###   ########.fr        #
+#    Updated: 2016/10/14 17:00:56 by pilespin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ all: sdl compil
 no: compil
 
 sdl:
+	@echo "\033[32mDownloading SDL ...\033[0m"
 	curl https://www.libsdl.org/release/SDL2-2.0.4.tar.gz -o $(PATH_SDL).tar.gz
 	@echo "\033[32mCompiling SDL ...\033[0m"
 	@mkdir -p $(LIB_SDL)
@@ -83,7 +84,7 @@ re: fclean all
 
 run:
 	@clear
-	@make
+	@make no
 	@./$(NAME)
 
 coffee:
