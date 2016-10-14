@@ -6,7 +6,7 @@
 #    By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/15 18:31:49 by pilespin          #+#    #+#              #
-#    Updated: 2016/10/10 17:29:16 by pilespin         ###   ########.fr        #
+#    Updated: 2016/10/14 12:02:35 by pilespin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,23 +14,20 @@
 	
 NAME	=	nibbler
 
-OS := $(shell uname)
-ifeq ($(OS), Darwin)
-	SDL	=	-framework SDL2
-else
-	SDL	=	$(shell pkg-config --cflags --libs sdl2)
-endif
-
 CC		=	g++ -std=c++11 -g
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
+
+LIB_SDL = libsdl
+PATH_SDL = SDL2-2.0.4
+SDL = `./$(LIB_SDL)/bin/sdl2-config --cflags --libs`
 
 SDIR	=	src/
 HDIR	=	includes/
 ODIR	=	obj/
 F_EXT	=	cpp
 H_EXT	=	hpp
-FOLDER	=	-I $(HDIR)
+FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
 SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp
@@ -42,7 +39,16 @@ SRC 	=	$(patsubst %.$(F_EXT), $(SDIR)%.$(F_EXT), $(SRCA))
 HDR		=	$(patsubst %.$(H_EXT), $(HDIR)%.$(H_EXT), $(SRCH))
 OBJ		=	$(patsubst %.$(F_EXT), $(ODIR)%.o, $(SRCA))
 
-all: compil
+all: sdl compil
+
+no: $(NAME)
+
+sdl:
+	curl https://www.libsdl.org/release/SDL2-2.0.4.tar.gz -o $(PATH_SDL).tar.gz
+	@echo "\033[32mCompiling SDL ...\033[0m"
+	@mkdir -p $(LIB_SDL)
+	@tar -xf $(PATH_SDL).tar.gz
+	@cd $(PATH_SDL) && ./configure --prefix=`cd ../$(LIB_SDL) && pwd` && make && make install
 
 compil:
 	@mkdir -p $(ODIR)
@@ -64,6 +70,7 @@ dynlib:
 
 clean:
 	@rm -rf $(ODIR)
+	@rm -rf $(PATH_SDL)
 
 fclean: clean
 	@rm -f $(NAME)
