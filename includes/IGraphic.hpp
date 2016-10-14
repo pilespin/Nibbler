@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   project.hpp                                        :+:      :+:    :+:   */
+/*   IGraphic.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/15 18:48:50 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/14 16:36:44 by pilespin         ###   ########.fr       */
+/*   Created: 2016/10/14 13:56:45 by pilespin          #+#    #+#             */
+/*   Updated: 2016/10/14 16:27:53 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROJECT_H
-# define PROJECT_H
+#pragma once
 
-enum eCommand {Up, Down, Left, Right, Escape, None};
+#include <project.hpp>
 
-#include <iostream>
-#include <SDL2/SDL.h>
-#include <map>
-#include <dlfcn.h>
-#include <thread>
-#include <mutex>
-#include <chrono>
-#include <sys/time.h>
-#include <iomanip>
+class IGraphic {
+public:
 
-#define SNAKE	1
-#define OFF 	0
+	virtual void			init() = 0;
+	virtual void			draw() = 0;
+	virtual void			getKey() = 0;
+	virtual void			setShared(Shared *shared) = 0;
+	virtual ~IGraphic( void ) {}
 
-#endif
+};

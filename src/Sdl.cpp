@@ -6,13 +6,27 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/11 18:01:14 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/14 16:51:05 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <project.hpp>
 #include "Sdl.hpp"
 #include "Shared.hpp"
+
+static double  ft_utime()
+{
+	int             sec;
+	double          micro;
+	struct timeval  tv;
+
+	gettimeofday(&tv, NULL);
+	sec = tv.tv_sec;
+	micro = tv.tv_usec;
+	micro /= 1000000;
+	micro += sec;
+	return (micro);
+}
 
 Sdl::Sdl() {
 	this->_val = 0;
@@ -21,7 +35,7 @@ Sdl::Sdl() {
 	this->windowSizeY = 480;
 	this->windowName = "Hello";
 	this->shared = NULL;
-
+	this->last_time = ft_utime();
 }
 
 Sdl::~Sdl()					{}
@@ -75,67 +89,68 @@ void			Sdl::setWindowSize(int x, int y) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 
-void	Sdl::start() {
+void	Sdl::init() {
 
-	int i;
-	int j;
 	this->setWindowSize(this->shared->mapSizeX * this->squareSize, this->shared->mapSizeY * this->squareSize);
 	this->setWindowName("Nibbler");
 	this->createWindow();
 	this->createRenderer();
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
-
     this->loadImage("img/squareGreen.bmp", "squareGreen");
 
-    bool        quit = false;
-    SDL_Event   event;
+}
 
-    while(!quit)
-    {
-    	this->shared->mutex.lock();
-    	
-    	while (SDL_PollEvent(&event))
-    	{
-    		if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
-    			event.key.keysym.sym == SDLK_ESCAPE)
-    		{
-    			quit = true;
-    			shared->setCommand(eCommand::Escape);
-				std::cout << "GoodBye" << std::endl;
-    		}
+void	Sdl::quit() {
+
+	SDL_DestroyWindow(this->getWindow());
+	SDL_Quit();
+}
+
+void	Sdl::getKey() {
+
+	SDL_Event   event;
+
+	while (SDL_PollEvent(&event))
+	{
+		if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
+			event.key.keysym.sym == SDLK_ESCAPE)
+		{
+			shared->setCommand(eCommand::Escape);
+			std::cout << "GoodBye" << std::endl;
+		}
             // if (event.type == SDL_MOUSEBUTTONDOWN){
         	//     quit = true;
         	// }
-    		else if (event.key.keysym.sym == SDLK_LEFT)
-    			shared->setCommand(eCommand::Left);
-    		else if (event.key.keysym.sym == SDLK_RIGHT)
-    			shared->setCommand(eCommand::Right);
-    		else if (event.key.keysym.sym == SDLK_UP)
-    			shared->setCommand(eCommand::Up);
-    		else if (event.key.keysym.sym == SDLK_DOWN)
-    			shared->setCommand(eCommand::Down);
-    	}
+		else if (event.key.keysym.sym == SDLK_LEFT)
+			shared->setCommand(eCommand::Left);
+		else if (event.key.keysym.sym == SDLK_RIGHT)
+			shared->setCommand(eCommand::Right);
+		else if (event.key.keysym.sym == SDLK_UP)
+			shared->setCommand(eCommand::Up);
+		else if (event.key.keysym.sym == SDLK_DOWN)
+			shared->setCommand(eCommand::Down);
+	}
+}
 
-    	SDL_RenderClear(this->getRenderer());
+void	Sdl::draw() {
 
-    	j = -1;
-    	while (++j < this->shared->mapSizeY)
-    	{
-    		i = -1;
-    		while (++i < this->shared->mapSizeX)
-    		{
-    			if (this->shared->map[j][i] == 1)
-    				this->DrawImageInRenderer(this->getImage("squareGreen"), i*this->squareSize, j*this->squareSize);
-    		}
-    	}
+	int i;
+	int j;
 
-    	this->shared->mutex.unlock();
-    	SDL_RenderPresent(this->getRenderer());
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	SDL_RenderClear(this->getRenderer());
 
-    }
-    SDL_DestroyWindow(this->getWindow());
-    SDL_Quit();
+	j = -1;
+	while (++j < this->shared->mapSizeY)
+	{
+		i = -1;
+		while (++i < this->shared->mapSizeX)
+		{
+			if (this->shared->map[j][i] == 1)
+				this->DrawImageInRenderer(this->getImage("squareGreen"), i*this->squareSize, j*this->squareSize);
+		}
+	}
+
+	SDL_RenderPresent(this->getRenderer());
 }
 
 void	Sdl::createWindow() {

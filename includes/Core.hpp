@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/11 15:42:25 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/14 16:32:10 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ private:
 	int		headX;
 	int		headY;
 	Shared 	*shared;
+	double	last_time;
+
 };
 
 std::ostream &operator<<(std::ostream &o, Core &c);

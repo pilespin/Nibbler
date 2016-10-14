@@ -6,7 +6,7 @@
 #    By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/15 18:31:49 by pilespin          #+#    #+#              #
-#    Updated: 2016/10/14 12:02:35 by pilespin         ###   ########.fr        #
+#    Updated: 2016/10/14 16:51:26 by pilespin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,11 @@
 	
 NAME	=	nibbler
 
-CC		=	g++ -std=c++11 -g
+CC		=	g++ -std=c++11
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
 
-LIB_SDL = libsdl
+LIB_SDL = SDL
 PATH_SDL = SDL2-2.0.4
 SDL = `./$(LIB_SDL)/bin/sdl2-config --cflags --libs`
 
@@ -41,7 +41,7 @@ OBJ		=	$(patsubst %.$(F_EXT), $(ODIR)%.o, $(SRCA))
 
 all: sdl compil
 
-no: $(NAME)
+no: compil
 
 sdl:
 	curl https://www.libsdl.org/release/SDL2-2.0.4.tar.gz -o $(PATH_SDL).tar.gz
@@ -49,6 +49,8 @@ sdl:
 	@mkdir -p $(LIB_SDL)
 	@tar -xf $(PATH_SDL).tar.gz
 	@cd $(PATH_SDL) && ./configure --prefix=`cd ../$(LIB_SDL) && pwd` && make && make install
+	@rm -rf $(PATH_SDL)
+	@rm -rf $(PATH_SDL).tar.gz
 
 compil:
 	@mkdir -p $(ODIR)
@@ -71,6 +73,7 @@ dynlib:
 clean:
 	@rm -rf $(ODIR)
 	@rm -rf $(PATH_SDL)
+	@rm -rf $(PATH_SDL).tar.gz
 
 fclean: clean
 	@rm -f $(NAME)
