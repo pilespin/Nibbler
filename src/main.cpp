@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:53:16 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 18:01:20 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 20:56:07 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int main()
         Shared      *shared;
         IGraphic    *graf;
 
-        shared = new Shared(50, 50);
+        shared = new Shared(20, 20);
         core = new Core(shared);
 
         DynamicLib  libsdl = DynamicLib();

@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 20:13:07 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 20:35:11 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	Sdl::init() {
 	this->createRenderer();
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
     this->loadImage("img/squareGreen.bmp", "squareGreen");
+    this->loadImage("img/applegreen.bmp", "apple");
 
 }
 
@@ -146,10 +147,14 @@ void	Sdl::draw() {
 
 	SDL_RenderClear(this->getRenderer());
 
-	for (auto it = this->shared->obj.begin(); it != this->shared->obj.end(); ++it) {
-		// std::cout << "X: " << it->getX() << "	Y: " << it->getY() << std::endl;
+	for (auto it = this->shared->snake.begin(); it != this->shared->snake.end(); ++it) {
 		if (it->getType() == SNAKE)
 			this->DrawImageInRenderer(this->getImage("squareGreen"), it->getX()*this->squareSize, it->getY()*this->squareSize);
+	}
+	
+	for (auto it = this->shared->obj.begin(); it != this->shared->obj.end(); ++it) {
+		if (it->getType() == APPLE)
+			this->DrawImageInRenderer(this->getImage("apple"), it->getX()*this->squareSize, it->getY()*this->squareSize);
 		// else if (it->getType() == APPLE)
 			// this->DrawImageInRenderer(this->getImage("apple"), it->getX()*this->squareSize, it->getY()*this->squareSize);
 
@@ -215,6 +220,8 @@ void	Sdl::DrawImageInRenderer(SDL_Surface *img, int x, int y) {
 	dest.x = x;
 	dest.y = y;
 	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+	dest.w = this->squareSize;
+	dest.h = this->squareSize;
 	SDL_RenderCopy(this->renderer, texture, NULL, &dest);
 	SDL_DestroyTexture(texture);
 }
