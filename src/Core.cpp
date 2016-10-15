@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/14 16:44:19 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 15:49:34 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,4 @@ void	Core::setOnMap(int y, int x, int value) {
 	}
 	else
 		throw Error("Error: Value is out of map");
-}
-
-void	Core::empty() {
-
 }

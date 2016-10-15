@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/14 16:32:10 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 15:49:33 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ public:
 	Core &operator=(Core const &rhs);
 
 	int			getValue() const;
-	void		empty();
 	void		start();
-	void		setOnMap(int x, int y, int value);
 
 	class Error : public std::exception {
 	public:
@@ -42,6 +40,8 @@ public:
 	};
 
 private:
+	void		setOnMap(int x, int y, int value);
+
 	int 	_val;
 	int		headX;
 	int		headY;

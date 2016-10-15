@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 15:44:03 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/11 16:18:05 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 15:52:04 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ public:
 
 	virtual int			getValue() const;
 	virtual void		setCommand(eCommand command);
-
-	void		empty();
 
 public: // private ////////////////////////////////////////////////////
 	Shared();

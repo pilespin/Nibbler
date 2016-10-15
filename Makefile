@@ -6,7 +6,7 @@
 #    By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/15 18:31:49 by pilespin          #+#    #+#              #
-#    Updated: 2016/10/14 17:00:56 by pilespin         ###   ########.fr        #
+#    Updated: 2016/10/15 15:54:42 by pilespin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,13 @@ CC		=	g++ -std=c++11
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
 
-LIB_SDL = SDL
-PATH_SDL = SDL2-2.0.4
-SDL = `./$(LIB_SDL)/bin/sdl2-config --cflags --libs`
+LIB_SDL 	= SDL
+PATH_SDL 	= SDL2-2.0.4
+SDL 		= `./$(LIB_SDL)/bin/sdl2-config --cflags --libs`
 
-LIB_ALLEGRO = ALLEGRO
-PATH_ALLEGRO = allegro-5.2.1.1
-ALLEGRO = `./$(LIB_ALLEGRO)/allegro-config --cflags --libs`
+LIB_ALLEGRO 	= ALLEGRO
+PATH_ALLEGRO 	= allegro-5.2.1.1
+ALLEGRO 		= `./$(LIB_ALLEGRO)/allegro-config --cflags --libs`
 
 SDIR	=	src/
 HDIR	=	includes/
@@ -43,19 +43,20 @@ SRC 	=	$(patsubst %.$(F_EXT), $(SDIR)%.$(F_EXT), $(SRCA))
 HDR		=	$(patsubst %.$(H_EXT), $(HDIR)%.$(H_EXT), $(SRCH))
 OBJ		=	$(patsubst %.$(F_EXT), $(ODIR)%.o, $(SRCA))
 
-all:  allegro compil
+all: allegro compil
 
 no: compil
 
 allegro:
 	@echo "\033[32mDownloading Allegro ...\033[0m"
 	curl http://download.gna.org/allegro/allegro/5.2.1.1/allegro-5.2.1.1.tar.gz -o $(PATH_ALLEGRO).tar.gz
-	@echo "\033[32mCompiling SDL ...\033[0m"
+	@echo "\033[32mCompiling Allegro ...\033[0m"
 	@mkdir -p $(LIB_ALLEGRO)
 	@tar -xf $(PATH_ALLEGRO).tar.gz
-	@cd $(LIB_ALLEGRO) && cmake -DSHARED=0 ../$(PATH_ALLEGRO) && make && make install
+	@cd $(LIB_ALLEGRO) && cmake -DSHARED=0 ../$(PATH_ALLEGRO) && make
 	@rm -rf $(PATH_ALLEGRO)
 	@rm -rf $(PATH_ALLEGRO).tar.gz
+
 sdl:
 	@echo "\033[32mDownloading SDL ...\033[0m"
 	curl https://www.libsdl.org/release/SDL2-2.0.4.tar.gz -o $(PATH_SDL).tar.gz
@@ -82,12 +83,16 @@ $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 
 dynlib:
 	@$(CC) -shared -o libmysdl.so src/Sdl.cpp $(SDL) $(FOLDER) -fPIC
+	@$(CC) -shared -o libmyallegro.so src/Allegro.cpp $(ALLEGRO) $(FOLDER) -fPIC
 	@echo "\033[32m ok \033[33m dynlib \033[0m"
 
 clean:
 	@rm -rf $(ODIR)
 	@rm -rf $(PATH_SDL)
 	@rm -rf $(PATH_SDL).tar.gz
+	@rm -rf $(LIB_ALLEGRO)
+	@rm -rf $(PATH_ALLEGRO)
+	@rm -rf $(PATH_ALLEGRO).tar.gz
 
 fclean: clean
 	@rm -f $(NAME)

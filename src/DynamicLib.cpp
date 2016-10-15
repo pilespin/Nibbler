@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:32:15 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/14 17:07:15 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 15:50:52 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,4 @@ IGraphic	*DynamicLib::createClass(std::string pathLib) {
 
 void	DynamicLib::closeLib() {
     dlclose(this->lib);
-}
-
-void	DynamicLib::empty() {
-
 }

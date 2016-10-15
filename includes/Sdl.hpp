@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/14 16:27:36 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 15:50:20 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "IGraphic.hpp"
 #include <project.hpp>
 
-class Sdl : public IGraphic{
+class Sdl : public IGraphic {
 
 public:
 	Sdl();
@@ -24,24 +24,16 @@ public:
 	Sdl(Sdl const &src);
 	Sdl &operator=(Sdl const &rhs);
 
-	int				getValue() const;
-	SDL_Window		*getWindow() const;
-	SDL_Renderer 	*getRenderer() const;
-	SDL_Surface		*getImage(std::string name);
+	int		getValue() const;
 
-	void			setWindowSize(int y, int x); //
-	void			setWindowName(std::string name);//----->le constructeur sert a quoi?-
-	void			setShared(Shared *shared);//
+	void	setWindowSize(int y, int x);
+	void	setWindowName(std::string name);
+	void	setShared(Shared *shared);
 
-	void			createWindow();
-	void			createRenderer();
-	SDL_Surface		*loadImage(std::string path, std::string newname);
-	void			DrawImageInRenderer(SDL_Surface *img, int x, int y);
-	void			init();
-	void			getKey();
-	void			quit();
-	void			draw();
-	void			empty();
+	void	init();
+	void	getKey();
+	void	quit();
+	void	draw();
 
 	class Error : public std::exception {
 	public:
@@ -56,17 +48,21 @@ public:
 	};
 
 private:
-	std::map< std::string, SDL_Surface * > 	img;
+	SDL_Window		*getWindow() const;
+	SDL_Renderer 	*getRenderer() const;
+	SDL_Surface		*getImage(std::string name);
+	SDL_Surface		*loadImage(std::string path, std::string newname);
 
-	Shared 			*shared;
+	void			DrawImageInRenderer(SDL_Surface *img, int x, int y);
+	void			createWindow();
+	void			createRenderer();
+	void			empty();
+
+	std::map< std::string, SDL_Surface * > 	img;
+	
 	int 			_val;
-	std::string		windowName;
-	int 			squareSize;
-	int 			windowSizeX;
-	int 			windowSizeY;
 	SDL_Window 		*window;
 	SDL_Renderer	*renderer;
-	double			last_time;
 };
 
 std::ostream &operator<<(std::ostream &o, Sdl &c);
