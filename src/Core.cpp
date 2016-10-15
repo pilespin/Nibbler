@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 15:49:34 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 19:38:32 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,33 @@ Core::Core() 						{	this->_val = 0;	}
 
 Core::Core(Shared	*shared) {
 	this->shared = shared;
+	this->shared->command = eCommand::Right;
+	this->shared->lastCommand = eCommand::Right;
 	this->headY = 5;
 	this->headX = 5;
-	this->setOnMap(this->headX, this->headY, SNAKE);
+	this->shared->obj.push_front(Object(this->headX - 4, this->headY, SNAKE));
+	this->shared->obj.push_front(Object(this->headX - 3, this->headY, SNAKE));
+	this->shared->obj.push_front(Object(this->headX - 2, this->headY, SNAKE));
+	this->shared->obj.push_front(Object(this->headX - 1, this->headY, SNAKE));
+	this->shared->obj.push_front(Object(this->headX, this->headY, SNAKE));
+
+	std::list<Object>::const_iterator it;
+	for (it = this->shared->obj.begin(); it != this->shared->obj.end(); ++it) {
+		std::cout << "X: " << it->getX() << "	Y: " << it->getY() << std::endl; 
+		this->setOnMap(it->getY(), it->getX(), SNAKE);
+	}
+
+	// this->setOnMap(this->headX, this->headY, SNAKE);
 	this->last_time = ft_utime();
+	this->secRefresh = .1;
 }
 
-Core::~Core()						{}
+Core::~Core() {
+}
 
-Core::Core(Core const &src)	{	*this = src;	}
+Core::Core(Core const &src)	{	
+	*this = src;	
+}
 
 Core	&Core::operator=(Core const &rhs) {
 
@@ -59,55 +77,88 @@ std::ostream &operator<<(std::ostream &o, Core &c) {
 int		Core::getValue() const	{	return (this->_val);	}
 ///////////////////////////////////////////////////////////////////////////////
 
+eCommand	Core::getOpositeCommand(eCommand command) {
+
+	if (command == eCommand::Up)
+		return (eCommand::Down);
+	else if (command == eCommand::Down)
+		return (eCommand::Up);
+	else if (command == eCommand::Left)
+		return (eCommand::Right);
+	else if (command == eCommand::Right)
+		return (eCommand::Left);
+	else
+		return (eCommand::None);
+
+}
 void	Core::start() {
 
 	//////////////////////////////////debug//////
-	std::cout << "----------------------" << std::endl;
-	int j = -1;
-	while (++j < this->shared->mapSizeY)
-	{
-		int i = -1;
-		while (++i < this->shared->mapSizeX)
-			std::cout << this->shared->map[j][i] << " ";
-		std::cout << std::endl;
-	}
-	std::cout << "----------------------" << std::endl;
+	// std::cout << "----------------------" << std::endl;
+	// int j = -1;
+	// while (++j < this->shared->mapSizeY)
+	// {
+	// 	int i = -1;
+	// 	while (++i < this->shared->mapSizeX)
+	// 		std::cout << this->shared->map[j][i] << " ";
+	// 	std::cout << std::endl;
+	// }
+	// std::cout << "----------------------" << std::endl;
     //////////////////////////////////debug//////
 
 	this->shared->mutex.lock();
 	double current = ft_utime();
 
-	if (current > this->last_time + 1)
+	if (current > this->last_time + this->secRefresh || 
+		(this->shared->command != this->shared->lastCommand && 
+			this->shared->lastCommand != this->getOpositeCommand(this->shared->command)))
 	{
-		this->last_time = ft_utime();
+
+		this->setOnMap(this->shared->obj.back().getY(), this->shared->obj.back().getX(), OFF);
+		this->shared->obj.pop_back();
+
+		if (this->shared->lastCommand == this->getOpositeCommand(this->shared->command))
+			this->shared->command = this->shared->lastCommand;
+
 		if (this->shared->command == eCommand::Up)
 		{
-			this->setOnMap(this->headY, this->headX, OFF);
 			this->headY--;
 			this->setOnMap(this->headY, this->headX, SNAKE);
+			this->shared->obj.push_front(Object(this->headX, this->headY, SNAKE));
 		}
 		else if (this->shared->command == eCommand::Down)
 		{
-			this->setOnMap(this->headY, this->headX, OFF);
 			this->headY++;
 			this->setOnMap(this->headY, this->headX, SNAKE);
+			this->shared->obj.push_front(Object(this->headX, this->headY, SNAKE));
 		}
 		else if (this->shared->command == eCommand::Left)
 		{
-			this->setOnMap(this->headY, this->headX, OFF);
 			this->headX--;
 			this->setOnMap(this->headY, this->headX, SNAKE);
+			this->shared->obj.push_front(Object(this->headX, this->headY, SNAKE));
 		}
 		else if (this->shared->command == eCommand::Right)
 		{
-			this->setOnMap(this->headY, this->headX, OFF);
 			this->headX++;
 			this->setOnMap(this->headY, this->headX, SNAKE);
+			this->shared->obj.push_front(Object(this->headX, this->headY, SNAKE));
 		}
 		else if (this->shared->command == eCommand::Escape)
 		{
 			exit(0);
 		}
+
+		this->shared->lastCommand = this->shared->command;
+		this->last_time = ft_utime();
+
+		// std::list<Object>::const_iterator it;
+		// for (it = this->shared->obj.begin(); it != this->shared->obj.end(); ++it) {
+		// 	std::cout << "X: " << it->getX() << "	Y: " << it->getY() << std::endl; 
+
+		// }
+		// std::cout << "----------------------" << std::endl;
+
 	}
 
 	this->shared->mutex.unlock();
@@ -118,8 +169,12 @@ void	Core::setOnMap(int y, int x, int value) {
 	if (x >= 0 && x < this->shared->mapSizeX && 
 		y >= 0 && y < this->shared->mapSizeY)
 	{
+		if (this->shared->map[y][x] == SNAKE && value == SNAKE)
+			throw Error("You are not eatable");
+		// if (this->shared->map[y][x] != OFF)
+		// 	throw Error("You are not alive, just dead");
 		this->shared->map[y][x] = value;
 	}
 	else
-		throw Error("Error: Value is out of map");
+		throw Error("Error: You are so far");
 }

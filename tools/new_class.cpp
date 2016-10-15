@@ -5,7 +5,9 @@ NewName::NewName() 						{	this->_val = 0;	}
 
 NewName::~NewName()						{}
 
-NewName::NewName(NewName const &src)	{	*this = src;	}
+NewName::NewName(NewName const &src)	{	
+	this->_val = src._val;
+}
 
 NewName	&NewName::operator=(NewName const &rhs) {
 

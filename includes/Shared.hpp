@@ -6,13 +6,15 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 15:44:03 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 15:52:04 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 19:33:17 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <project.hpp>
+
+class Object;
 
 class Shared {
 
@@ -27,10 +29,13 @@ public:
 
 public: // private ////////////////////////////////////////////////////
 	Shared();
+	std::list<Object> obj;
+
 	int 		_val;
 	std::mutex 	mutex;
 	int			**map;
 	eCommand 	command;
+	eCommand 	lastCommand;
 	int 		mapSizeX;
 	int 		mapSizeY;
 };

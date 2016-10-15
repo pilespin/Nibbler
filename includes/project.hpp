@@ -6,17 +6,18 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/15 18:48:50 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/14 16:36:44 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 19:11:13 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PROJECT_H
 # define PROJECT_H
 
-enum eCommand {Up, Down, Left, Right, Escape, None};
+enum eCommand {None, Up, Down, Left, Right, Escape};
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <list>
 #include <map>
 #include <dlfcn.h>
 #include <thread>
@@ -25,6 +26,7 @@ enum eCommand {Up, Down, Left, Right, Escape, None};
 #include <sys/time.h>
 #include <iomanip>
 
+#define APPLE	2
 #define SNAKE	1
 #define OFF 	0
 

@@ -6,7 +6,7 @@
 #    By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/15 18:31:49 by pilespin          #+#    #+#              #
-#    Updated: 2016/10/15 15:54:42 by pilespin         ###   ########.fr        #
+#    Updated: 2016/10/15 19:32:15 by pilespin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ H_EXT	=	hpp
 FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_ALLEGRO)/include
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
-SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp
+SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp Object.cpp
 
 SRCH	=	$(shell cd $(HDIR) && ls -1 *.$(H_EXT))
 SRCO	=	$(SRCA:$(F_EXT)=.o)
