@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 15:44:03 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 19:31:00 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 20:13:45 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 Shared::Shared() 						{	this->_val = 0;	}
 Shared::Shared(int sizeX, int sizeY) : mapSizeX(sizeX), mapSizeY(sizeY)	{
-	std::cout << "sizeX: " << sizeX << std::endl;
-	std::cout << "sizeY: " << sizeY << std::endl;
+	// std::cout << "sizeX: " << sizeX << std::endl;
+	// std::cout << "sizeY: " << sizeY << std::endl;
 
 	this->map = new int*[sizeY];
 	int i = -1;
 	while (++i < sizeY)
 	{
-		std::cout << "I: " << i << std::endl;
+		// std::cout << "I: " << i << std::endl;
 		this->map[i] = new int[sizeX];
 	}
 }

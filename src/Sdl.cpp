@@ -6,13 +6,14 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 15:42:45 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 20:13:07 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <project.hpp>
 #include "Sdl.hpp"
 #include "Shared.hpp"
+#include "Object.hpp"
 
 static double  ft_utime()
 {
@@ -112,23 +113,29 @@ void	Sdl::getKey() {
 
 	while (SDL_PollEvent(&event))
 	{
-		if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
-			event.key.keysym.sym == SDLK_ESCAPE)
+		if (event.type == SDL_KEYDOWN)
 		{
-			shared->setCommand(eCommand::Escape);
-			std::cout << "GoodBye" << std::endl;
-		}
+			if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
+				event.key.keysym.sym == SDLK_ESCAPE)
+			{
+				shared->setCommand(eCommand::Escape);
+				std::cout << "GoodBye" << std::endl;
+			}
             // if (event.type == SDL_MOUSEBUTTONDOWN){
         	//     quit = true;
         	// }
-		else if (event.key.keysym.sym == SDLK_LEFT)
-			shared->setCommand(eCommand::Left);
-		else if (event.key.keysym.sym == SDLK_RIGHT)
-			shared->setCommand(eCommand::Right);
-		else if (event.key.keysym.sym == SDLK_UP)
-			shared->setCommand(eCommand::Up);
-		else if (event.key.keysym.sym == SDLK_DOWN)
-			shared->setCommand(eCommand::Down);
+			else if (event.type == SDLK_1){
+				std::cout << "Change lib one" << std::endl;
+			}
+			else if (event.key.keysym.sym == SDLK_LEFT)
+				shared->setCommand(eCommand::Left);
+			else if (event.key.keysym.sym == SDLK_RIGHT)
+				shared->setCommand(eCommand::Right);
+			else if (event.key.keysym.sym == SDLK_UP)
+				shared->setCommand(eCommand::Up);
+			else if (event.key.keysym.sym == SDLK_DOWN)
+				shared->setCommand(eCommand::Down);
+		}
 	}
 }
 
@@ -139,15 +146,13 @@ void	Sdl::draw() {
 
 	SDL_RenderClear(this->getRenderer());
 
-	j = -1;
-	while (++j < this->shared->mapSizeY)
-	{
-		i = -1;
-		while (++i < this->shared->mapSizeX)
-		{
-			if (this->shared->map[j][i] == 1)
-				this->DrawImageInRenderer(this->getImage("squareGreen"), i*this->squareSize, j*this->squareSize);
-		}
+	for (auto it = this->shared->obj.begin(); it != this->shared->obj.end(); ++it) {
+		// std::cout << "X: " << it->getX() << "	Y: " << it->getY() << std::endl;
+		if (it->getType() == SNAKE)
+			this->DrawImageInRenderer(this->getImage("squareGreen"), it->getX()*this->squareSize, it->getY()*this->squareSize);
+		// else if (it->getType() == APPLE)
+			// this->DrawImageInRenderer(this->getImage("apple"), it->getX()*this->squareSize, it->getY()*this->squareSize);
+
 	}
 
 	SDL_RenderPresent(this->getRenderer());

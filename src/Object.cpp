@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 19:31:52 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 19:32:34 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 19:54:38 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ std::ostream &operator<<(std::ostream &o, Object &c) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 int		Object::getValue() const	{	return (this->_val);	}
-int		Object::getX() const	{	return (this->x);	}
-int		Object::getY() const	{	return (this->y);	}
+int		Object::getX() const		{	return (this->x);	}
+int		Object::getY() const		{	return (this->y);	}
+int		Object::getType() const		{	return (this->type);	}
 ///////////////////////////////////////////////////////////////////////////////
 void	Object::empty() {
 

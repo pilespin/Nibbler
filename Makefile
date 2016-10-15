@@ -6,7 +6,7 @@
 #    By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/15 18:31:49 by pilespin          #+#    #+#              #
-#    Updated: 2016/10/15 19:32:15 by pilespin         ###   ########.fr        #
+#    Updated: 2016/10/15 19:52:20 by pilespin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,7 @@ $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 	@echo "\033[32m ok \033[33m $@\033[0m"
 
 dynlib:
-	@$(CC) -shared -o libmysdl.so src/Sdl.cpp $(SDL) $(FOLDER) -fPIC
+	@$(CC) -shared -o libmysdl.so src/Sdl.cpp src/Object.cpp $(SDL) $(FOLDER) -fPIC
 	@$(CC) -shared -o libmyallegro.so src/Allegro.cpp $(ALLEGRO) $(FOLDER) -fPIC
 	@echo "\033[32m ok \033[33m dynlib \033[0m"
 

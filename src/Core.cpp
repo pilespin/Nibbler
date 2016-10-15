@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 19:38:32 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 20:14:19 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ Core::Core(Shared	*shared) {
 
 	std::list<Object>::const_iterator it;
 	for (it = this->shared->obj.begin(); it != this->shared->obj.end(); ++it) {
-		std::cout << "X: " << it->getX() << "	Y: " << it->getY() << std::endl; 
+		// std::cout << "X: " << it->getX() << "	Y: " << it->getY() << std::endl; 
 		this->setOnMap(it->getY(), it->getX(), SNAKE);
 	}
 

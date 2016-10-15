@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 19:32:01 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 19:32:45 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/15 19:54:20 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ public:
 	Object &operator=(Object const &rhs);
 
 	int			getValue() const;
+	int			getType() const;
 	int			getX() const;
 	int			getY() const;
 	void		empty();
