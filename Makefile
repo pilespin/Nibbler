@@ -22,12 +22,16 @@ LIB_SDL = SDL
 PATH_SDL = SDL2-2.0.4
 SDL = `./$(LIB_SDL)/bin/sdl2-config --cflags --libs`
 
+LIB_ALLEGRO = ALLEGRO
+PATH_ALLEGRO = allegro-5.2.1.1
+ALLEGRO = `./$(LIB_ALLEGRO)/allegro-config --cflags --libs`
+
 SDIR	=	src/
 HDIR	=	includes/
 ODIR	=	obj/
 F_EXT	=	cpp
 H_EXT	=	hpp
-FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include
+FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_ALLEGRO)/include
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
 SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp
@@ -39,10 +43,19 @@ SRC 	=	$(patsubst %.$(F_EXT), $(SDIR)%.$(F_EXT), $(SRCA))
 HDR		=	$(patsubst %.$(H_EXT), $(HDIR)%.$(H_EXT), $(SRCH))
 OBJ		=	$(patsubst %.$(F_EXT), $(ODIR)%.o, $(SRCA))
 
-all: sdl compil
+all:  allegro compil
 
 no: compil
 
+allegro:
+	@echo "\033[32mDownloading Allegro ...\033[0m"
+	curl http://download.gna.org/allegro/allegro/5.2.1.1/allegro-5.2.1.1.tar.gz -o $(PATH_ALLEGRO).tar.gz
+	@echo "\033[32mCompiling SDL ...\033[0m"
+	@mkdir -p $(LIB_ALLEGRO)
+	@tar -xf $(PATH_ALLEGRO).tar.gz
+	@cd $(LIB_ALLEGRO) && cmake -DSHARED=0 ../$(PATH_ALLEGRO) && make && make install
+	@rm -rf $(PATH_ALLEGRO)
+	@rm -rf $(PATH_ALLEGRO).tar.gz
 sdl:
 	@echo "\033[32mDownloading SDL ...\033[0m"
 	curl https://www.libsdl.org/release/SDL2-2.0.4.tar.gz -o $(PATH_SDL).tar.gz

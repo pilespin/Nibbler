@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Sdl.hpp                                            :+:      :+:    :+:   */
+/*   Allegro.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,32 +16,32 @@
 #include "IGraphic.hpp"
 #include <project.hpp>
 
-class Sdl : public IGraphic{
+class Allegro : public IGraphic{
 
 public:
-	Sdl();
-	~Sdl();
-	Sdl(Sdl const &src);
-	Sdl &operator=(Sdl const &rhs);
+	Allegro();
+	~Allegro();
+	Allegro(Allegro const &src);
+	Allegro &operator=(Allegro const &rhs);
 
-	int				getValue() const;
-	SDL_Window		*getWindow() const;
-	SDL_Renderer 	*getRenderer() const;
-	SDL_Surface		*getImage(std::string name);
+	virtual int				getValue() const;
+	virtual Allegro_Window		*getWindow() const;
+	virtual Allegro_Renderer 	*getRenderer() const;
+	virtual Allegro_Surface		*getImage(std::string name);
 
-	void			setWindowSize(int y, int x); //
-	void			setWindowName(std::string name);//----->le constructeur sert a quoi?-
-	void			setShared(Shared *shared);//
+	virtual void			setWindowSize(int y, int x);
+	virtual void			setWindowName(std::string name);
+	virtual void			setShared(Shared *shared);
 
-	void			createWindow();
-	void			createRenderer();
-	SDL_Surface		*loadImage(std::string path, std::string newname);
-	void			DrawImageInRenderer(SDL_Surface *img, int x, int y);
-	void			init();
-	void			getKey();
-	void			quit();
-	void			draw();
-	void			empty();
+	virtual void			createWindow();
+	virtual void			createRenderer();
+	virtual Allegro_Surface		*loadImage(std::string path, std::string newname);
+	virtual void			DrawImageInRenderer(Allegro_Surface *img, int x, int y);
+	virtual void			init();
+	virtual void			getKey();
+	virtual void			quit();
+	virtual void			draw();
+	virtual void			empty();
 
 	class Error : public std::exception {
 	public:
@@ -56,7 +56,7 @@ public:
 	};
 
 private:
-	std::map< std::string, SDL_Surface * > 	img;
+	std::map< std::string, Allegro_Surface * > 	img;
 
 	Shared 			*shared;
 	int 			_val;
@@ -64,9 +64,9 @@ private:
 	int 			squareSize;
 	int 			windowSizeX;
 	int 			windowSizeY;
-	SDL_Window 		*window;
-	SDL_Renderer	*renderer;
+	Allegro_Window 		*window;
+	Allegro_Renderer	*renderer;
 	double			last_time;
 };
 
-std::ostream &operator<<(std::ostream &o, Sdl &c);
+std::ostream &operator<<(std::ostream &o, Allegro &c);
