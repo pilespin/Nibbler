@@ -13,7 +13,7 @@
 #include "Object.hpp"
 
 Object::Object() 						{	this->_val = 0;	}
-Object::Object(int x, int y, int type) {
+Object::Object(int y, int x, int type) {
 
 	this->_val 	= 0;	
 	this->type 	= type;	

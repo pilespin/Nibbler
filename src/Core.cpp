@@ -36,14 +36,14 @@ Core::Core(Shared	*shared) {
 	this->shared->lastCommand = eCommand::Right;
 	this->headY = 5;
 	this->headX = 5;
-	this->shared->snake.push_front(Object(this->headX - 4, this->headY, SNAKE));
-	this->shared->snake.push_front(Object(this->headX - 3, this->headY, SNAKE));
-	this->shared->snake.push_front(Object(this->headX - 2, this->headY, SNAKE));
-	this->shared->snake.push_front(Object(this->headX - 1, this->headY, SNAKE));
-	this->shared->snake.push_front(Object(this->headX, this->headY, SNAKE));
+	this->shared->snake.push_front(Object(this->headY, this->headX -4, SNAKE));
+	this->shared->snake.push_front(Object(this->headY, this->headX -3, SNAKE));
+	this->shared->snake.push_front(Object(this->headY, this->headX -2, SNAKE));
+	this->shared->snake.push_front(Object(this->headY, this->headX -1, SNAKE));
+	this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
 
-	this->shared->obj.push_front(Object(10, 10, APPLE));
-	this->setOnMap(10, 10, APPLE);
+	this->shared->obj.push_front(Object(10, 3, APPLE));
+	this->setOnMap(10, 3, APPLE);
 
 	std::list<Object>::const_iterator it;
 	for (it = this->shared->snake.begin(); it != this->shared->snake.end(); ++it) {
@@ -94,6 +94,13 @@ eCommand	Core::getOpositeCommand(eCommand command) {
 }
 void	Core::start() {
 
+	// this->shared->mutex.lock();
+	double current = ft_utime();
+
+	if (current > this->last_time + this->secRefresh || 
+		(this->shared->command != this->shared->lastCommand && 
+			this->shared->lastCommand != this->getOpositeCommand(this->shared->command)))
+	{
 	////////////////////////////////debug//////
 	std::cout << "----------------------" << std::endl;
 	int j = -1;
@@ -107,14 +114,6 @@ void	Core::start() {
 	std::cout << "----------------------" << std::endl;
     ////////////////////////////////debug//////
 
-	this->shared->mutex.lock();
-	double current = ft_utime();
-
-	if (current > this->last_time + this->secRefresh || 
-		(this->shared->command != this->shared->lastCommand && 
-			this->shared->lastCommand != this->getOpositeCommand(this->shared->command)))
-	{
-
 		this->last_time = ft_utime();
 		this->setOnMap(this->shared->snake.back().getY(), this->shared->snake.back().getX(), OFF);
 		this->shared->snake.pop_back();
@@ -126,44 +125,30 @@ void	Core::start() {
 		{
 			this->headY--;
 			this->setOnMap(this->headY, this->headX, SNAKE);
-			this->shared->snake.push_front(Object(this->headX, this->headY, SNAKE));
+			this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
 		}
 		else if (this->shared->command == eCommand::Down)
 		{
 			this->headY++;
 			this->setOnMap(this->headY, this->headX, SNAKE);
-			this->shared->snake.push_front(Object(this->headX, this->headY, SNAKE));
+			this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
 		}
 		else if (this->shared->command == eCommand::Left)
 		{
 			this->headX--;
 			this->setOnMap(this->headY, this->headX, SNAKE);
-			this->shared->snake.push_front(Object(this->headX, this->headY, SNAKE));
+			this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
 		}
 		else if (this->shared->command == eCommand::Right)
 		{
 			this->headX++;
 			this->setOnMap(this->headY, this->headX, SNAKE);
-			this->shared->snake.push_front(Object(this->headX, this->headY, SNAKE));
+			this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
 		}
 		else if (this->shared->command == eCommand::Escape)
 		{
 			exit(0);
 		}
-
-		////////////////////////////EAT////////////////////////
-		if (this->shared->map[this->headY][this->headX] == APPLE)
-		{
-			// std::cout << "Eat apple" << std::endl;
-			// this->shared->obj.push_front(Object(1, 1, APPLE));
-			// this->setOnMap(1, 1, APPLE);
-			// this->shared->snake.push_front(Object(this->headX + 5, this->headY + 5, SNAKE));
-			// this->shared->obj.pop_back(); 
-			// this->shared->map[this->headY][this->headX] = OFF;
-
-		}
-
-		////////////////////////////EAT////////////////////////
 
 		this->shared->lastCommand = this->shared->command;
 
@@ -176,7 +161,7 @@ void	Core::start() {
 
 	}
 
-	this->shared->mutex.unlock();
+	// this->shared->mutex.unlock();
 }
 
 void	Core::setOnMap(int y, int x, int value) {
@@ -186,6 +171,13 @@ void	Core::setOnMap(int y, int x, int value) {
 	{
 		if (this->shared->map[y][x] == SNAKE && value == SNAKE)
 			throw Error("You are not eatable");
+		if (this->shared->map[this->headY][this->headX] == APPLE)
+		{
+			this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
+			this->shared->obj.pop_back(); 
+			this->shared->obj.push_front(Object(this->headY + 1, this->headX + 1, APPLE));
+			this->shared->map[this->headY + 1][this->headX + 1] = APPLE;
+		}
 		this->shared->map[y][x] = value;
 	}
 	else

@@ -17,7 +17,7 @@
 class Object {
 
 public:
-	Object(int x, int y, int type);
+	Object(int y, int x, int type);
 	~Object();
 	Object(Object const &src);
 	Object &operator=(Object const &rhs);

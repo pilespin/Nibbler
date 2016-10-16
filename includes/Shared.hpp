@@ -33,7 +33,7 @@ public: // private ////////////////////////////////////////////////////
 	std::list<Object> obj;
 
 	int 		_val;
-	std::mutex 	mutex;
+	// std::mutex 	mutex;
 	int			**map;
 	eCommand 	command;
 	eCommand 	lastCommand;
