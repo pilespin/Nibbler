@@ -6,10 +6,11 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 19:31:52 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 19:54:38 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 15:11:58 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <project.hpp>
 #include "Object.hpp"
 
 Object::Object() 						{	this->_val = 0;	}

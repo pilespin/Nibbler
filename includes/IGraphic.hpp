@@ -6,14 +6,13 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/14 13:56:45 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 15:42:46 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 15:03:21 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <project.hpp>
-#include "Shared.hpp"
+class Shared;
 
 class IGraphic {
 public:

@@ -6,10 +6,12 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:32:15 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 15:50:52 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 15:06:15 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <project.hpp>
+#include "IGraphic.hpp"
 #include "DynamicLib.hpp"
 
 DynamicLib::DynamicLib() 						{	this->_val = 0;	}

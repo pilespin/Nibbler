@@ -6,15 +6,14 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 19:34:47 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 17:34:21 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "Shared.hpp"
-#include "Object.hpp"
-#include <iostream>
+class Shared;
+class Object;
 
 class Core {
 
@@ -42,7 +41,14 @@ public:
 
 private:
 	void		setOnMap(int x, int y, int value);
+	void		pushNewBlock(int y, int x);
+	void		MoveSnake();
+	void 		ignoreOpositeCommand();
 	eCommand	getOpositeCommand(eCommand command);
+	void		pushNewFood();
+	int 		getRandomNumber(int max);
+	void		pushNewBlockRandom(int max);
+	void		pushNewSnake();
 
 	int 	_val;
 	int		headX;

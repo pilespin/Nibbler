@@ -6,14 +6,15 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 20:35:11 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 17:04:07 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <project.hpp>
-#include "Sdl.hpp"
+#include "IGraphic.hpp"
 #include "Shared.hpp"
 #include "Object.hpp"
+#include "Sdl.hpp"
 
 static double  ft_utime()
 {
@@ -99,6 +100,7 @@ void	Sdl::init() {
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
     this->loadImage("img/squareGreen.bmp", "squareGreen");
     this->loadImage("img/applegreen.bmp", "apple");
+    this->loadImage("img/block.bmp", "block");
 
 }
 
@@ -151,13 +153,15 @@ void	Sdl::draw() {
 		if (it->getType() == SNAKE)
 			this->DrawImageInRenderer(this->getImage("squareGreen"), it->getX()*this->squareSize, it->getY()*this->squareSize);
 	}
+
+	for (auto it = this->shared->block.begin(); it != this->shared->block.end(); ++it) {
+		if (it->getType() == BLOCK)
+			this->DrawImageInRenderer(this->getImage("block"), it->getX()*this->squareSize, it->getY()*this->squareSize);
+	}
 	
 	for (auto it = this->shared->obj.begin(); it != this->shared->obj.end(); ++it) {
 		if (it->getType() == APPLE)
 			this->DrawImageInRenderer(this->getImage("apple"), it->getX()*this->squareSize, it->getY()*this->squareSize);
-		// else if (it->getType() == APPLE)
-			// this->DrawImageInRenderer(this->getImage("apple"), it->getX()*this->squareSize, it->getY()*this->squareSize);
-
 	}
 
 	SDL_RenderPresent(this->getRenderer());

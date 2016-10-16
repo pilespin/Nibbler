@@ -6,13 +6,11 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 15:44:03 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 20:31:05 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 17:06:22 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-
-#include <project.hpp>
 
 class Object;
 
@@ -31,9 +29,9 @@ public: // private ////////////////////////////////////////////////////
 	Shared();
 	std::list<Object> snake;
 	std::list<Object> obj;
+	std::list<Object> block;
 
 	int 		_val;
-	// std::mutex 	mutex;
 	int			**map;
 	eCommand 	command;
 	eCommand 	lastCommand;

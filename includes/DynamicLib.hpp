@@ -6,13 +6,12 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 13:59:47 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 15:50:57 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 15:06:04 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <project.hpp>
 #include "IGraphic.hpp"
 
 class DynamicLib {

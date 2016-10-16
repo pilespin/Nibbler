@@ -6,13 +6,11 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 19:32:01 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 19:54:20 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 15:37:47 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-
-#include <iostream>
 
 class Object {
 

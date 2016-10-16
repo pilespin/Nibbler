@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/15 18:48:50 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/15 20:23:56 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 16:58:55 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ enum eCommand {None, Up, Down, Left, Right, Escape};
 #include <sys/time.h>
 #include <iomanip>
 
-#define GREY	3
+#define BLOCK	3
 #define APPLE	2
 #define SNAKE	1
 #define OFF 	0
