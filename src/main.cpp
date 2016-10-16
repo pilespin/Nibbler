@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:53:16 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/16 16:41:35 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 19:14:04 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ int main()
 
         DynamicLib  libsdl = DynamicLib();
         
-        graf = libsdl.createClass("./libmysdl.so");
+        // graf = libsdl.createClass("./libmysdl.so");
+        graf = libsdl.createClass("./libmyncurses.so");
+        // graf = libsdl.createClass("./libmyallegro.so");
 
         graf->setShared(shared);
         graf->init();

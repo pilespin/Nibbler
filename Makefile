@@ -6,7 +6,7 @@
 #    By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/15 18:31:49 by pilespin          #+#    #+#              #
-#    Updated: 2016/10/15 19:52:20 by pilespin         ###   ########.fr        #
+#    Updated: 2016/10/16 18:01:12 by pilespin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ NAME	=	nibbler
 CC		=	g++ -std=c++11
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
+
+NCURSES		= -lncurses
 
 LIB_SDL 	= SDL
 PATH_SDL 	= SDL2-2.0.4
@@ -82,8 +84,9 @@ $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 	@echo "\033[32m ok \033[33m $@\033[0m"
 
 dynlib:
-	@$(CC) -shared -o libmysdl.so src/Sdl.cpp src/Object.cpp $(SDL) $(FOLDER) -fPIC
-	@$(CC) -shared -o libmyallegro.so src/Allegro.cpp $(ALLEGRO) $(FOLDER) -fPIC
+	@$(CC) -shared -o libmysdl.so src/Sdl.cpp src/Object.cpp $(FLAGS) $(SDL) $(FOLDER) -fPIC
+	@$(CC) -shared -o libmyncurses.so src/Ncurses.cpp src/Object.cpp $(FLAGS) $(NCURSES) $(FOLDER) -fPIC
+	@$(CC) -shared -o libmyallegro.so src/Allegro.cpp $(ALLEGRO) $(FLAGS) $(FOLDER) -fPIC
 	@echo "\033[32m ok \033[33m dynlib \033[0m"
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/16 17:04:07 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 18:01:53 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,9 +143,6 @@ void	Sdl::getKey() {
 }
 
 void	Sdl::draw() {
-
-	int i;
-	int j;
 
 	SDL_RenderClear(this->getRenderer());
 

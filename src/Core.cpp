@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/16 17:39:42 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/16 18:08:49 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,16 +171,16 @@ void	Core::start() {
 			this->shared->lastCommand != this->getOpositeCommand(this->shared->command)))
 	{
 		////////////////////////////////debug//////
-		std::cout << "----------------------" << std::endl;
-		int j = -1;
-		while (++j < this->shared->mapSizeY)
-		{
-			int i = -1;
-			while (++i < this->shared->mapSizeX)
-				std::cout << this->shared->map[j][i] << " ";
-			std::cout << std::endl;
-		}
-		std::cout << "----------------------" << std::endl;
+		// std::cout << "----------------------" << std::endl;
+		// int j = -1;
+		// while (++j < this->shared->mapSizeY)
+		// {
+		// 	int i = -1;
+		// 	while (++i < this->shared->mapSizeX)
+		// 		std::cout << this->shared->map[j][i] << " ";
+		// 	std::cout << std::endl;
+		// }
+		// std::cout << "----------------------" << std::endl;
     	////////////////////////////////debug//////
 
 		this->last_time = ft_utime();
