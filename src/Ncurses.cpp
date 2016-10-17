@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/16 17:48:46 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/16 19:37:03 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/17 14:31:16 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void 	Ncurses::setShared(Shared *shared)	{	this->shared = shared;	}
 
 void	Ncurses::init() {
 	initscr();
+	// noecho();
+	raw();
 }
 
 void	Ncurses::quit() {
@@ -95,20 +97,26 @@ void	Ncurses::draw() {
 			}
 		}
 	}
-	// mvprintw(j + 1, i + 1, "%s", "\n" );
+	mvprintw(j*2, i*4, "%s", "\n" );
 	// addch('A' | A_BOLD | A_UNDERLINE);
 	// attroff(COLOR_PAIR(1));
 	refresh();
 
 }
 
-void	Ncurses::getKey() {
+int		Ncurses::getKey() {
 
 	timeout(0.1);
-	char ch;
-	ch = getch();
+	int ch;
+	ch = (int)getch();
 	
-	if (ch == 'D')
+	if (ch == 27)
+	{
+		ch = (int)getch();
+		if (ch == -1)
+			shared->setCommand(eCommand::Escape);
+	}
+	else if (ch == 'D')
 		shared->setCommand(eCommand::Left);
 	else if (ch == 'C')
 		shared->setCommand(eCommand::Right);
@@ -116,6 +124,13 @@ void	Ncurses::getKey() {
 		shared->setCommand(eCommand::Up);
 	else if (ch == 'B')
 		shared->setCommand(eCommand::Down);
+	else if (ch == '1')
+		shared->setCommand(eCommand::Lib1);
+	else if (ch == '2')
+		shared->setCommand(eCommand::Lib2);
+	else if (ch == '3')
+		shared->setCommand(eCommand::Lib3);
+	return (ch - 48);
 }
 
 

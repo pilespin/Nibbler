@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/16 18:08:49 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/17 14:51:20 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,10 @@ void	Core::start() {
 		this->MoveSnake();
 
 		if (this->shared->command == eCommand::Escape)
+		{
+			throw Error("GoodBye");
 			exit(0);
+		}
 
 		this->shared->lastCommand = this->shared->command;
 

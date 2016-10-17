@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 15:44:03 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/16 16:49:57 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/17 14:50:58 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 #include "Shared.hpp"
 #include "Object.hpp"
 
-Shared::Shared() 						{	this->_val = 0;	}
+Shared::Shared() 						{	
+	this->_val = 0;
+	// this->lastCommand = eCommand::Right;
+}
+
 Shared::Shared(int sizeX, int sizeY) : mapSizeX(sizeX), mapSizeY(sizeY)	{
 
 	this->map = new int*[sizeY];
@@ -30,13 +34,25 @@ Shared::Shared(int sizeX, int sizeY) : mapSizeX(sizeX), mapSizeY(sizeY)	{
 
 Shared::~Shared()						{}
 
-Shared::Shared(Shared const &src)	{	*this = src;	}
+Shared::Shared(Shared const &src)	{	
+
+	this->_val = src._val;
+	this->command = src.command;
+	this->lastCommand = src.lastCommand;
+	this->mapSizeX = src.mapSizeX;
+	this->mapSizeY = src.mapSizeY;
+	// *this = src;
+}
 
 Shared	&Shared::operator=(Shared const &rhs) {
 
 	if (this != &rhs)
 	{
 		this->_val = rhs._val;
+		this->command = rhs.command;
+		this->lastCommand = rhs.lastCommand;
+		this->mapSizeX = rhs.mapSizeX;
+		this->mapSizeY = rhs.mapSizeY;
 	}
 	return (*this);
 }

@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/16 17:48:46 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/16 19:37:10 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/17 14:30:58 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ public:
 	void	init();
 	void	quit();
 	void	draw();
-	void	getKey();
+	int		getKey();
 	void	setShared(Shared *shared);
 	void	setWindowSize(int y, int x);
 	void	setWindowName(std::string name);

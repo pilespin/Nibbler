@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/16 14:52:29 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/17 14:31:59 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ public:
 	void	setShared(Shared *shared);
 
 	void	init();
-	void	getKey();
+	int 	getKey();
 	void	quit();
 	void	draw();
 

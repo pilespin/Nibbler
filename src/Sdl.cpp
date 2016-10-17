@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/16 18:01:53 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/17 14:31:20 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	Sdl::quit() {
 	SDL_Quit();
 }
 
-void	Sdl::getKey() {
+int 	Sdl::getKey() {
 
 	SDL_Event   event;
 
@@ -122,14 +122,13 @@ void	Sdl::getKey() {
 				event.key.keysym.sym == SDLK_ESCAPE)
 			{
 				shared->setCommand(eCommand::Escape);
-				std::cout << "GoodBye" << std::endl;
 			}
-            // if (event.type == SDL_MOUSEBUTTONDOWN){
-        	//     quit = true;
-        	// }
-			else if (event.type == SDLK_1){
-				std::cout << "Change lib one" << std::endl;
-			}
+			else if (event.key.keysym.sym == SDLK_1)
+				shared->setCommand(eCommand::Lib1);
+			else if (event.key.keysym.sym == SDLK_2)
+				shared->setCommand(eCommand::Lib2);
+			else if (event.key.keysym.sym == SDLK_3)
+				shared->setCommand(eCommand::Lib3);
 			else if (event.key.keysym.sym == SDLK_LEFT)
 				shared->setCommand(eCommand::Left);
 			else if (event.key.keysym.sym == SDLK_RIGHT)
@@ -140,6 +139,7 @@ void	Sdl::getKey() {
 				shared->setCommand(eCommand::Down);
 		}
 	}
+	return (this->shared->command);
 }
 
 void	Sdl::draw() {
