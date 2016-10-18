@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 15:44:03 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/17 14:50:58 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/18 17:09:43 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 
 Shared::Shared() 						{	
 	this->_val = 0;
-	// this->lastCommand = eCommand::Right;
 }
 
 Shared::Shared(int sizeX, int sizeY) : mapSizeX(sizeX), mapSizeY(sizeY)	{
+
+	this->lib = eChoseLib::Lib1;
 
 	this->map = new int*[sizeY];
 	int i = -1;
@@ -63,8 +64,13 @@ std::ostream &operator<<(std::ostream &o, Shared &c) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 int		Shared::getValue() const	{	return (this->_val);	}
+int		Shared::getLib() const	{	return (this->lib);	}
 void	Shared::setCommand(eCommand command) {
 	this->command = command;
+}
+
+void	Shared::setLib(eChoseLib lib) {
+	this->lib = lib;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

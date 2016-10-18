@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/17 14:31:20 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/18 17:09:03 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,11 @@ int 	Sdl::getKey() {
 				shared->setCommand(eCommand::Escape);
 			}
 			else if (event.key.keysym.sym == SDLK_1)
-				shared->setCommand(eCommand::Lib1);
+				shared->setLib(eChoseLib::Lib1);
 			else if (event.key.keysym.sym == SDLK_2)
-				shared->setCommand(eCommand::Lib2);
+				shared->setLib(eChoseLib::Lib2);
 			else if (event.key.keysym.sym == SDLK_3)
-				shared->setCommand(eCommand::Lib3);
+				shared->setLib(eChoseLib::Lib3);
 			else if (event.key.keysym.sym == SDLK_LEFT)
 				shared->setCommand(eCommand::Left);
 			else if (event.key.keysym.sym == SDLK_RIGHT)

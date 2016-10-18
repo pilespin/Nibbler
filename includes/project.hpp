@@ -6,14 +6,15 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/15 18:48:50 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/17 13:57:51 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/18 17:30:13 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PROJECT_H
 # define PROJECT_H
 
-enum eCommand {None, Lib1, Lib2, Lib3, Up, Down, Left, Right, Escape};
+enum eCommand 	{None, Up, Down, Left, Right, Escape};
+enum eChoseLib 	{Nope, Lib1, Lib2, Lib3};
 
 #include <iostream>
 #include <SDL2/SDL.h>

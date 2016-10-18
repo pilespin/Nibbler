@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/17 14:51:20 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/18 17:15:14 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ Core::Core(Shared	*shared) {
 	this->pushNewBlockRandom(this->shared->mapSizeX / 5);
 	this->pushNewFood();
 	this->last_time = ft_utime();
-	this->secRefresh = 0.2;
+	this->secRefresh = 1.2;
 }
 
 Core::~Core() {
@@ -131,8 +131,8 @@ void Core::MoveSnake() {
 		this->headX--;
 	else if (this->shared->command == eCommand::Right)
 		this->headX++;
-	else
-		return;
+	// else
+		// return;
 
 	this->setOnMap(this->headY, this->headX, SNAKE);
 	this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));

@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/16 17:48:46 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/17 14:31:16 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/18 17:08:28 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,11 @@ int		Ncurses::getKey() {
 	else if (ch == 'B')
 		shared->setCommand(eCommand::Down);
 	else if (ch == '1')
-		shared->setCommand(eCommand::Lib1);
+		shared->setLib(eChoseLib::Lib1);
 	else if (ch == '2')
-		shared->setCommand(eCommand::Lib2);
+		shared->setLib(eChoseLib::Lib2);
 	else if (ch == '3')
-		shared->setCommand(eCommand::Lib3);
+		shared->setLib(eChoseLib::Lib3);
 	return (ch - 48);
 }
 

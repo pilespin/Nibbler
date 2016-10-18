@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:53:16 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/17 14:30:47 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/18 17:29:27 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int main()
     Core        *core;
     Shared      *shared;
     IGraphic    *graf;
-    int         key;
+    int         select_lib;
 
     try
     {
@@ -40,19 +40,26 @@ int main()
 
         while (1)
         {
-            key = graf->getKey();
-            if (key == 1)
+            graf->getKey();
+
+            select_lib = shared->getLib();
+            if (select_lib == 1)
             {
+                shared->lib = eChoseLib::Nope;
+                graf->quit();
                 graf = libsdl.createClass("./libmysdl.so");
                 graf->setShared(shared);
                 graf->init();
             }
-            if (key == 2)
+            if (select_lib == 2)
             {
+                shared->lib = eChoseLib::Nope;
+                graf->quit();
                 graf = libsdl.createClass("./libmyncurses.so");
                 graf->setShared(shared);
                 graf->init();
             }
+
             core->start();
             graf->draw();
             // std::this_thread::sleep_for(std::chrono::milliseconds(1000));   
