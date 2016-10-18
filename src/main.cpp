@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:53:16 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/18 17:29:27 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/18 19:58:53 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,49 +17,57 @@
 #include "Sdl.hpp"
 #include "IGraphic.hpp"
 
+IGraphic    *renewLib(DynamicLib dLib, Shared *shared, std::string path)
+{
+    IGraphic    *graf = NULL;
+
+    if (!shared)
+        return (NULL);
+
+    shared->lib = eChoseLib::Nope;
+    // graf->quit();
+    dLib.closeLib();
+    graf = dLib.createClass(path.c_str());
+    graf->setShared(shared);
+    graf->init();
+    return (graf);
+}
+
 int main()
 {
     Core        *core;
     Shared      *shared;
-    IGraphic    *graf;
-    int         select_lib;
+    IGraphic    *graf = NULL;
+    DynamicLib  dLib = DynamicLib();
 
     try
     {
         shared = new Shared(15, 10);
         core = new Core(shared);
 
-        DynamicLib  libsdl = DynamicLib();
-        
-        // graf = libsdl.createClass("./libmysdl.so");
-        graf = libsdl.createClass("./libmyncurses.so");
-        // graf = libsdl.createClass("./libmyallegro.so");
-
-        graf->setShared(shared);
-        graf->init();
+        graf = renewLib(dLib, shared, "./libmysdl.so");
+        // graf = renewLib(dLib, shared, "./libmyncurses.so");
+        // graf = renewLib(dLib, shared, "./libmyallegro.so");
 
         while (1)
         {
+
+            if (shared->getLib() == SDL)
+            {
+                if (graf)
+                    delete graf;
+                // graf->quit();
+                graf = renewLib(dLib, shared, "./libmysdl.so");
+            }
+            else if (shared->getLib() == NCURSES)
+            {
+                if (graf)
+                    delete graf;
+                // graf->quit();
+                graf = renewLib(dLib, shared, "./libmyncurses.so");
+            }
+
             graf->getKey();
-
-            select_lib = shared->getLib();
-            if (select_lib == 1)
-            {
-                shared->lib = eChoseLib::Nope;
-                graf->quit();
-                graf = libsdl.createClass("./libmysdl.so");
-                graf->setShared(shared);
-                graf->init();
-            }
-            if (select_lib == 2)
-            {
-                shared->lib = eChoseLib::Nope;
-                graf->quit();
-                graf = libsdl.createClass("./libmyncurses.so");
-                graf->setShared(shared);
-                graf->init();
-            }
-
             core->start();
             graf->draw();
             // std::this_thread::sleep_for(std::chrono::milliseconds(1000));   
@@ -67,7 +75,13 @@ int main()
     }
     catch (std::exception &e)
     {
-        graf->quit();
+        if (shared)
+        {
+            if (graf)
+                delete graf;
+            graf = renewLib(dLib, shared, "./libmyncurses.so");
+            graf->quit();
+        }
         std::cerr << "Exception: " << e.what() << std::endl;
     }
 

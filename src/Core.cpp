@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/10 14:36:10 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/18 17:15:14 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/18 18:52:38 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ Core::Core(Shared	*shared) {
 	this->pushNewBlockRandom(this->shared->mapSizeX / 5);
 	this->pushNewFood();
 	this->last_time = ft_utime();
-	this->secRefresh = 1.2;
+	this->secRefresh = 0.5;
 }
 
 Core::~Core() {
@@ -191,7 +191,7 @@ void	Core::start() {
 		if (this->shared->command == eCommand::Escape)
 		{
 			throw Error("GoodBye");
-			exit(0);
+			// exit(0);
 		}
 
 		this->shared->lastCommand = this->shared->command;

@@ -6,7 +6,7 @@
 #    By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/15 18:31:49 by pilespin          #+#    #+#              #
-#    Updated: 2016/10/16 18:01:12 by pilespin         ###   ########.fr        #
+#    Updated: 2016/10/18 19:27:43 by pilespin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 	
 NAME	=	nibbler
 
-CC		=	g++ -std=c++11
+CC		=	g++ -std=c++11 -g
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
 

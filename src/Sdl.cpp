@@ -6,7 +6,7 @@
 /*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/18 17:09:03 by pilespin         ###   ########.fr       */
+/*   Updated: 2016/10/18 19:32:44 by pilespin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@ static double  ft_utime()
 
 Sdl::Sdl() {
 	this->_val = 0;
-	this->squareSize = 25;
+	this->squareSize = 28;
 	this->windowSizeX = 640;
 	this->windowSizeY = 480;
 	this->windowName = "Hello";
 	this->shared = NULL;
 	this->last_time = ft_utime();
+	this->window = NULL;
+	this->renderer = NULL;
 }
 
 Sdl::~Sdl()					{}
@@ -105,6 +107,9 @@ void	Sdl::init() {
 }
 
 void	Sdl::quit() {
+
+	if (!this->getWindow())
+		return;
 
 	SDL_DestroyWindow(this->getWindow());
 	SDL_Quit();
