@@ -26,8 +26,8 @@ PATH_SDL_IMG 	= SDL2_image-2.0.1
 SDL 			= `./$(LIB_SDL)/bin/sdl2-config --cflags --libs` -lSDL2_image
 
 
-LIB_QT 		= /goinfre/QT
-PATH_QT 	= qt-everywhere-opensource-src-5.7.0
+LIB_QT 		= ~/goinfre/QT
+PATH_QT 	= ~/goinfre/qt-everywhere-opensource-src-5.7.0
 QT 			= 
 
 LIB_SFML 	= SFML
@@ -60,12 +60,12 @@ sfml:
 	@cd SFML && cmake . && make
 
 dlqt:
-	curl http://download.qt.io/official_releases/qt/5.7/5.7.0/single/qt-everywhere-opensource-src-5.7.0.tar.gz -o $(PATH_QT).tar.gz
+	@curl http://www.mirrorservice.org/sites/download.qt-project.org/archive/qt/5.7/5.7.0/single/qt-everywhere-opensource-src-5.7.0.tar.gz -o $(PATH_QT).tar.gz
 
 qt:
 	mkdir -p $(LIB_QT)
-	tar -xf $(PATH_QT).tar.gz -C /goinfre/
-	cd $(PATH_QT) && ./configure --prefix=`cd $(LIB_QT) && pwd` && make && make install
+	tar -xf $(PATH_QT).tar.gz -C ~/goinfre/
+	cd $(PATH_QT) && ./configure --prefix=`cd $(LIB_QT) && pwd` -qt-xcb && make && make install
 
 cleanqt:
 	@rm -rf $(LIB_QT)
@@ -111,6 +111,7 @@ clean:
 	@rm -rf $(PATH_SDL).tar.gz
 	@rm -rf $(PATH_SDL_IMG)
 	@rm -rf $(PATH_SDL_IMG).tar.gz
+	@rm -rf $(PATH_QT)
 
 fclean: clean
 	@rm -f $(NAME)
@@ -119,6 +120,7 @@ fclean: clean
 	@rm -f libmysfml.so
 
 suclean: fclean
+	@rm -rf $(LIB_QT)
 	@rm -rf $(LIB_SDL)
 	@rm -rf $(LIB_SFML)
 
