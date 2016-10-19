@@ -25,6 +25,11 @@ PATH_SDL 		= SDL2-2.0.4
 PATH_SDL_IMG 	= SDL2_image-2.0.1
 SDL 			= `./$(LIB_SDL)/bin/sdl2-config --cflags --libs` -lSDL2_image
 
+
+LIB_QT 		= /goinfre/QT
+PATH_QT 	= qt-everywhere-opensource-src-5.7.0
+QT 			= 
+
 LIB_SFML 	= SFML
 PATH_SFML 	= SFML-2.4.0-sources.zip
 SFML 		= 
@@ -53,6 +58,18 @@ no: compil
 sfml:
 	@git clone https://github.com/SFML/SFML.git SFML
 	@cd SFML && cmake . && make
+
+dlqt:
+	curl http://download.qt.io/official_releases/qt/5.7/5.7.0/single/qt-everywhere-opensource-src-5.7.0.tar.gz -o $(PATH_QT).tar.gz
+
+qt:
+	mkdir -p $(LIB_QT)
+	tar -xf $(PATH_QT).tar.gz -C /goinfre/
+	cd $(PATH_QT) && ./configure --prefix=`cd $(LIB_QT) && pwd` && make && make install
+
+cleanqt:
+	@rm -rf $(LIB_QT)
+	@rm -rf $(PATH_QT)
 
 sdl:
 	@echo "\033[32mDownloading SDL ...\033[0m"
