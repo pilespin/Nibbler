@@ -22,7 +22,10 @@ IGraphic    *renewLib(DynamicLib dLib, Shared *shared, std::string path)
     IGraphic    *graf = NULL;
 
     if (!shared)
-        return (NULL);
+    {
+        std::cerr << "Error: Shared memory is out" << std::endl;
+        exit(0);
+    }
 
     shared->lib = eChoseLib::Nope;
     // graf->quit();
