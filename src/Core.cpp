@@ -42,7 +42,7 @@ Core::Core(Shared	*shared) {
 	this->pushNewBlockRandom(this->shared->mapSizeX / 5);
 	this->pushNewFood();
 	this->last_time = ft_utime();
-	this->secRefresh = 0.5;
+	this->secRefresh = 0.2;
 }
 
 Core::~Core() {
@@ -73,7 +73,7 @@ void Core::pushNewBlockRandom(int max) {
 
 	int i = -1;
 	while (++i < max)
-		this->pushNewBlock(getRandomNumber(this->shared->mapSizeY - 1) + 1, getRandomNumber(this->shared->mapSizeX));
+		this->pushNewBlock(getRandomNumber(this->shared->mapSizeY - 2) + 1, getRandomNumber(this->shared->mapSizeX - 2 ) + 1);
 
 }
 

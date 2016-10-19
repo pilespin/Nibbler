@@ -101,10 +101,9 @@ void	Sdl::init() {
 	this->createRenderer();
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
     this->loadImage("img/squareGreen.bmp", "squareGreen");
-    this->loadImage("img/applegreen.bmp", "apple");
-    // this->loadImage("img/block.bmp", "block");
-    // this->loadImage("img/de.png", "block");
-    this->loadImage("img/warn.png", "block");
+    this->loadImage("img/pnoyelle.png", "pnoyelle");
+    this->loadImage("img/boobs.png", "boobs");
+    this->loadImage("img/rock.png", "rock");
 
 }
 
@@ -153,20 +152,23 @@ void	Sdl::draw() {
 
 	SDL_RenderClear(this->getRenderer());
 
+	for (auto it = this->shared->block.begin(); it != this->shared->block.end(); ++it) {
+		if (it->getType() == BLOCK)
+			this->DrawImageInRenderer(this->getImage("rock"), it->getX()*this->squareSize, it->getY()*this->squareSize);
+	}
+	
+	for (auto it = this->shared->obj.begin(); it != this->shared->obj.end(); ++it) {
+		if (it->getType() == APPLE)
+			this->DrawImageInRenderer(this->getImage("boobs"), it->getX()*this->squareSize, it->getY()*this->squareSize);
+	}
+
 	for (auto it = this->shared->snake.begin(); it != this->shared->snake.end(); ++it) {
 		if (it->getType() == SNAKE)
 			this->DrawImageInRenderer(this->getImage("squareGreen"), it->getX()*this->squareSize, it->getY()*this->squareSize);
 	}
 
-	for (auto it = this->shared->block.begin(); it != this->shared->block.end(); ++it) {
-		if (it->getType() == BLOCK)
-			this->DrawImageInRenderer(this->getImage("block"), it->getX()*this->squareSize, it->getY()*this->squareSize);
-	}
-	
-	for (auto it = this->shared->obj.begin(); it != this->shared->obj.end(); ++it) {
-		if (it->getType() == APPLE)
-			this->DrawImageInRenderer(this->getImage("apple"), it->getX()*this->squareSize, it->getY()*this->squareSize);
-	}
+	// Head of snake
+	this->DrawImageInRenderer(this->getImage("pnoyelle"), this->shared->snake.begin()->getX()*this->squareSize, this->shared->snake.begin()->getY()*this->squareSize);
 
 	SDL_RenderPresent(this->getRenderer());
 }
