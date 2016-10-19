@@ -18,6 +18,7 @@ enum eChoseLib 	{Nope, Lib1, Lib2, Lib3};
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include "SDL2/SDL_image.h"
 #include <list>
 #include <map>
 #include <dlfcn.h>

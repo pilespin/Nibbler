@@ -102,7 +102,9 @@ void	Sdl::init() {
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
     this->loadImage("img/squareGreen.bmp", "squareGreen");
     this->loadImage("img/applegreen.bmp", "apple");
-    this->loadImage("img/block.bmp", "block");
+    // this->loadImage("img/block.bmp", "block");
+    // this->loadImage("img/de.png", "block");
+    this->loadImage("img/warn.png", "block");
 
 }
 
@@ -200,7 +202,8 @@ void	Sdl::createRenderer() {
 
 SDL_Surface	*Sdl::loadImage(std::string path, std::string newname) {
 
-	SDL_Surface     *bmp = SDL_LoadBMP(path.c_str());
+	// SDL_Surface     *bmp = SDL_LoadBMP(path.c_str());
+	SDL_Surface     *bmp = IMG_Load(path.c_str());
 	if (!bmp){
 		SDL_DestroyRenderer(this->renderer);
 		SDL_DestroyWindow(this->window);

@@ -14,26 +14,27 @@
 	
 NAME	=	nibbler
 
-CC		=	g++ -std=c++11 -g
+CC		=	g++ -std=c++11
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
 
 NCURSES		= -lncurses
 
-LIB_SDL 	= SDL
-PATH_SDL 	= SDL2-2.0.4
-SDL 		= `./$(LIB_SDL)/bin/sdl2-config --cflags --libs`
+LIB_SDL 		= SDL
+PATH_SDL 		= SDL2-2.0.4
+PATH_SDL_IMG 	= SDL2_image-2.0.1
+SDL 			= `./$(LIB_SDL)/bin/sdl2-config --cflags --libs` -lSDL2_image
 
-LIB_ALLEGRO 	= ALLEGRO
-PATH_ALLEGRO 	= allegro-5.2.1.1
-ALLEGRO 		= `./$(LIB_ALLEGRO)/allegro-config --cflags --libs`
+LIB_SFML 	= SFML
+PATH_SFML 	= SFML-2.4.0-sources.zip
+SFML 		= 
 
 SDIR	=	src/
 HDIR	=	includes/
 ODIR	=	obj/
 F_EXT	=	cpp
 H_EXT	=	hpp
-FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_ALLEGRO)/include
+FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_ALLEGRO)/include -I./$(LIB_SDL)/lib/
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
 SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp Object.cpp
@@ -45,28 +46,27 @@ SRC 	=	$(patsubst %.$(F_EXT), $(SDIR)%.$(F_EXT), $(SRCA))
 HDR		=	$(patsubst %.$(H_EXT), $(HDIR)%.$(H_EXT), $(SRCH))
 OBJ		=	$(patsubst %.$(F_EXT), $(ODIR)%.o, $(SRCA))
 
-all: allegro compil
+all: sdl compil
 
 no: compil
 
-allegro:
-	@echo "\033[32mDownloading Allegro ...\033[0m"
-	curl http://download.gna.org/allegro/allegro/5.2.1.1/allegro-5.2.1.1.tar.gz -o $(PATH_ALLEGRO).tar.gz
-	@echo "\033[32mCompiling Allegro ...\033[0m"
-	@mkdir -p $(LIB_ALLEGRO)
-	@tar -xf $(PATH_ALLEGRO).tar.gz
-	@cd $(LIB_ALLEGRO) && cmake -DSHARED=0 ../$(PATH_ALLEGRO) && make
-	@rm -rf $(PATH_ALLEGRO)
-	@rm -rf $(PATH_ALLEGRO).tar.gz
+sfml:
+	@git clone https://github.com/SFML/SFML.git SFML
+	@cd SFML && cmake . && make
 
 sdl:
 	@echo "\033[32mDownloading SDL ...\033[0m"
 	curl https://www.libsdl.org/release/SDL2-2.0.4.tar.gz -o $(PATH_SDL).tar.gz
+	curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz -o $(PATH_SDL_IMG).tar.gz
 	@echo "\033[32mCompiling SDL ...\033[0m"
 	@mkdir -p $(LIB_SDL)
 	@tar -xf $(PATH_SDL).tar.gz
+	@tar -xf $(PATH_SDL_IMG).tar.gz
 	@cd $(PATH_SDL) && ./configure --prefix=`cd ../$(LIB_SDL) && pwd` && make && make install
+	@cd $(PATH_SDL_IMG) && ./configure --prefix=`cd ../$(LIB_SDL) && pwd` && make && make install
 	@rm -rf $(PATH_SDL)
+	@rm -rf $(PATH_SDL_IMG)
+	@rm -rf $(PATH_SDL_IMG).tar.gz
 	@rm -rf $(PATH_SDL).tar.gz
 
 compil:
@@ -86,20 +86,25 @@ $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 dynlib:
 	@$(CC) -shared -o libmysdl.so src/Sdl.cpp src/Object.cpp $(FLAGS) $(SDL) $(FOLDER) -fPIC
 	@$(CC) -shared -o libmyncurses.so src/Ncurses.cpp src/Object.cpp $(FLAGS) $(NCURSES) $(FOLDER) -fPIC
-	@$(CC) -shared -o libmyallegro.so src/Allegro.cpp $(ALLEGRO) $(FLAGS) $(FOLDER) -fPIC
 	@echo "\033[32m ok \033[33m dynlib \033[0m"
 
 clean:
 	@rm -rf $(ODIR)
 	@rm -rf $(PATH_SDL)
 	@rm -rf $(PATH_SDL).tar.gz
-	@rm -rf $(LIB_ALLEGRO)
-	@rm -rf $(PATH_ALLEGRO)
-	@rm -rf $(PATH_ALLEGRO).tar.gz
+	@rm -rf $(PATH_SDL_IMG)
+	@rm -rf $(PATH_SDL_IMG).tar.gz
 
 fclean: clean
 	@rm -f $(NAME)
 	@rm -f libmysdl.so
+	@rm -f libmyncurses.so
+	@rm -f libmysfml.so
+
+suclean: fclean
+	@rm -rf $(LIB_SDL)
+	@rm -rf $(LIB_SFML)
+
 
 re: fclean all
 
