@@ -26,8 +26,8 @@ PATH_SDL_IMG 	= SDL2_image-2.0.1
 SDL 			= `./$(LIB_SDL)/bin/sdl2-config --cflags --libs` -lSDL2_image
 
 
-LIB_QT 		= ~/goinfre/QT
-PATH_QT 	= ~/goinfre/qt-everywhere-opensource-src-5.7.0
+LIB_QT 		= /goinfre/qtbase
+PATH_QT 	= /goinfre/qt-everywhere-opensource-src-5.7.0
 QT 			= 
 
 LIB_SFML 	= SFML
@@ -51,7 +51,7 @@ SRC 	=	$(patsubst %.$(F_EXT), $(SDIR)%.$(F_EXT), $(SRCA))
 HDR		=	$(patsubst %.$(H_EXT), $(HDIR)%.$(H_EXT), $(SRCH))
 OBJ		=	$(patsubst %.$(F_EXT), $(ODIR)%.o, $(SRCA))
 
-all: sdl compil
+all: compil
 
 no: compil
 
@@ -64,8 +64,8 @@ dlqt:
 
 qt:
 	mkdir -p $(LIB_QT)
-	tar -xf $(PATH_QT).tar.gz -C ~/goinfre/
-	cd $(PATH_QT) && ./configure --prefix=`cd $(LIB_QT) && pwd` -qt-xcb && make && make install
+	tar -xf $(PATH_QT).tar.gz -C /goinfre/
+	cd $(PATH_QT) && ./configure --prefix=`cd $(LIB_QT) && pwd` -opensource -nomake tests -nomake examples -release -confirm-license && make -j 4
 
 cleanqt:
 	@rm -rf $(LIB_QT)
