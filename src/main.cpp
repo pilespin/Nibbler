@@ -16,6 +16,7 @@
 #include "Core.hpp"
 #include "Sdl.hpp"
 #include "IGraphic.hpp"
+#include <SFML/Graphics.hpp>
 
 IGraphic    *renewLib(DynamicLib dLib, Shared *shared, std::string path)
 {
@@ -43,18 +44,40 @@ int main()
     IGraphic    *graf = NULL;
     DynamicLib  dLib = DynamicLib();
 
+
+////////////////////////////////WORKING /////////////
+    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        window.draw(shape);
+        window.display();
+    }
+////////////////////////////////WORKING /////////////
+
+
+
     try
     {
         shared = new Shared(15, 10);
         core = new Core(shared);
 
-        graf = renewLib(dLib, shared, "./libmysdl.so");
+        // graf = renewLib(dLib, shared, "./libmysdl.so");
         // graf = renewLib(dLib, shared, "./libmyncurses.so");
-        // graf = renewLib(dLib, shared, "./libmyallegro.so");
+        graf = renewLib(dLib, shared, "./libmysfml.so");
 
         while (1)
         {
-
             if (shared->getLib() == SDL)
             {
                 if (graf)

@@ -25,21 +25,20 @@ PATH_SDL 		= SDL2-2.0.5
 PATH_SDL_IMG 	= SDL2_image-2.0.1
 SDL 			= `./$(LIB_SDL)/bin/sdl2-config --cflags --libs` -lSDL2_image
 
-
 LIB_QT 		= /goinfre/qtbase
 PATH_QT 	= /goinfre/qt-everywhere-opensource-src-5.7.0
 QT 			= 
 
 LIB_SFML 	= SFML
-PATH_SFML 	= SFML-2.4.0-sources.zip
-SFML 		= 
+PATH_SFML 	= SFML-2.4.0
+SFML 		= -L./$(PATH_SFML)/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 SDIR	=	src/
 HDIR	=	includes/
 ODIR	=	obj/
 F_EXT	=	cpp
 H_EXT	=	hpp
-FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_ALLEGRO)/include -I./$(LIB_SDL)/lib/
+FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_ALLEGRO)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/include/
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
 SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp Object.cpp
@@ -56,6 +55,12 @@ all: compil
 no: compil
 
 sfml:
+	@curl http://mirror2.sfml-dev.org/files/SFML-2.4.0-sources.zip -o $(PATH_SFML).zip
+	unzip $(PATH_SFML).zip
+	cat patch_sfml > $(PATH_SFML)/src/SFML/Graphics/CMakeLists.txt
+	cd $(PATH_SFML) && cmake . && make -j8
+
+else:
 	@git clone https://github.com/SFML/SFML.git SFML
 	@cd SFML && cmake . && make -j 8
 
@@ -67,8 +72,8 @@ qt:
 
 sdl:
 	@echo "\033[32mDownloading SDL ...\033[0m"
-	curl https://www.libsdl.org/release/SDL2-2.0.5.tar.gz -o $(PATH_SDL).tar.gz
-	curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz -o $(PATH_SDL_IMG).tar.gz
+	@curl https://www.libsdl.org/release/SDL2-2.0.5.tar.gz -o $(PATH_SDL).tar.gz
+	@curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz -o $(PATH_SDL_IMG).tar.gz
 	@echo "\033[32mCompiling SDL ...\033[0m"
 	@mkdir -p $(LIB_SDL)
 	@tar -xf $(PATH_SDL).tar.gz
@@ -87,7 +92,7 @@ compil:
 	@make -j 8 $(NAME)
 
 $(NAME): $(OBJ) $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(FOLDER)
+	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(FOLDER) $(SFML)
 	@echo "\033[37m END $(NAME)\033[0m"
 
 $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR) 
@@ -97,6 +102,7 @@ $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 dynlib:
 	@$(CC) -shared -o libmysdl.so src/Sdl.cpp src/Object.cpp $(FLAGS) $(SDL) $(FOLDER) -fPIC
 	@$(CC) -shared -o libmyncurses.so src/Ncurses.cpp src/Object.cpp $(FLAGS) $(NCURSES) $(FOLDER) -fPIC
+	@$(CC) -shared -o libmysfml.so src/Sfml.cpp src/Object.cpp $(FLAGS) $(SFML) $(FOLDER) -fPIC
 	@echo "\033[32m ok \033[33m dynlib \033[0m"
 
 clean:
@@ -117,6 +123,7 @@ suclean: fclean
 	@rm -rf $(LIB_QT)
 	@rm -rf $(LIB_SDL)
 	@rm -rf $(LIB_SFML)
+	@rm -rf $(PATH_SFML)
 	@rm -rf $(LIB_QT)
 	@rm -rf $(PATH_QT)
 
