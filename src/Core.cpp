@@ -36,13 +36,17 @@ Core::Core(Shared	*shared) {
 	this->shared = shared;
 	this->shared->command = eCommand::Right;
 	this->shared->lastCommand = eCommand::Right;
+	this->IAheadY = this->shared->mapSizeY - 1;
+	this->IAheadX = 6;
 	this->headY = 0;
 	this->headX = 6;
+	this->IAalive = true;
 	this->pushNewSnake();
+	this->pushNewIASnake();
 	this->pushNewBlockRandom(this->shared->mapSizeX / 5);
 	this->pushNewFood();
 	this->last_time = ft_utime();
-	this->secRefresh = 0.2;
+	this->secRefresh = 0.3;
 }
 
 Core::~Core() {
@@ -75,6 +79,19 @@ void Core::pushNewBlockRandom(int max) {
 	while (++i < max)
 		this->pushNewBlock(getRandomNumber(this->shared->mapSizeY - 2) + 1, getRandomNumber(this->shared->mapSizeX - 2 ) + 1);
 
+}
+
+void Core::pushNewIASnake() {
+
+	this->shared->IAsnake.push_front(Object(this->IAheadY, this->IAheadX -4, IASNAKE));
+	this->shared->IAsnake.push_front(Object(this->IAheadY, this->IAheadX -3, IASNAKE));
+	this->shared->IAsnake.push_front(Object(this->IAheadY, this->IAheadX -2, IASNAKE));
+	this->shared->IAsnake.push_front(Object(this->IAheadY, this->IAheadX -1, IASNAKE));
+	this->shared->IAsnake.push_front(Object(this->IAheadY, this->IAheadX, IASNAKE));
+
+	for (auto it = this->shared->IAsnake.begin(); it != this->shared->IAsnake.end(); ++it) {
+		this->setOnMap(it->getY(), it->getX(), IASNAKE);
+	}
 }
 
 void Core::pushNewSnake() {
@@ -118,6 +135,60 @@ void Core::ignoreOpositeCommand() {
 
 }
 
+bool Core::IAcheckPosition(int y, int x)
+{
+	if (x >= 0 && x <= this->shared->mapSizeX - 1 && 
+		y >= 0 && y <= this->shared->mapSizeY - 1)
+	{
+		if (this->shared->map[y][x] == OFF)
+			return (true);
+		if (this->shared->map[y][x] == APPLE)
+			return (true);
+	}
+	return (false);
+}
+
+void Core::MoveIASnake() {
+
+	if (!this->IAalive)
+		return;
+	
+	this->setOnMap(this->shared->IAsnake.back().getY(), this->shared->IAsnake.back().getX(), OFF);
+	this->shared->IAsnake.pop_back();
+
+	bool right 	= IAcheckPosition(this->IAheadY, this->IAheadX + 1);
+	bool left 	= IAcheckPosition(this->IAheadY, this->IAheadX - 1);
+	bool up 	= IAcheckPosition(this->IAheadY - 1, this->IAheadX);
+	bool down 	= IAcheckPosition(this->IAheadY + 1, this->IAheadX);
+
+
+	if (up && this->shared->obj.begin()->getY() < this->IAheadY)
+		this->IAheadY--;
+	else if (down && this->shared->obj.begin()->getY() > this->IAheadY)
+		this->IAheadY++;
+	else if (left && this->shared->obj.begin()->getX() < this->IAheadX)
+		this->IAheadX--;
+	else if (right && this->shared->obj.begin()->getX() > this->IAheadX)
+		this->IAheadX++;
+	else
+	{
+		if (right)
+			this->IAheadX++;
+		else if (left)
+			this->IAheadX--;
+		else if (up)
+			this->IAheadY--;
+		else if (down)
+			this->IAheadY++;
+		else
+			this->IAalive = false;
+	}
+
+	this->setOnMap(this->IAheadY, this->IAheadX, IASNAKE);
+	this->shared->IAsnake.push_front(Object(this->IAheadY, this->IAheadX, IASNAKE));
+
+}
+
 void Core::MoveSnake() {
 	
 	this->setOnMap(this->shared->snake.back().getY(), this->shared->snake.back().getX(), OFF);
@@ -131,8 +202,6 @@ void Core::MoveSnake() {
 		this->headX--;
 	else if (this->shared->command == eCommand::Right)
 		this->headX++;
-	// else
-		// return;
 
 	this->setOnMap(this->headY, this->headX, SNAKE);
 	this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
@@ -171,27 +240,27 @@ void	Core::start() {
 			this->shared->lastCommand != this->getOpositeCommand(this->shared->command)))
 	{
 		////////////////////////////////debug//////
-		// std::cout << "----------------------" << std::endl;
-		// int j = -1;
-		// while (++j < this->shared->mapSizeY)
-		// {
-		// 	int i = -1;
-		// 	while (++i < this->shared->mapSizeX)
-		// 		std::cout << this->shared->map[j][i] << " ";
-		// 	std::cout << std::endl;
-		// }
-		// std::cout << "----------------------" << std::endl;
+			// std::cout << "----------------------" << std::endl;
+			// int j = -1;
+			// while (++j < this->shared->mapSizeY)
+			// {
+			// 	int i = -1;
+			// 	while (++i < this->shared->mapSizeX)
+			// 		std::cout << this->shared->map[j][i] << " ";
+			// 	std::cout << std::endl;
+			// }
+			// std::cout << "----------------------" << std::endl;
     	////////////////////////////////debug//////
 
 		this->last_time = ft_utime();
 
 		this->ignoreOpositeCommand();
-		this->MoveSnake();
+		this->MoveSnake();	
+		this->MoveIASnake();
 
 		if (this->shared->command == eCommand::Escape)
 		{
 			throw Error("GoodBye");
-			// exit(0);
 		}
 
 		this->shared->lastCommand = this->shared->command;
@@ -212,7 +281,14 @@ void	Core::setOnMap(int y, int x, int value) {
 			this->shared->obj.pop_back();
 			this->pushNewFood();
 		}
-		if (this->shared->map[this->headY][this->headX] == BLOCK)
+		if (this->shared->map[this->IAheadY][this->IAheadX] == APPLE)
+		{
+			this->shared->IAsnake.push_front(Object(this->IAheadY, this->IAheadX, IASNAKE));
+			this->shared->obj.pop_back();
+			this->pushNewFood();
+		}
+		if (this->shared->map[this->headY][this->headX] == BLOCK ||
+			this->shared->map[this->headY][this->headX] == IASNAKE)
 			throw Error("Error: You are dead");
 
 		this->shared->map[y][x] = value;

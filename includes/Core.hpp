@@ -43,14 +43,21 @@ private:
 	void		setOnMap(int x, int y, int value);
 	void		pushNewBlock(int y, int x);
 	void		MoveSnake();
+	void		MoveIASnake();
 	void 		ignoreOpositeCommand();
 	eCommand	getOpositeCommand(eCommand command);
 	void		pushNewFood();
 	int 		getRandomNumber(int max);
 	void		pushNewBlockRandom(int max);
 	void		pushNewSnake();
+	void 		pushNewIASnake();
+
+	bool 		IAcheckPosition(int y, int x);
 
 	int 	_val;
+	bool	IAalive;
+	int		IAheadX;
+	int		IAheadY;
 	int		headX;
 	int		headY;
 	Shared 	*shared;

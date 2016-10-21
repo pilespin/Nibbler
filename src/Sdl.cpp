@@ -99,11 +99,16 @@ void	Sdl::init() {
 	this->setWindowName("Nibbler");
 	this->createWindow();
 	this->createRenderer();
+	IMG_Init(IMG_INIT_PNG);
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
     this->loadImage("img/squareGreen.bmp", "squareGreen");
-    this->loadImage("img/pnoyelle.png", "pnoyelle");
-    this->loadImage("img/boobs.png", "boobs");
-    this->loadImage("img/rock.png", "rock");
+    this->loadImage("img/apple.bmp", "pnoyelle");
+    this->loadImage("img/squareblue.bmp", "squareblue");
+    // this->loadImage("img/pnoyelle.png", "pnoyelle");
+    this->loadImage("img/squareGreen.bmp", "boobs");
+    // this->loadImage("img/boobs.png", "boobs");
+    this->loadImage("img/apple.bmp", "rock");
+    // this->loadImage("img/rock.png", "rock");
 
 }
 
@@ -167,6 +172,11 @@ void	Sdl::draw() {
 			this->DrawImageInRenderer(this->getImage("squareGreen"), it->getX()*this->squareSize, it->getY()*this->squareSize);
 	}
 
+	for (auto it = this->shared->IAsnake.begin(); it != this->shared->IAsnake.end(); ++it) {
+		if (it->getType() == IASNAKE)
+			this->DrawImageInRenderer(this->getImage("squareblue"), it->getX()*this->squareSize, it->getY()*this->squareSize);
+	}
+
 	// Head of snake
 	this->DrawImageInRenderer(this->getImage("pnoyelle"), this->shared->snake.begin()->getX()*this->squareSize, this->shared->snake.begin()->getY()*this->squareSize);
 
@@ -211,7 +221,7 @@ SDL_Surface	*Sdl::loadImage(std::string path, std::string newname) {
 		SDL_DestroyWindow(this->window);
 		std::cout << SDL_GetError() << std::endl;
 		SDL_Quit();
-		throw Error("Error when creating window");
+		throw Error("Error when atempt to load image: \"" + path + "\"");
 	}
 
 	if (newname.length() > 0 && !this->img[newname])

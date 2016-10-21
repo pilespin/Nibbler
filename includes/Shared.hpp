@@ -43,6 +43,7 @@ public:
 public: // private ////////////////////////////////////////////////////
 	Shared();
 	std::list<Object> snake;
+	std::list<Object> IAsnake;
 	std::list<Object> obj;
 	std::list<Object> block;
 

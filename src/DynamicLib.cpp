@@ -64,5 +64,6 @@ IGraphic	*DynamicLib::createClass(std::string pathLib) {
 }
 
 void	DynamicLib::closeLib() {
-	dlclose(this->lib);
+	if (this->lib)
+		dlclose(this->lib);
 }

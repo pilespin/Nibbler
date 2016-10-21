@@ -21,7 +21,7 @@ LIB		=	-ldl -lpthread
 NCURSES		= -lncurses
 
 LIB_SDL 		= SDL
-PATH_SDL 		= SDL2-2.0.4
+PATH_SDL 		= SDL2-2.0.5
 PATH_SDL_IMG 	= SDL2_image-2.0.1
 SDL 			= `./$(LIB_SDL)/bin/sdl2-config --cflags --libs` -lSDL2_image
 
@@ -57,30 +57,24 @@ no: compil
 
 sfml:
 	@git clone https://github.com/SFML/SFML.git SFML
-	@cd SFML && cmake . && make
-
-dlqt:
-	@curl http://www.mirrorservice.org/sites/download.qt-project.org/archive/qt/5.7/5.7.0/single/qt-everywhere-opensource-src-5.7.0.tar.gz -o $(PATH_QT).tar.gz
+	@cd SFML && cmake . && make -j 8
 
 qt:
+	@curl http://www.mirrorservice.org/sites/download.qt-project.org/archive/qt/5.7/5.7.0/single/qt-everywhere-opensource-src-5.7.0.tar.gz -o $(PATH_QT).tar.gz
 	mkdir -p $(LIB_QT)
 	tar -xf $(PATH_QT).tar.gz -C /goinfre/
-	cd $(PATH_QT) && ./configure --prefix=`cd $(LIB_QT) && pwd` -opensource -nomake tests -nomake examples -release -confirm-license && make -j 4
-
-cleanqt:
-	@rm -rf $(LIB_QT)
-	@rm -rf $(PATH_QT)
+	cd $(PATH_QT) && ./configure --prefix=`cd $(LIB_QT) && pwd` -opensource -nomake tests -nomake examples -release -confirm-license && make -j 8
 
 sdl:
 	@echo "\033[32mDownloading SDL ...\033[0m"
-	curl https://www.libsdl.org/release/SDL2-2.0.4.tar.gz -o $(PATH_SDL).tar.gz
+	curl https://www.libsdl.org/release/SDL2-2.0.5.tar.gz -o $(PATH_SDL).tar.gz
 	curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz -o $(PATH_SDL_IMG).tar.gz
 	@echo "\033[32mCompiling SDL ...\033[0m"
 	@mkdir -p $(LIB_SDL)
 	@tar -xf $(PATH_SDL).tar.gz
 	@tar -xf $(PATH_SDL_IMG).tar.gz
-	@cd $(PATH_SDL) && ./configure --prefix=`cd ../$(LIB_SDL) && pwd` && make && make install
-	@cd $(PATH_SDL_IMG) && ./configure --prefix=`cd ../$(LIB_SDL) && pwd` && make && make install
+	@cd $(PATH_SDL) && ./configure --prefix=`cd ../$(LIB_SDL) && pwd` && make -j 8 && make -j 8 install
+	@cd $(PATH_SDL_IMG) && ./configure --prefix=`cd ../$(LIB_SDL) && pwd` && make -j 8 && make -j 8 install
 	@rm -rf $(PATH_SDL)
 	@rm -rf $(PATH_SDL_IMG)
 	@rm -rf $(PATH_SDL_IMG).tar.gz
@@ -89,8 +83,8 @@ sdl:
 compil:
 	@mkdir -p $(ODIR)
 	@echo "\033[32m compiling $(NAME) >>> \c \033[0m"
-	@make dynlib
-	@make $(NAME)
+	@make -j 8 dynlib
+	@make -j 8 $(NAME)
 
 $(NAME): $(OBJ) $(SRC)
 	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(FOLDER)
@@ -123,7 +117,8 @@ suclean: fclean
 	@rm -rf $(LIB_QT)
 	@rm -rf $(LIB_SDL)
 	@rm -rf $(LIB_SFML)
-
+	@rm -rf $(LIB_QT)
+	@rm -rf $(PATH_QT)
 
 re: fclean all
 
