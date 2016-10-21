@@ -90,6 +90,8 @@ compil:
 	@echo "\033[32m compiling $(NAME) >>> \c \033[0m"
 	@make -j 8 dynlib
 	@make -j 8 $(NAME)
+	@echo "\033[31m Please export this variable \033[0m"
+	export LD_LIBRARY_PATH=$(PATH_SFML)/lib
 
 $(NAME): $(OBJ) $(SRC)
 	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(FOLDER) $(SFML)
