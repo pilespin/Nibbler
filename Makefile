@@ -38,7 +38,7 @@ HDIR	=	includes/
 ODIR	=	obj/
 F_EXT	=	cpp
 H_EXT	=	hpp
-FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_ALLEGRO)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/include/
+FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_ALLEGRO)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/usr/usr/local/include/
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
 SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp Object.cpp
@@ -58,7 +58,7 @@ sfml:
 	@curl http://mirror2.sfml-dev.org/files/SFML-2.4.0-sources.zip -o $(PATH_SFML).zip
 	unzip $(PATH_SFML).zip
 	cat patch_sfml > $(PATH_SFML)/src/SFML/Graphics/CMakeLists.txt
-	cd $(PATH_SFML) && cmake . && make -j8
+	cd $(PATH_SFML) && cmake . && make -j8 && make DESTDIR=./usr install
 
 else:
 	@git clone https://github.com/SFML/SFML.git SFML
@@ -86,6 +86,8 @@ sdl:
 	@rm -rf $(PATH_SDL).tar.gz
 
 compil:
+	@echo "\033[31m Please export this variable \033[0m"
+	export LD_LIBRARY_PATH=$(PATH_SFML)/lib
 	@mkdir -p $(ODIR)
 	@echo "\033[32m compiling $(NAME) >>> \c \033[0m"
 	@make -j 8 dynlib
@@ -104,7 +106,7 @@ $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 dynlib:
 	@$(CC) -shared -o libmysdl.so src/Sdl.cpp src/Object.cpp $(FLAGS) $(SDL) $(FOLDER) -fPIC
 	@$(CC) -shared -o libmyncurses.so src/Ncurses.cpp src/Object.cpp $(FLAGS) $(NCURSES) $(FOLDER) -fPIC
-	@$(CC) -shared -o libmysfml.so src/Sfml.cpp src/Object.cpp $(FLAGS) $(SFML) $(FOLDER) -fPIC
+	# @$(CC) -shared -o libmysfml.so src/Sfml.cpp src/Object.cpp $(FLAGS) $(SFML) $(FOLDER) -fPIC
 	@echo "\033[32m ok \033[33m dynlib \033[0m"
 
 clean:
