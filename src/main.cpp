@@ -45,7 +45,7 @@ int main()
 
     try
     {
-        shared = new Shared(15, 10);
+        shared = new Shared(20, 15);
         core = new Core(shared);
 
         graf = renewLib(dLib, shared, "./libmysdl.so");

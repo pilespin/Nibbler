@@ -45,7 +45,7 @@ void 	Ncurses::setShared(Shared *shared)	{	this->shared = shared;	}
 
 void	Ncurses::init() {
 	initscr();
-	// noecho();
+	noecho();
 	raw();
 }
 
@@ -60,6 +60,7 @@ void	Ncurses::draw() {
 	init_pair(APPLE, COLOR_YELLOW, COLOR_YELLOW);
 	init_pair(8, COLOR_CYAN, COLOR_CYAN);
 	init_pair(SNAKE, COLOR_GREEN, COLOR_GREEN);
+	init_pair(IASNAKE, COLOR_BLUE, COLOR_BLUE);
 	int i;
 	int j = -1;
 	while (++j < this->shared->mapSizeY)
@@ -73,6 +74,13 @@ void	Ncurses::draw() {
 				mvprintw(j*2, i*4, "    ");
 				mvprintw(j*2 + 1, i*4, "    ");
 				attroff(COLOR_PAIR(SNAKE));
+			}
+			else if (this->shared->map[j][i] == IASNAKE)
+			{
+				attron(COLOR_PAIR(IASNAKE));
+				mvprintw(j*2, i*4, "    ");
+				mvprintw(j*2 + 1, i*4, "    ");
+				attroff(COLOR_PAIR(IASNAKE));
 			}
 			else if (this->shared->map[j][i] == BLOCK)
 			{
@@ -98,8 +106,6 @@ void	Ncurses::draw() {
 		}
 	}
 	mvprintw(j*2, i*4, "%s", "\n" );
-	// addch('A' | A_BOLD | A_UNDERLINE);
-	// attroff(COLOR_PAIR(1));
 	refresh();
 
 }

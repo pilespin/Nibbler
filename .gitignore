@@ -35,5 +35,6 @@ nibbler
 
 SDL2-2.0.4.tar.gz
 SDL2-2.0.4/
+SFML-2.4.0/
+SFML-2.4.0*
 SDL/
-ALLEGRO/
