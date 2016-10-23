@@ -31,7 +31,7 @@ enum eChoseLib 	{Nope, Lib1, Lib2, Lib3};
 
 #define SDL		1
 #define NCURSES	2
-#define ALLEGRO	3
+#define SFML	3
 
 #define IASNAKE	4
 #define BLOCK	3

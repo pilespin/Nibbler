@@ -31,14 +31,14 @@ QT 			=
 
 LIB_SFML 	= SFML
 PATH_SFML 	= SFML-2.4.0
-SFML 		= -L./$(PATH_SFML)/lib -lsfml-graphics -lsfml-window -lsfml-system
+SFML 		= -Xlinker -rpath -Xlinker ./$(PATH_SFML)/lib/ -L./$(PATH_SFML)/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 SDIR	=	src/
 HDIR	=	includes/
 ODIR	=	obj/
 F_EXT	=	cpp
 H_EXT	=	hpp
-FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_ALLEGRO)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/usr/usr/local/include/
+FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/usr/local/include/
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
 SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp Object.cpp
@@ -50,15 +50,19 @@ SRC 	=	$(patsubst %.$(F_EXT), $(SDIR)%.$(F_EXT), $(SRCA))
 HDR		=	$(patsubst %.$(H_EXT), $(HDIR)%.$(H_EXT), $(SRCH))
 OBJ		=	$(patsubst %.$(F_EXT), $(ODIR)%.o, $(SRCA))
 
-all: compil
+all: sdl sfml compil
 
 no: compil
 
 sfml:
+	@echo "\033[32mDownloading SFML ...\033[0m"
 	@curl http://mirror2.sfml-dev.org/files/SFML-2.4.0-sources.zip -o $(PATH_SFML).zip
-	unzip $(PATH_SFML).zip
-	cat patch_sfml > $(PATH_SFML)/src/SFML/Graphics/CMakeLists.txt
-	cd $(PATH_SFML) && cmake . && make -j8 && make DESTDIR=./usr install
+	@echo "\033[32mCompiling SFML...\033[0m"
+	@unzip $(PATH_SFML).zip
+	@cat patch_sfml > $(PATH_SFML)/src/SFML/Graphics/CMakeLists.txt
+	@cd $(PATH_SFML) && cmake . && make -j 8 && make install DESTDIR=./
+	@cp -r $(PATH_SFML)/Library/Frameworks $(PATH_SFML)
+	@rm -rf $(PATH_SFML).zip
 
 else:
 	@git clone https://github.com/SFML/SFML.git SFML
@@ -86,14 +90,10 @@ sdl:
 	@rm -rf $(PATH_SDL).tar.gz
 
 compil:
-	@echo "\033[31m Please export this variable \033[0m"
-	export LD_LIBRARY_PATH=$(PATH_SFML)/lib
 	@mkdir -p $(ODIR)
 	@echo "\033[32m compiling $(NAME) >>> \c \033[0m"
 	@make -j 8 dynlib
 	@make -j 8 $(NAME)
-	@echo "\033[31m Please export this variable \033[0m"
-	export LD_LIBRARY_PATH=$(PATH_SFML)/lib
 
 $(NAME): $(OBJ) $(SRC)
 	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(FOLDER) $(SFML)
@@ -106,7 +106,7 @@ $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 dynlib:
 	@$(CC) -shared -o libmysdl.so src/Sdl.cpp src/Object.cpp $(FLAGS) $(SDL) $(FOLDER) -fPIC
 	@$(CC) -shared -o libmyncurses.so src/Ncurses.cpp src/Object.cpp $(FLAGS) $(NCURSES) $(FOLDER) -fPIC
-	# @$(CC) -shared -o libmysfml.so src/Sfml.cpp src/Object.cpp $(FLAGS) $(SFML) $(FOLDER) -fPIC
+	@$(CC) -shared -o libmysfml.so src/Sfml.cpp $(FLAGS) $(SFML) $(FOLDER) -fPIC
 	@echo "\033[32m ok \033[33m dynlib \033[0m"
 
 clean:
@@ -122,11 +122,10 @@ fclean: clean
 	@rm -f libmysdl.so
 	@rm -f libmyncurses.so
 	@rm -f libmysfml.so
-
-suclean: fclean
 	@rm -rf $(LIB_QT)
 	@rm -rf $(LIB_SDL)
 	@rm -rf $(LIB_SFML)
+	@rm -rf $(PATH_SFML).zip
 	@rm -rf $(PATH_SFML)
 	@rm -rf $(LIB_QT)
 	@rm -rf $(PATH_QT)

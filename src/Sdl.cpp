@@ -101,14 +101,19 @@ void	Sdl::init() {
 	this->createRenderer();
 	IMG_Init(IMG_INIT_PNG);
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
+    
     this->loadImage("img/squareGreen.bmp", "squareGreen");
-    this->loadImage("img/apple.bmp", "pnoyelle");
-    this->loadImage("img/squareblue.bmp", "squareblue");
-    // this->loadImage("img/pnoyelle.png", "pnoyelle");
-    this->loadImage("img/squareGreen.bmp", "boobs");
-    // this->loadImage("img/boobs.png", "boobs");
-    this->loadImage("img/apple.bmp", "rock");
-    // this->loadImage("img/rock.png", "rock");
+    this->loadImage("img/squareblue.png", "squareblue");
+    this->loadImage("img/pnoyelle.png", "pnoyelle");
+    this->loadImage("img/boobs.png", "boobs");
+    this->loadImage("img/rock.png", "rock");
+
+
+    // this->loadImage("img/squareGreen.bmp", "squareGreen");
+    // this->loadImage("img/squareblue.png", "squareblue");
+    // this->loadImage("img/apple.bmp", "pnoyelle");
+    // this->loadImage("img/squareGreen.bmp", "boobs");
+    // this->loadImage("img/apple.bmp", "rock");
 
 }
 

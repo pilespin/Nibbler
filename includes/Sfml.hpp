@@ -14,13 +14,13 @@ public:
 	int			getValue() const;
 	void		empty();
 
- void	init();
- void	quit();
- void	draw();
- int	getKey();
- void	setShared(Shared *shared);
- void	setWindowSize(int y, int x);
- void	setWindowName(std::string name);
+	void	init();
+	void	quit();
+	void	draw();
+	int		getKey();
+	void	setShared(Shared *shared);
+	void	setWindowSize(int y, int x);
+	void	setWindowName(std::string name);
 
 	class Error : public std::exception {
 	public:

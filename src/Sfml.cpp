@@ -31,7 +31,7 @@ int		Sfml::getValue() const			{	return (this->_val);	}
 void	Sfml::setShared(Shared *shared)	{	this->shared = shared;		}
 ///////////////////////////////////////////////////////////////////////////////
 
-void	init() {
+void	Sfml::init() {
 
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
     sf::CircleShape shape(100.f);
@@ -52,25 +52,25 @@ void	init() {
     }
 }
 
-void	quit() {
+void	Sfml::quit() {
 
 }
 
-void	draw() {
+void	Sfml::draw() {
 
 }
 
-int		getKey() {
-return(1);
+int		Sfml::getKey() {
+    return(1);
 }
 
-void	setWindowSize(int y, int x) {
-(void)x;
-(void)y;
+void	Sfml::setWindowSize(int y, int x) {
+    (void)x;
+    (void)y;
 }
 
-void	setWindowName(std::string name) {
-(void)name;
+void	Sfml::setWindowName(std::string name) {
+    (void)name;
 }
 
 
