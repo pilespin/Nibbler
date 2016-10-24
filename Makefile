@@ -14,7 +14,7 @@
 	
 NAME	=	nibbler
 
-CC		=	g++ -std=c++11
+CC		=	g++ -std=c++11 -g
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
 
@@ -61,12 +61,10 @@ sfml:
 	@unzip $(PATH_SFML).zip
 	@cat patch_sfml > $(PATH_SFML)/src/SFML/Graphics/CMakeLists.txt
 	@cd $(PATH_SFML) && cmake . && make -j 8 && make install DESTDIR=./
+ifeq ($(shell uname), Darwin)
 	@cp -r $(PATH_SFML)/Library/Frameworks $(PATH_SFML)
+endif
 	@rm -rf $(PATH_SFML).zip
-
-else:
-	@git clone https://github.com/SFML/SFML.git SFML
-	@cd SFML && cmake . && make -j 8
 
 qt:
 	@curl http://www.mirrorservice.org/sites/download.qt-project.org/archive/qt/5.7/5.7.0/single/qt-everywhere-opensource-src-5.7.0.tar.gz -o $(PATH_QT).tar.gz

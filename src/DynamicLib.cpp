@@ -14,7 +14,10 @@
 #include "IGraphic.hpp"
 #include "DynamicLib.hpp"
 
-DynamicLib::DynamicLib() 						{	this->_val = 0;	}
+DynamicLib::DynamicLib() 						{	
+	this->_val = 0;
+	this->lib = NULL;
+	this->ptrClass = NULL;	}
 
 DynamicLib::~DynamicLib()						{}
 

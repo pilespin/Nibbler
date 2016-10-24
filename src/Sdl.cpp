@@ -104,6 +104,7 @@ void	Sdl::init() {
     
     this->loadImage("img/squareGreen.bmp", "squareGreen");
     this->loadImage("img/squareblue.png", "squareblue");
+    this->loadImage("img/squareyellow.png", "squareyellow");
     this->loadImage("img/pnoyelle.png", "pnoyelle");
     this->loadImage("img/boobs.png", "boobs");
     this->loadImage("img/rock.png", "rock");
@@ -183,6 +184,7 @@ void	Sdl::draw() {
 	}
 
 	// Head of snake
+	this->DrawImageInRenderer(this->getImage("squareyellow"), this->shared->IAsnake.begin()->getX()*this->squareSize, this->shared->IAsnake.begin()->getY()*this->squareSize);
 	this->DrawImageInRenderer(this->getImage("pnoyelle"), this->shared->snake.begin()->getX()*this->squareSize, this->shared->snake.begin()->getY()*this->squareSize);
 
 	SDL_RenderPresent(this->getRenderer());

@@ -161,18 +161,25 @@ void Core::MoveIASnake() {
 	bool up 	= IAcheckPosition(this->IAheadY - 1, this->IAheadX);
 	bool down 	= IAcheckPosition(this->IAheadY + 1, this->IAheadX);
 
-
-	if (up && this->shared->obj.begin()->getY() < this->IAheadY)
-		this->IAheadY--;
-	else if (down && this->shared->obj.begin()->getY() > this->IAheadY)
-		this->IAheadY++;
-	else if (left && this->shared->obj.begin()->getX() < this->IAheadX)
+	if (left && this->shared->obj.begin()->getX() < this->IAheadX)
 		this->IAheadX--;
 	else if (right && this->shared->obj.begin()->getX() > this->IAheadX)
 		this->IAheadX++;
+	else if (up && this->shared->obj.begin()->getY() < this->IAheadY)
+		this->IAheadY--;
+	else if (down && this->shared->obj.begin()->getY() > this->IAheadY)
+		this->IAheadY++;
+	else if (up && !left && this->shared->obj.begin()->getY() < this->IAheadY)
+		this->IAheadY--;
+	else if (down && !right && this->shared->obj.begin()->getY() > this->IAheadY)
+		this->IAheadY++;
 	else
 	{
-		if (right)
+		if (up && !left)
+			this->IAheadY--;
+		else if (down && !right)
+			this->IAheadY++;
+		else if (right)
 			this->IAheadX++;
 		else if (left)
 			this->IAheadX--;
@@ -217,14 +224,22 @@ int Core::getRandomNumber(int max) {
 
 void Core::pushNewFood() {
 
-	int x = getRandomNumber(this->shared->mapSizeX);
-	int y = getRandomNumber(this->shared->mapSizeY);
+	int i = 0;
+
+	int x = getRandomNumber(this->shared->mapSizeX - 1);
+	int y = getRandomNumber(this->shared->mapSizeY - 1);
+	i++;
 
 	while (this->shared->map[y][x] != OFF)
 	{
-		x = getRandomNumber(this->shared->mapSizeX);
-		y = getRandomNumber(this->shared->mapSizeY);
+		x = getRandomNumber(this->shared->mapSizeX - 1);
+		y = getRandomNumber(this->shared->mapSizeY - 1);
+		if (i++ > 2000)
+			throw Error("You have win");
 	}
+	if (i++ > 3)
+		this->secRefresh -= 0.05;
+
 
 	this->shared->obj.push_front(Object(y, x, APPLE));
 	this->shared->map[y][x] = APPLE;
