@@ -304,10 +304,10 @@ void	Core::setOnMap(int y, int x, int value) {
 		}
 		if (this->shared->map[this->headY][this->headX] == BLOCK ||
 			this->shared->map[this->headY][this->headX] == IASNAKE)
-			throw Error("Error: You are dead");
+			throw Error("You are dead");
 
 		this->shared->map[y][x] = value;
 	}
 	else
-		throw Error("Error: You are so far");
+		throw Error("You are so far");
 }

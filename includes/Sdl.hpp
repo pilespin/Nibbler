@@ -54,7 +54,6 @@ private:
 	void			DrawImageInRenderer(SDL_Surface *img, int x, int y);
 	void			createWindow();
 	void			createRenderer();
-	void			empty();
 
 	std::map< std::string, SDL_Surface * > 	img;
 	

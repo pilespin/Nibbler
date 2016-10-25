@@ -102,19 +102,12 @@ void	Sdl::init() {
 	IMG_Init(IMG_INIT_PNG);
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
     
+    this->loadImage("img/squareyellow.png", "squareyellow");
     this->loadImage("img/squareGreen.bmp", "squareGreen");
     this->loadImage("img/squareblue.png", "squareblue");
-    this->loadImage("img/squareyellow.png", "squareyellow");
     this->loadImage("img/pnoyelle.png", "pnoyelle");
     this->loadImage("img/boobs.png", "boobs");
     this->loadImage("img/rock.png", "rock");
-
-
-    // this->loadImage("img/squareGreen.bmp", "squareGreen");
-    // this->loadImage("img/squareblue.png", "squareblue");
-    // this->loadImage("img/apple.bmp", "pnoyelle");
-    // this->loadImage("img/squareGreen.bmp", "boobs");
-    // this->loadImage("img/apple.bmp", "rock");
 
 }
 
@@ -221,7 +214,6 @@ void	Sdl::createRenderer() {
 
 SDL_Surface	*Sdl::loadImage(std::string path, std::string newname) {
 
-	// SDL_Surface     *bmp = SDL_LoadBMP(path.c_str());
 	SDL_Surface     *bmp = IMG_Load(path.c_str());
 	if (!bmp){
 		SDL_DestroyRenderer(this->renderer);
@@ -252,10 +244,6 @@ void	Sdl::DrawImageInRenderer(SDL_Surface *img, int x, int y) {
 	dest.h = this->squareSize;
 	SDL_RenderCopy(this->renderer, texture, NULL, &dest);
 	SDL_DestroyTexture(texture);
-}
-
-void	Sdl::empty() {
-
 }
 
 extern "C"

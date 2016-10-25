@@ -135,6 +135,13 @@ run:
 	@make no
 	@./$(NAME)
 
+leaks:
+	@zsh -c "while ((1)) {sleep 1 ; leaks $(NAME) | grep -A 1 Leak > the_leaks ; clear && cat the_leaks}"
+
+allleaks:
+	@zsh -c "while ((1)) {sleep 1 ; leaks $(NAME) > the_leaks ; clear && cat the_leaks}"
+
+
 coffee:
 	@clear
 	@echo "                        \`:.      				"

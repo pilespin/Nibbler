@@ -17,7 +17,7 @@
 #include "Sdl.hpp"
 #include "IGraphic.hpp"
 
-IGraphic    *renewLib(DynamicLib dLib, Shared *shared, std::string path)
+IGraphic    *renewLib(IGraphic *lib, Shared *shared, bool init)
 {
     IGraphic    *graf = NULL;
 
@@ -28,11 +28,10 @@ IGraphic    *renewLib(DynamicLib dLib, Shared *shared, std::string path)
     }
 
     shared->lib = eChoseLib::Nope;
-    // graf->quit();
-    dLib.closeLib();
-    graf = dLib.createClass(path.c_str());
+    graf = lib;
     graf->setShared(shared);
-    graf->init();
+    if (init)
+        graf->init();
     return (graf);
 }
 
@@ -41,6 +40,9 @@ int main()
     Core        *core;
     Shared      *shared;
     IGraphic    *graf = NULL;
+    IGraphic    *lib1 = NULL;
+    IGraphic    *lib2 = NULL;
+    IGraphic    *lib3 = NULL;
     DynamicLib  dLib = DynamicLib();
 
     try
@@ -48,30 +50,20 @@ int main()
         shared = new Shared(20, 15);
         core = new Core(shared);
 
-        graf = renewLib(dLib, shared, "./libmysdl.so");
-        // graf = renewLib(dLib, shared, "./libmyncurses.so");
-        // graf = renewLib(dLib, shared, "./libmysfml.so");
+        lib1 = dLib.createClass("./libmysdl.so");
+        lib2 = dLib.createClass("./libmyncurses.so");
+        lib3 = dLib.createClass("./libmysfml.so");
+
+        graf = renewLib(lib1, shared, true);
 
         while (1)
         {
             if (shared->getLib() == SDL)
-            {
-                if (graf)
-                    delete graf;
-                graf = renewLib(dLib, shared, "./libmysdl.so");
-            }
+                graf = renewLib(lib1, shared, false);
             else if (shared->getLib() == NCURSES)
-            {
-                if (graf)
-                    delete graf;
-                graf = renewLib(dLib, shared, "./libmyncurses.so");
-            }
+                graf = renewLib(lib2, shared, true);
             else if (shared->getLib() == SFML)
-            {
-                if (graf)
-                    delete graf;
-                graf = renewLib(dLib, shared, "./libmysfml.so");
-            }
+                graf = renewLib(lib3, shared, true);
 
             graf->getKey();
             core->start();
@@ -83,12 +75,10 @@ int main()
     {
         if (shared)
         {
-            if (graf)
-                delete graf;
-            graf = renewLib(dLib, shared, "./libmyncurses.so");
+            graf = renewLib(lib2, shared, true);
             graf->quit();
         }
-        std::cerr << "Exception: " << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;
     }
 
     return (0);
