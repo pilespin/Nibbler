@@ -14,7 +14,7 @@
 	
 NAME	=	nibbler
 
-CC		=	g++ -std=c++11 -g
+CC		=	g++ -std=c++11
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
 
@@ -66,10 +66,10 @@ sfml:
 	@unzip $(PATH_SFML).zip
 	@cat patch_sfml > $(PATH_SFML)/src/SFML/Graphics/CMakeLists.txt
 ifeq ($(shell uname), Darwin)
-	@cd $(PATH_SFML) && cmake -DCMAKE_INSTALL_PREFIX=/Library/Frameworks/Mono.framework/Headers/freetype2/ . && make -j 8 && make install DESTDIR=./
+	@cd $(PATH_SFML) && cmake -DCMAKE_INSTALL_PREFIX=/Library/Frameworks/Mono.framework/Headers/freetype2/ . && make -j 8 && make -j 8 install DESTDIR=./
 	@cp -r $(PATH_SFML)/Library/Frameworks $(PATH_SFML)
 else
-	@cd $(PATH_SFML) && cmake . && make -j 8 && make install DESTDIR=./
+	@cd $(PATH_SFML) && cmake . && make -j 8 && make - j 8 install DESTDIR=./
 endif
 	@rm -rf $(PATH_SFML).zip
 
@@ -101,7 +101,7 @@ compil:
 	@make -j 8 $(NAME)
 
 $(NAME): $(OBJ) $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(FOLDER) $(SFML)
+	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(FOLDER)
 	@echo "\033[37m END $(NAME)\033[0m"
 
 $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR) 
