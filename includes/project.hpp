@@ -17,14 +17,10 @@ enum eCommand 	{None, Up, Down, Left, Right, Escape};
 enum eChoseLib 	{Nope, Lib1, Lib2, Lib3};
 
 #include <iostream>
-#include <SDL2/SDL.h>
-#include "SDL2/SDL_image.h"
-#include <SFML/Graphics.hpp>
 #include <list>
 #include <map>
 #include <dlfcn.h>
 #include <thread>
-#include <mutex>
 #include <chrono>
 #include <sys/time.h>
 #include <iomanip>

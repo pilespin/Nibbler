@@ -44,13 +44,31 @@ Sdl::Sdl() {
 
 Sdl::~Sdl()					{}
 
-Sdl::Sdl(Sdl const &src)	{	*this = src;	}
+Sdl::Sdl(Sdl const &src)	{		
+	this->_val 			= src._val;
+	this->shared 		= src.shared;
+	this->windowName 	= src.windowName;
+	this->squareSize 	= src.squareSize;
+	this->windowSizeX 	= src.windowSizeX;
+	this->windowSizeY 	= src.windowSizeY;
+	this->last_time 	= src.last_time;
+	this->window 		= src.window;
+	this->renderer 		= src.renderer;
+}
 
 Sdl	&Sdl::operator=(Sdl const &rhs) {
 
 	if (this != &rhs)
 	{
-		this->_val = rhs._val;
+		this->_val 			= rhs._val;
+		this->shared 		= rhs.shared;
+		this->windowName 	= rhs.windowName;
+		this->squareSize 	= rhs.squareSize;
+		this->windowSizeX 	= rhs.windowSizeX;
+		this->windowSizeY 	= rhs.windowSizeY;
+		this->last_time 	= rhs.last_time;
+		this->window 		= rhs.window;
+		this->renderer 		= rhs.renderer;
 	}
 	return (*this);
 }

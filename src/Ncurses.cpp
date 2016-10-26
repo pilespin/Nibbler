@@ -22,14 +22,26 @@ Ncurses::Ncurses() 						{	this->_val = 0;	}
 Ncurses::~Ncurses()						{}
 
 Ncurses::Ncurses(Ncurses const &src)	{	
-	this->_val = src._val;
+	this->_val 			= src._val;
+	this->shared 		= src.shared;
+	this->windowName 	= src.windowName;
+	this->squareSize 	= src.squareSize;
+	this->windowSizeX 	= src.windowSizeX;
+	this->windowSizeY 	= src.windowSizeY;
+	this->last_time 	= src.last_time;
 }
 
 Ncurses	&Ncurses::operator=(Ncurses const &rhs) {
 
 	if (this != &rhs)
 	{
-		this->_val = rhs._val;
+		this->_val 			= rhs._val;
+		this->shared 		= rhs.shared;
+		this->windowName 	= rhs.windowName;
+		this->squareSize 	= rhs.squareSize;
+		this->windowSizeX 	= rhs.windowSizeX;
+		this->windowSizeY 	= rhs.windowSizeY;
+		this->last_time 	= rhs.last_time;
 	}
 	return (*this);
 }

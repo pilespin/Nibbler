@@ -1,4 +1,4 @@
-
+#include <SFML/Graphics.hpp>
 #include <project.hpp>
 #include "IGraphic.hpp"
 #include "Shared.hpp"
@@ -10,16 +10,28 @@ Sfml::Sfml() 						{	this->_val = 0;	}
 Sfml::~Sfml()						{}
 
 Sfml::Sfml(Sfml const &src)	{	
-	this->_val = src._val;
+    this->_val          = src._val;
+    this->shared        = src.shared;
+    this->windowName    = src.windowName;
+    this->squareSize    = src.squareSize;
+    this->windowSizeX   = src.windowSizeX;
+    this->windowSizeY   = src.windowSizeY;
+    this->last_time     = src.last_time;
 }
 
 Sfml	&Sfml::operator=(Sfml const &rhs) {
 
 	if (this != &rhs)
 	{
-		this->_val = rhs._val;
-	}
-	return (*this);
+        this->_val          = rhs._val;
+        this->shared        = rhs.shared;
+        this->windowName    = rhs.windowName;
+        this->squareSize    = rhs.squareSize;
+        this->windowSizeX   = rhs.windowSizeX;
+        this->windowSizeY   = rhs.windowSizeY;
+        this->last_time     = rhs.last_time;
+    }
+    return (*this);
 }
 
 std::ostream &operator<<(std::ostream &o, Sfml &c) {

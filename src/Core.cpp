@@ -43,7 +43,7 @@ Core::Core(Shared	*shared) {
 	this->IAalive = true;
 	this->pushNewSnake();
 	this->pushNewIASnake();
-	this->pushNewBlockRandom(this->shared->mapSizeX / 5);
+	this->pushNewBlockRandom((this->shared->mapSizeX * this->shared->mapSizeY) * 0.02);
 	this->pushNewFood();
 	this->last_time = ft_utime();
 	this->secRefresh = 0.3;
@@ -53,14 +53,29 @@ Core::~Core() {
 }
 
 Core::Core(Core const &src)	{	
-	*this = src;	
+	this->IAalive 		= src.IAalive;
+	this->IAheadX 		= src.IAheadX;
+	this->IAheadY 		= src.IAheadY;
+	this->headX 		= src.headX;
+	this->headY 		= src.headY;
+	this->shared 		= src.shared;
+	this->last_time 	= src.last_time;
+	this->secRefresh 	= src.secRefresh;
 }
 
 Core	&Core::operator=(Core const &rhs) {
 
 	if (this != &rhs)
 	{
-		this->_val = rhs._val;
+		this->_val 			= rhs._val;
+		this->IAalive 		= rhs.IAalive;
+		this->IAheadX 		= rhs.IAheadX;
+		this->IAheadY 		= rhs.IAheadY;
+		this->headX 		= rhs.headX;
+		this->headY 		= rhs.headY;
+		this->shared 		= rhs.shared;
+		this->last_time 	= rhs.last_time;
+		this->secRefresh 	= rhs.secRefresh;
 	}
 	return (*this);
 }
@@ -244,11 +259,9 @@ void Core::pushNewFood() {
 	if (i++ > 1)
 		this->setSpeed(this->secRefresh -= 0.02);
 
-
 	this->shared->obj.push_front(Object(y, x, APPLE));
 	this->shared->map[y][x] = APPLE;
 }
-
 
 void	Core::start() {
 

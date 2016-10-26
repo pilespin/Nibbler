@@ -75,16 +75,13 @@ std::ostream &operator<<(std::ostream &o, Shared &c) {
 	return (o);
 }
 ///////////////////////////////////////////////////////////////////////////////
-int		Shared::getValue() const	{	return (this->_val);	}
-int		Shared::getLib() const		{	return (this->lib);		}
-int		Shared::getOldLib() const	{	return (this->oldLib);	}
-void	Shared::setCommand(eCommand command) {
-	this->command = command;
-}
+int		Shared::getValue() const				{	return (this->_val);	}
+int		Shared::getLib() const					{	return (this->lib);		}
+int		Shared::getOldLib() const				{	return (this->oldLib);	}
+void	Shared::setCommand(eCommand command) 	{ this->command = command; 	}
 
 void	Shared::setLib(eChoseLib lib) {
 	this->oldLib = this->lib ;
 	this->lib = lib;
 }
-
 ///////////////////////////////////////////////////////////////////////////////
