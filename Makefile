@@ -38,7 +38,12 @@ HDIR	=	includes/
 ODIR	=	obj/
 F_EXT	=	cpp
 H_EXT	=	hpp
+
+ifeq ($(shell uname), Darwin)
+FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/include/
+else
 FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/usr/local/include/
+endif
 
 # SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
 SRCA	=	main.cpp DynamicLib.cpp Core.cpp Shared.cpp Object.cpp
@@ -60,9 +65,11 @@ sfml:
 	@echo "\033[32mCompiling SFML...\033[0m"
 	@unzip $(PATH_SFML).zip
 	@cat patch_sfml > $(PATH_SFML)/src/SFML/Graphics/CMakeLists.txt
-	@cd $(PATH_SFML) && cmake -DCMAKE_INSTALL_PREFIX=/Library/Frameworks/Mono.framework/Headers/freetype2/ . && make -j 8 && make install DESTDIR=./
 ifeq ($(shell uname), Darwin)
+	@cd $(PATH_SFML) && cmake -DCMAKE_INSTALL_PREFIX=/Library/Frameworks/Mono.framework/Headers/freetype2/ . && make -j 8 && make install DESTDIR=./
 	@cp -r $(PATH_SFML)/Library/Frameworks $(PATH_SFML)
+else
+	@cd $(PATH_SFML) && cmake . && make -j 8 && make install DESTDIR=./
 endif
 	@rm -rf $(PATH_SFML).zip
 
