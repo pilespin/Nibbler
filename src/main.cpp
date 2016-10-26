@@ -35,7 +35,27 @@ IGraphic    *renewLib(IGraphic *lib, Shared *shared, bool init)
     return (graf);
 }
 
-int main()
+int getWindowX(int ac, char **av)
+{
+    if (ac >= 2)
+    {
+        int nb = std::atoi(av[1]);
+        return (nb);
+    }
+    return (20);
+}
+
+int getWindowY(int ac, char **av)
+{
+    if (ac >= 3)
+    {
+        int nb = std::atoi(av[2]);
+        return (nb);
+    }
+    return (15);
+}
+
+int main(int ac, char **av)
 {
     Core        *core;
     Shared      *shared;
@@ -47,8 +67,11 @@ int main()
 
     try
     {
-        shared = new Shared(20, 15);
+
+        shared = new Shared(getWindowX(ac, av), getWindowY(ac, av));
         core = new Core(shared);
+
+        core->setSpeed(0.25);
 
         lib1 = dLib.createClass("./libmysdl.so");
         lib2 = dLib.createClass("./libmyncurses.so");

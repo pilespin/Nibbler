@@ -26,6 +26,7 @@ public:
 
 	int			getValue() const;
 	void		start();
+	void 		setSpeed(double val);
 
 	class Error : public std::exception {
 	public:

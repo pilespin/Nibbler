@@ -71,6 +71,10 @@ std::ostream &operator<<(std::ostream &o, Core &c) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 int		Core::getValue() const	{	return (this->_val);	}
+void	Core::setSpeed(double val) {	
+	if (val >= 0.15)
+		this->secRefresh = val;
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 void Core::pushNewBlockRandom(int max) {
@@ -237,8 +241,8 @@ void Core::pushNewFood() {
 		if (i++ > 2000)
 			throw Error("You have win");
 	}
-	if (i++ > 3)
-		this->secRefresh -= 0.05;
+	if (i++ > 1)
+		this->setSpeed(this->secRefresh -= 0.02);
 
 
 	this->shared->obj.push_front(Object(y, x, APPLE));
