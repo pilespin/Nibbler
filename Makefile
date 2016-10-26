@@ -120,20 +120,16 @@ clean:
 	@rm -rf $(PATH_SDL).tar.gz
 	@rm -rf $(PATH_SDL_IMG)
 	@rm -rf $(PATH_SDL_IMG).tar.gz
-	@rm -rf $(PATH_QT)
 
 fclean: clean
 	@rm -f $(NAME)
 	@rm -f libmysdl.so
 	@rm -f libmyncurses.so
 	@rm -f libmysfml.so
-	@rm -rf $(LIB_QT)
 	@rm -rf $(LIB_SDL)
 	@rm -rf $(LIB_SFML)
 	@rm -rf $(PATH_SFML).zip
 	@rm -rf $(PATH_SFML)
-	@rm -rf $(LIB_QT)
-	@rm -rf $(PATH_QT)
 
 re: fclean all
 
