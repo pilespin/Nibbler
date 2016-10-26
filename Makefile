@@ -60,7 +60,7 @@ sfml:
 	@echo "\033[32mCompiling SFML...\033[0m"
 	@unzip $(PATH_SFML).zip
 	@cat patch_sfml > $(PATH_SFML)/src/SFML/Graphics/CMakeLists.txt
-	@cd $(PATH_SFML) && cmake . && make -j 8 && make install DESTDIR=./
+	@cd $(PATH_SFML) && cmake -DCMAKE_INSTALL_PREFIX=/Library/Frameworks/Mono.framework/Headers/freetype2/ . && make -j 8 && make install DESTDIR=./
 ifeq ($(shell uname), Darwin)
 	@cp -r $(PATH_SFML)/Library/Frameworks $(PATH_SFML)
 endif
