@@ -19,7 +19,9 @@ DynamicLib::DynamicLib() {
 	this->lib = NULL;
 	this->ptrClass = NULL;	}
 
-DynamicLib::~DynamicLib()						{}
+DynamicLib::~DynamicLib()						{
+	this->closeLib();
+}
 
 DynamicLib::DynamicLib(DynamicLib const &src)	{	
 	this->_val = src._val;

@@ -14,7 +14,7 @@
 	
 NAME	=	nibbler
 
-CC		=	g++ -std=c++11
+CC		=	g++ -std=c++11 -g
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
 
@@ -111,7 +111,7 @@ $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 dynlib:
 	@$(CC) -shared -o libmysdl.so src/Sdl.cpp src/Object.cpp $(FLAGS) $(SDL) $(FOLDER) -fPIC
 	@$(CC) -shared -o libmyncurses.so src/Ncurses.cpp src/Object.cpp $(FLAGS) $(NCURSES) $(FOLDER) -fPIC
-	@$(CC) -shared -o libmysfml.so src/Sfml.cpp $(FLAGS) $(SFML) $(FOLDER) -fPIC
+	@$(CC) -shared -o libmysfml.so src/Sfml.cpp src/Object.cpp $(FLAGS) $(SFML) $(FOLDER) -fPIC
 	@echo "\033[32m ok \033[33m dynlib \033[0m"
 
 clean:

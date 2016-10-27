@@ -17,7 +17,10 @@ Sfml::Sfml() 						{
     this->loadImage("img/rock.png", "rock");
 }
 
-Sfml::~Sfml()						{}
+Sfml::~Sfml()						{
+        if (this->window.isOpen())
+            this->window.close();
+}
 
 Sfml::Sfml(Sfml const &src)	{	
     this->_val          = src._val;
@@ -50,7 +53,11 @@ std::ostream &operator<<(std::ostream &o, Sfml &c) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 int		Sfml::getValue() const			{	return (this->_val);	}
-void	Sfml::setShared(Shared *shared)	{	this->shared = shared;		}
+void	Sfml::setShared(Shared *shared)	{	
+    std::cout<<"abc"<<std::endl;
+    this->shared = shared;		
+    std::cout<<"abc"<<std::endl;
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 void	Sfml::init() {
@@ -80,6 +87,8 @@ void	Sfml::init() {
 }
 
 void	Sfml::quit() {
+    if (this->window.isOpen())
+        this->window.close();
 
 }
 sf::RectangleShape Sfml::make_obj(int X, int Y, std::string texture){
@@ -164,8 +173,10 @@ while (window.pollEvent(event))
                shared->setCommand(static_cast<eCommand>(event.key.code - 70));
             else if  (event.key.code == 36)
                 shared->setCommand(eCommand::Escape);
-            else if (event.key.code > 26 && event.key.code < 28)
+            else if (event.key.code == 27 || event.key.code == 28 || event.key.code == 29)
+            {
                 shared->setLib(static_cast<eChoseLib>(event.key.code - 26));
+            }
             break;
 
         // we don't process other types of events

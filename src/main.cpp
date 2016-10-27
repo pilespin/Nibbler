@@ -17,22 +17,37 @@
 #include "Sdl.hpp"
 #include "IGraphic.hpp"
 
-IGraphic    *renewLib(IGraphic *lib, Shared *shared, bool init)
+IGraphic    *renewLib(Shared *shared, eChoseLib which)
 {
-    IGraphic    *graf = NULL;
+    DynamicLib  dLib = DynamicLib();
+    IGraphic    *lib = NULL;
 
     if (!shared)
     {
         std::cerr << "Error: Shared memory is out" << std::endl;
         exit(0);
     }
-
+    if (which == eChoseLib::Lib1)
+        lib = dLib.createClass("./libmysdl.so");
+    if (which == eChoseLib::Lib2)
+        lib = dLib.createClass("./libmyncurses.so");
+    if (which == eChoseLib::Lib3)
+    {
+        std::cout<<"make"<<std::endl;
+        lib = dLib.createClass("./libmysfml.so");
+    }
     shared->lib = eChoseLib::Nope;
-    graf = lib;
-    graf->setShared(shared);
-    if (init)
-        graf->init();
-    return (graf);
+    
+    std::cout<<"lib"<<std::endl;
+        
+    if (lib == NULL)
+    {
+        std::cout<<"libNULL"<<std::endl;
+        exit(0);
+    }
+    lib->setShared(shared);
+    lib->init();
+    return (lib);
 }
 
 int getWindowX(int ac, char **av)
@@ -60,10 +75,6 @@ int main(int ac, char **av)
     Core        *core;
     Shared      *shared;
     IGraphic    *graf = NULL;
-    IGraphic    *lib1 = NULL;
-    IGraphic    *lib2 = NULL;
-    IGraphic    *lib3 = NULL;
-    DynamicLib  dLib = DynamicLib();
 
     try
     {
@@ -73,20 +84,29 @@ int main(int ac, char **av)
 
         core->setSpeed(0.25);
 
-        lib1 = dLib.createClass("./libmysdl.so");
-        lib2 = dLib.createClass("./libmyncurses.so");
-        lib3 = dLib.createClass("./libmysfml.so");
-
-        graf = renewLib(lib1, shared, true);
+        graf = renewLib(shared, eChoseLib::Lib3);
 
         while (1)
         {
             if (shared->getLib() == SDL)
-                graf = renewLib(lib1, shared, false);
+            {
+                 graf->quit();
+                delete graf;
+                graf = renewLib(shared, eChoseLib::Lib1);
+            }
             else if (shared->getLib() == NCURSES)
-                graf = renewLib(lib2, shared, true);
+            {
+                 graf->quit();
+                delete graf;
+                graf = renewLib(shared, eChoseLib::Lib2);
+            }
             else if (shared->getLib() == SFML)
-                graf = renewLib(lib3, shared, true);
+            {
+                graf->quit();
+                delete graf;
+
+                graf = renewLib(shared, eChoseLib::Lib3);
+            }
 
             graf->getKey();
             core->start();
@@ -98,7 +118,6 @@ int main(int ac, char **av)
     {
         if (shared)
         {
-            graf = renewLib(lib2, shared, true);
             graf->quit();
         }
         std::cerr << e.what() << std::endl;

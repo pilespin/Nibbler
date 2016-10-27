@@ -13,7 +13,7 @@
 #ifndef PROJECT_H
 # define PROJECT_H
 
-enum eCommand 	{None, Up, Down, Left, Right, Escape};
+enum eCommand 	{None, Left, Right, Up, Down, Escape};
 enum eChoseLib 	{Nope, Lib1, Lib2, Lib3};
 
 #include <iostream>

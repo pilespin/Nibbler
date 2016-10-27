@@ -7,7 +7,7 @@ class Sfml : public IGraphic {
 
 public:
 	Sfml();
-	~Sfml();
+	virtual ~Sfml();
 	Sfml(Sfml const &src);
 	Sfml &operator=(Sfml const &rhs);
 
