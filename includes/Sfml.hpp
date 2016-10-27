@@ -35,7 +35,14 @@ public:
 	};
 
 private:
+	sf::RenderWindow window;
+	std::map< std::string, sf::Texture > 	img;
 	int _val;
+
+	void	loadImage(std::string path, std::string name);
+ 	std::vector<sf::RectangleShape>  constructobject();
+sf::RectangleShape make_obj(int X, int Y, std::string texture);
+
 };
 
 std::ostream &operator<<(std::ostream &o, Sfml &c);
