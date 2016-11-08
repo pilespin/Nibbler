@@ -113,11 +113,12 @@ void			Sdl::setWindowSize(int x, int y) {
 
 void	Sdl::init() {
 
+	SDL_Init(SDL_INIT_VIDEO);
+	IMG_Init(IMG_INIT_PNG);
 	this->setWindowSize(this->shared->mapSizeX * this->squareSize, this->shared->mapSizeY * this->squareSize);
 	this->setWindowName("Nibbler");
 	this->createWindow();
 	this->createRenderer();
-	IMG_Init(IMG_INIT_PNG);
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
     
     this->loadImage("img/squareyellow.png", "squareyellow");
@@ -271,7 +272,7 @@ extern "C"
 		return new Sdl();
 	}
 	void        delete_class(IGraphic *graph)
-    {
-        delete graph;
-    }
+	{
+		delete graph;
+	}
 }

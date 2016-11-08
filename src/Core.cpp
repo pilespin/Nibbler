@@ -217,20 +217,20 @@ void Core::MoveIASnake() {
 
 void Core::MoveSnake() {
 	
-	// this->setOnMap(this->shared->snake.back().getY(), this->shared->snake.back().getX(), OFF);
-	// this->shared->snake.pop_back();
+	this->setOnMap(this->shared->snake.back().getY(), this->shared->snake.back().getX(), OFF);
+	this->shared->snake.pop_back();
 
-	// if (this->shared->command == eCommand::Up)
-	// 	this->headY--;
-	// else if (this->shared->command == eCommand::Down)
-	// 	this->headY++;
-	// else if (this->shared->command == eCommand::Left)
-	// 	this->headX--;
-	// else if (this->shared->command == eCommand::Right)
-	// 	this->headX++;
+	if (this->shared->command == eCommand::Up)
+		this->headY--;
+	else if (this->shared->command == eCommand::Down)
+		this->headY++;
+	else if (this->shared->command == eCommand::Left)
+		this->headX--;
+	else if (this->shared->command == eCommand::Right)
+		this->headX++;
 
-	// this->setOnMap(this->headY, this->headX, SNAKE);
-	// this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
+	this->setOnMap(this->headY, this->headX, SNAKE);
+	this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
 
 }
 
@@ -287,7 +287,7 @@ void	Core::start() {
 		this->last_time = ft_utime();
 
 		this->ignoreOpositeCommand();
-		this->MoveSnake();	
+		// this->MoveSnake();	
 		this->MoveIASnake();
 
 		if (this->shared->command == eCommand::Escape)

@@ -168,7 +168,7 @@ while (window.pollEvent(event))
 
         // key pressed
         case sf::Event::KeyPressed:
-            std::cout << event.key.code << std::endl;
+            // std::cout << event.key.code << std::endl;
             if (event.key.code > 70 && event.key.code < 75)
                shared->setCommand(static_cast<eCommand>(event.key.code - 70));
             else if  (event.key.code == 36)

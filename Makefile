@@ -69,7 +69,7 @@ ifeq ($(shell uname), Darwin)
 	@cd $(PATH_SFML) && cmake -DCMAKE_INSTALL_PREFIX=/Library/Frameworks/Mono.framework/Headers/freetype2/ . && make -j 8 && make -j 8 install DESTDIR=./
 	@cp -r $(PATH_SFML)/Library/Frameworks $(PATH_SFML)
 else
-	@cd $(PATH_SFML) && cmake . && make -j 8 && make - j 8 install DESTDIR=./
+	@cd $(PATH_SFML) && cmake . && make -j 8 && make -j 8 install DESTDIR=./
 endif
 	@rm -rf $(PATH_SFML).zip
 

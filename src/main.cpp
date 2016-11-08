@@ -48,11 +48,9 @@ int main(int ac, char **av)
         shared = new Shared(getWindowX(ac, av), getWindowY(ac, av));
         core = new Core(shared);
         Lib_handler = new DynamicLib();
-        core->setSpeed(0.25);
-            std::cout << "po" <<std::endl;
 
+        core->setSpeed(0.25);
         Lib_handler->createClass("libmysfml.so", shared);
-            std::cout << "po" <<std::endl;
 
         while (1)
         {
