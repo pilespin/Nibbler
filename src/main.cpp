@@ -17,39 +17,6 @@
 #include "Sdl.hpp"
 #include "IGraphic.hpp"
 
-IGraphic    *renewLib(Shared *shared, eChoseLib which)
-{
-    DynamicLib  dLib = DynamicLib();
-    IGraphic    *lib = NULL;
-
-    if (!shared)
-    {
-        std::cerr << "Error: Shared memory is out" << std::endl;
-        exit(0);
-    }
-    if (which == eChoseLib::Lib1)
-        lib = dLib.createClass("./libmysdl.so");
-    if (which == eChoseLib::Lib2)
-        lib = dLib.createClass("./libmyncurses.so");
-    if (which == eChoseLib::Lib3)
-    {
-        std::cout<<"make"<<std::endl;
-        lib = dLib.createClass("./libmysfml.so");
-    }
-    shared->lib = eChoseLib::Nope;
-    
-    std::cout<<"lib"<<std::endl;
-        
-    if (lib == NULL)
-    {
-        std::cout<<"libNULL"<<std::endl;
-        exit(0);
-    }
-    lib->setShared(shared);
-    lib->init();
-    return (lib);
-}
-
 int getWindowX(int ac, char **av)
 {
     if (ac >= 2)
@@ -74,52 +41,45 @@ int main(int ac, char **av)
 {
     Core        *core;
     Shared      *shared;
-    IGraphic    *graf = NULL;
-
+    DynamicLib  *Lib_handler;
     try
     {
 
         shared = new Shared(getWindowX(ac, av), getWindowY(ac, av));
         core = new Core(shared);
-
+        Lib_handler = new DynamicLib();
         core->setSpeed(0.25);
+            std::cout << "po" <<std::endl;
 
-        graf = renewLib(shared, eChoseLib::Lib3);
+        Lib_handler->createClass("libmysfml.so", shared);
+            std::cout << "po" <<std::endl;
 
         while (1)
         {
             if (shared->getLib() == SDL)
             {
-                 graf->quit();
-                delete graf;
-                graf = renewLib(shared, eChoseLib::Lib1);
+                Lib_handler->createClass("libmysdl.so", shared);
+                shared->setLib(eChoseLib::Nope);
             }
             else if (shared->getLib() == NCURSES)
             {
-                 graf->quit();
-                delete graf;
-                graf = renewLib(shared, eChoseLib::Lib2);
+                Lib_handler->createClass("libmyncurses.so", shared);
+                shared->setLib(eChoseLib::Nope);
             }
             else if (shared->getLib() == SFML)
             {
-                graf->quit();
-                delete graf;
-
-                graf = renewLib(shared, eChoseLib::Lib3);
+                Lib_handler->createClass("libmysfml.so", shared);
+                shared->setLib(eChoseLib::Nope);
             }
 
-            graf->getKey();
+            Lib_handler->getKey();
             core->start();
-            graf->draw();
+            Lib_handler->draw();
             std::this_thread::sleep_for(std::chrono::milliseconds(1));   
         }
     }
     catch (std::exception &e)
     {
-        if (shared)
-        {
-            graf->quit();
-        }
         std::cerr << e.what() << std::endl;
     }
 

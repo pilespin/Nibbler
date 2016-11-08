@@ -209,8 +209,13 @@ void	Sfml::empty() {
 
 extern "C"
 {
-	IGraphic *make_class()
+	IGraphic   *make_class()
 	{
 		return new Sfml();
 	}
+
+    void        delete_class(IGraphic *graph)
+    {
+        delete graph;
+    }
 }

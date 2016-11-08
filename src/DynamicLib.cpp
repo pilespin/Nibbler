@@ -14,61 +14,100 @@
 #include "IGraphic.hpp"
 #include "DynamicLib.hpp"
 
-DynamicLib::DynamicLib() {	
-	this->_val = 0;
+DynamicLib::DynamicLib()
+{	
 	this->lib = NULL;
-	this->ptrClass = NULL;	}
+	this->constr = NULL;	
+	this->destr = NULL;	
+	this->graph = NULL;	
+}
 
-DynamicLib::~DynamicLib()						{
+DynamicLib::~DynamicLib()
+{
 	this->closeLib();
 }
 
-DynamicLib::DynamicLib(DynamicLib const &src)	{	
-	this->_val = src._val;
+DynamicLib::DynamicLib(DynamicLib const &src)
+{	
 	this->lib = src.lib;
-	this->ptrClass = src.ptrClass;
+	this->constr = src.constr;
+	this->destr = src.destr;
+	this->graph = src.graph;
 }
 
 DynamicLib	&DynamicLib::operator=(DynamicLib const &rhs) {
 
 	if (this != &rhs)
 	{
-		this->_val = rhs._val;
 		this->lib = rhs.lib;
-		this->ptrClass = rhs.ptrClass;
+		this->constr = rhs.constr;
+		this->destr = rhs.destr;
+		this->graph = rhs.graph;
 	}
 	return (*this);
 }
 
 std::ostream &operator<<(std::ostream &o, DynamicLib &c) {
-	o << "DynamicLib: " << c.getValue() << " ";
+	(void)c;
+	o << "DynamicLib " << std::endl;
 	return (o);
 }
-///////////////////////////////////////////////////////////////////////////////
-int			DynamicLib::getValue() const	{	return (this->_val);		}
-IGraphic	*DynamicLib::getClass() const	{	return (this->ptrClass);	}
-///////////////////////////////////////////////////////////////////////////////
+void	DynamicLib::draw()
+{
+	if (this->graph == NULL)
+		throw Error("Dynamic Library not loaded.");
+	this->graph->draw();
+}
 
-IGraphic	*DynamicLib::createClass(std::string pathLib) {
+int		DynamicLib::getKey()
+{
+	if (this->graph == NULL)
+		throw Error("Dynamic Library not loaded.");
+	return (this->graph->getKey());
+}
 
-	void    *func;
+void  DynamicLib::createClass(std::string pathLib, Shared *shared) {
 
+	void		*constr_pre;
+	void		*destr_pre;
+
+	if (this->lib != NULL)
+		this->closeLib();
 	this->lib = dlopen(pathLib.c_str(), RTLD_LAZY | RTLD_LOCAL);
-	if(!this->lib)
+	if(this->lib == NULL)
+	{
+		// std::cout<< dlerror()<<std::endl;
 		throw Error("Error: an error occured when opening dynamic library");
+	}
 
-	func = dlsym(this->lib, "make_class");
-	if (!func)
-		throw Error("Error: an error occured when loading function in library");
+	constr_pre = (dlsym(this->lib, "make_class"));
+	if (constr_pre == NULL)
+	{
+		throw Error("Error: an error occured when loading function constructeur in library");
+	}
+	destr_pre = (dlsym(this->lib, "delete_class"));
+	if (destr_pre == NULL)
+		throw Error("Error: an error occured when loading function destructeur in library");
+	
 
-	typedef IGraphic *(*ptr)();
+	this->constr = (IGraphic 	*(*)(void))(constr_pre);
+	this->destr = (void(*)(IGraphic *))(destr_pre);
 
-	ptr     pMaker = (ptr)func;
-	this->ptrClass = pMaker();
-	return (this->ptrClass);
+	this->graph = (this->constr)();
+	this->graph->setShared(shared);
+	this->graph->init();
 }
 
 void	DynamicLib::closeLib() {
-	if (this->lib)
-		dlclose(this->lib);
+
+	if (this->lib == NULL)
+		throw Error("error in closing library");
+	this->graph->quit();
+	(this->destr)(this->graph);
+	if (dlclose(this->lib) != 0)
+		throw Error("error in closing library");
+	this->lib = NULL;
+	this->constr = NULL;	
+	this->destr = NULL;	
+	this->graph = NULL;
 }

@@ -22,10 +22,11 @@ public:
 	DynamicLib(DynamicLib const &src);
 	DynamicLib &operator=(DynamicLib const &rhs);
 
-	int			getValue() const;
-	IGraphic	*getClass() const;
 
-	IGraphic	*createClass(std::string pathLib);
+	void		draw();
+	int			getKey();
+	void		delete_current();
+	void 		createClass(std::string pathLib, Shared *shared);
 	void		closeLib();
 
 	class Error : public std::exception {
@@ -41,9 +42,10 @@ public:
 	};
 
 private:
-	int 		_val;
 	void		*lib;
-	IGraphic	*ptrClass;
+	IGraphic	*graph;
+	IGraphic 	*(*constr)(void);
+	void 		(*destr)(IGraphic *);
 };
 
 std::ostream &operator<<(std::ostream &o, DynamicLib &c);

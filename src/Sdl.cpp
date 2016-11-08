@@ -270,4 +270,8 @@ extern "C"
 	{
 		return new Sdl();
 	}
+	void        delete_class(IGraphic *graph)
+    {
+        delete graph;
+    }
 }

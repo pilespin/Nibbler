@@ -167,4 +167,8 @@ extern "C"
 	{
 		return new Ncurses();
 	}
+	void        delete_class(IGraphic *graph)
+    {
+        delete graph;
+    }
 }
