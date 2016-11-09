@@ -14,7 +14,7 @@
 	
 NAME	=	nibbler
 
-CC		=	g++ -std=c++11 -g
+CC		=	g++ -std=c++11
 FLAGS	=	-Wall -Wextra -Werror
 LIB		=	-ldl -lpthread
 
