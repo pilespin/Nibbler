@@ -42,35 +42,34 @@ int main(int ac, char **av)
     Core        *core;
     Shared      *shared;
     DynamicLib  *Lib_handler;
+    
     try
     {
-
+        Lib_handler = new DynamicLib();
         shared = new Shared(getWindowX(ac, av), getWindowY(ac, av));
         core = new Core(shared);
-        Lib_handler = new DynamicLib();
 
         core->setSpeed(0.25);
-        Lib_handler->createClass("libmysfml.so", shared);
+        Lib_handler->createClass("./libmysfml.so", shared);
 
         while (1)
         {
+            if (shared->getLib() == NCURSES)
+            {
+                shared->setLib(eChoseLib::Nope);
+                Lib_handler->createClass("./libmyncurses.so", shared);
+            }
             if (shared->getLib() == SDL)
             {
-                Lib_handler->createClass("libmysdl.so", shared);
+                Lib_handler->createClass("./libmysdl.so", shared);
                 shared->setLib(eChoseLib::Nope);
             }
-            else if (shared->getLib() == NCURSES)
+            if (shared->getLib() == SFML)
             {
-                Lib_handler->createClass("libmyncurses.so", shared);
+                Lib_handler->createClass("./libmysfml.so", shared);
+                Lib_handler->createClass("./libmysfml.so", shared);
                 shared->setLib(eChoseLib::Nope);
             }
-            else if (shared->getLib() == SFML)
-            {
-                Lib_handler->createClass("libmysfml.so", shared);
-                Lib_handler->createClass("libmysfml.so", shared);
-                shared->setLib(eChoseLib::Nope);
-            }
-
             Lib_handler->getKey();
             core->start();
             Lib_handler->draw();
@@ -79,8 +78,11 @@ int main(int ac, char **av)
     }
     catch (std::exception &e)
     {
-        Lib_handler->createClass("libmyncurses.so", shared);
-        Lib_handler->quit();
+        if (shared)
+        { 
+            Lib_handler->createClass("libmyncurses.so", shared);
+            Lib_handler->quit();
+        }
         std::cerr << e.what() << std::endl;
     }
 

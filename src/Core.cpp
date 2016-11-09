@@ -233,6 +233,8 @@ void Core::MoveSnake() {
 	this->setOnMap(this->shared->snake.back().getY(), this->shared->snake.back().getX(), OFF);
 	this->shared->snake.pop_back();
 
+	if (this->shared->command == eCommand::Escape)
+		throw Error("GoodBye");
 	if (keymap[this->shared->command])
 		(this->*(keymap[this->shared->command]))();
 

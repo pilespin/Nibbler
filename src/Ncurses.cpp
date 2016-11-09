@@ -52,7 +52,12 @@ std::ostream &operator<<(std::ostream &o, Ncurses &c) {
 }
 ///////////////////////////////////////////////////////////////////////////////
 int		Ncurses::getValue() const			{	return (this->_val);	}
-void 	Ncurses::setShared(Shared *shared)	{	this->shared = shared;	}
+
+void 	Ncurses::setShared(Shared *shared)	{
+	if (!shared)
+		throw Error("Shared is Dead");
+	this->shared = shared;
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 void	Ncurses::init() {
@@ -67,6 +72,19 @@ void	Ncurses::init() {
 	initscr();
 	noecho();
 	raw();
+
+	if (this->shared->mapSizeX * 4 > COLS)
+	{
+		this->changeLibForLib1();
+		this->quit();
+		std::cout << "Error: Please enlarge your window for using Ncurses" << std::endl;
+	}
+	if (this->shared->mapSizeY * 2 > LINES)
+	{
+		this->changeLibForLib1(); 
+		this->quit();
+		std::cout << "Error: Please elongate your window for using Ncurses" << std::endl;
+	}
 }
 
 void	Ncurses::quit() {
@@ -116,7 +134,7 @@ int		Ncurses::getKey() {
 	timeout(0.1);
 	int ch;
 	ch = (int)getch();
-	
+
 	if (ch == 27)
 	{
 		ch = (int)getch();
