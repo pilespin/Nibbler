@@ -42,7 +42,16 @@ Sdl::Sdl() {
 	this->renderer = NULL;
 }
 
-Sdl::~Sdl()					{}
+Sdl::~Sdl() {
+
+	for (auto it = this->img.begin(); it != this->img.end(); it++) {
+		SDL_FreeSurface(it->second);
+	}
+
+	SDL_DestroyRenderer(this->getRenderer());
+	SDL_DestroyWindow(this->getWindow());
+	SDL_Quit();
+}
 
 Sdl::Sdl(Sdl const &src)	{		
 	this->_val 			= src._val;
@@ -84,9 +93,12 @@ SDL_Renderer	*Sdl::getRenderer() const		{	return (this->renderer);	}
 void			Sdl::setShared(Shared *shared)	{	this->shared = shared;		}
 void			Sdl::setWindowName(std::string name) {
 	if (name.length() > 0)
+	{
+		this->windowName.erase();
 		this->windowName = name;
+	}
 	else
-		throw Error("Error: Image not found");
+		throw Error("Error: Bad name");
 
 }
 
@@ -132,11 +144,16 @@ void	Sdl::init() {
 
 void	Sdl::quit() {
 
-	if (!this->getWindow())
-		return;
+	// for (auto it = this->img.begin(); it != this->img.end(); it++) {
+	// 	SDL_FreeSurface(it->second);
+	// }
 
-	SDL_DestroyWindow(this->getWindow());
-	SDL_Quit();
+	// SDL_DestroyRenderer(this->getRenderer());
+
+	// if (!this->getWindow())
+	// 	return;
+	// SDL_DestroyWindow(this->getWindow());
+	// SDL_Quit();
 }
 
 int 	Sdl::getKey() {
@@ -211,7 +228,7 @@ void	Sdl::createWindow() {
 		this->windowSizeY, 
 		SDL_WINDOW_SHOWN);
 
-	if(!window)
+	if(!this->window)
 	{
 		std::cout << SDL_GetError() << std::endl;
 		SDL_Quit();

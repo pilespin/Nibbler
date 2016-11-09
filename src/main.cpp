@@ -67,6 +67,7 @@ int main(int ac, char **av)
             else if (shared->getLib() == SFML)
             {
                 Lib_handler->createClass("libmysfml.so", shared);
+                Lib_handler->createClass("libmysfml.so", shared);
                 shared->setLib(eChoseLib::Nope);
             }
 
