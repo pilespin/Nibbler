@@ -56,6 +56,14 @@ void 	Ncurses::setShared(Shared *shared)	{	this->shared = shared;	}
 ///////////////////////////////////////////////////////////////////////////////
 
 void	Ncurses::init() {
+	this->keymap['1']	= &Ncurses::changeLibForLib1;
+	this->keymap['2']	= &Ncurses::changeLibForLib2;
+	this->keymap['3']	= &Ncurses::changeLibForLib3;
+	this->keymap['D']	= &Ncurses::moveToLeft;
+	this->keymap['C']	= &Ncurses::moveToRight;
+	this->keymap['A']	= &Ncurses::moveToUp;
+	this->keymap['B']	= &Ncurses::moveToDown;
+
 	initscr();
 	noecho();
 	raw();
@@ -70,9 +78,10 @@ void	Ncurses::draw() {
 	start_color();
 	init_pair(BLOCK, COLOR_RED, COLOR_RED);
 	init_pair(APPLE, COLOR_YELLOW, COLOR_YELLOW);
-	init_pair(8, COLOR_CYAN, COLOR_CYAN);
+	init_pair(OFF, COLOR_CYAN, COLOR_CYAN);
 	init_pair(SNAKE, COLOR_GREEN, COLOR_GREEN);
 	init_pair(IASNAKE, COLOR_BLUE, COLOR_BLUE);
+
 	int i;
 	int j = -1;
 	while (++j < this->shared->mapSizeY)
@@ -80,47 +89,27 @@ void	Ncurses::draw() {
 		i = -1;
 		while (++i < this->shared->mapSizeX)
 		{
-			if (this->shared->map[j][i] == SNAKE)
-			{
-				attron(COLOR_PAIR(SNAKE));
-				mvprintw(j*2, i*4, "    ");
-				mvprintw(j*2 + 1, i*4, "    ");
-				attroff(COLOR_PAIR(SNAKE));
-			}
-			else if (this->shared->map[j][i] == IASNAKE)
-			{
-				attron(COLOR_PAIR(IASNAKE));
-				mvprintw(j*2, i*4, "    ");
-				mvprintw(j*2 + 1, i*4, "    ");
-				attroff(COLOR_PAIR(IASNAKE));
-			}
-			else if (this->shared->map[j][i] == BLOCK)
-			{
-				attron(COLOR_PAIR(BLOCK));
-				mvprintw(j*2, i*4, "    ");
-				mvprintw(j*2 + 1, i*4, "    ");
-				attroff(COLOR_PAIR(BLOCK));
-			}
-			else if (this->shared->map[j][i] == APPLE)
-			{
-				attron(COLOR_PAIR(APPLE));
-				mvprintw(j*2, i*4, "    ");
-				mvprintw(j*2 + 1, i*4, "    ");
-				attroff(COLOR_PAIR(APPLE));
-			}
-			else if (this->shared->map[j][i] == OFF)
-			{
-				attron(COLOR_PAIR(8));
-				mvprintw(j*2, i*4, "    ");
-				mvprintw(j*2 + 1, i*4, "    ");
-				attroff(COLOR_PAIR(8));
-			}
+			attron(COLOR_PAIR(this->shared->map[j][i]));
+			mvprintw(j*2, i*4, "    ");
+			mvprintw(j*2 + 1, i*4, "    ");
+			attroff(COLOR_PAIR(this->shared->map[j][i]));
 		}
 	}
 	mvprintw(j*2, i*4, "%s", "\n" );
 	refresh();
 
 }
+
+///////////////////////////////   KEY   ///////////////////////////////////////
+void 	Ncurses::changeLibForLib1() 	{	this->shared->setLib(eChoseLib::Lib1);		}
+void 	Ncurses::changeLibForLib2() 	{	this->shared->setLib(eChoseLib::Lib2);		}
+void 	Ncurses::changeLibForLib3() 	{	this->shared->setLib(eChoseLib::Lib3);		}
+void 	Ncurses::moveToLeft() 			{	this->shared->setCommand(eCommand::Left);	}
+void 	Ncurses::moveToRight() 			{	this->shared->setCommand(eCommand::Right);	}
+void 	Ncurses::moveToUp() 			{	this->shared->setCommand(eCommand::Up);		}
+void 	Ncurses::moveToDown() 			{	this->shared->setCommand(eCommand::Down);	}
+void 	Ncurses::moveToEscape() 		{	this->shared->setCommand(eCommand::Escape);	}
+///////////////////////////////   KEY   ///////////////////////////////////////
 
 int		Ncurses::getKey() {
 
@@ -132,22 +121,17 @@ int		Ncurses::getKey() {
 	{
 		ch = (int)getch();
 		if (ch == -1)
+		{
+			this->quit();
 			shared->setCommand(eCommand::Escape);
+		}
 	}
-	else if (ch == 'D')
-		shared->setCommand(eCommand::Left);
-	else if (ch == 'C')
-		shared->setCommand(eCommand::Right);
-	else if (ch == 'A')
-		shared->setCommand(eCommand::Up);
-	else if (ch == 'B')
-		shared->setCommand(eCommand::Down);
-	else if (ch == '1')
-		shared->setLib(eChoseLib::Lib1);
-	else if (ch == '2')
-		shared->setLib(eChoseLib::Lib2);
-	else if (ch == '3')
-		shared->setLib(eChoseLib::Lib3);
+	else
+	{			
+		if (keymap[ch])
+			(this->*(keymap[ch]))();
+	}
+
 	return (ch - 48);
 }
 
@@ -168,7 +152,7 @@ extern "C"
 		return new Ncurses();
 	}
 	void        delete_class(IGraphic *graph)
-    {
-        delete graph;
-    }
+	{
+		delete graph;
+	}
 }

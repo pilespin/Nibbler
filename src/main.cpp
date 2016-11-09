@@ -79,6 +79,8 @@ int main(int ac, char **av)
     }
     catch (std::exception &e)
     {
+        Lib_handler->createClass("libmyncurses.so", shared);
+        Lib_handler->quit();
         std::cerr << e.what() << std::endl;
     }
 

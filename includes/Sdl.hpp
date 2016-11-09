@@ -49,6 +49,16 @@ public:
 	};
 
 private:
+
+	void 	changeLibForLib1();
+	void 	changeLibForLib2();
+	void 	changeLibForLib3();
+	void 	moveToLeft();
+	void 	moveToRight();
+	void 	moveToUp();
+	void 	moveToDown();
+	void 	moveToEscape();
+
 	SDL_Window		*getWindow() const;
 	SDL_Renderer 	*getRenderer() const;
 	SDL_Surface		*getImage(std::string name);
@@ -58,6 +68,7 @@ private:
 	void			createWindow();
 	void			createRenderer();
 
+	std::map<char, void (Sdl::*)()> 		keymap;
 	std::map< std::string, SDL_Surface * > 	img;
 	
 	int 			_val;

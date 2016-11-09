@@ -45,6 +45,17 @@ public:
 	};
 
 private:
+	void 	changeLibForLib1();
+	void 	changeLibForLib2();
+	void 	changeLibForLib3();
+	void 	moveToLeft();
+	void 	moveToRight();
+	void 	moveToUp();
+	void 	moveToDown();
+	void 	moveToEscape();
+
+	std::map<char, void (Ncurses::*)()> 		keymap;
+	
 	int _val;
 };
 

@@ -24,6 +24,7 @@ public:
 
 
 	void		draw();
+	void		quit();
 	int			getKey();
 	void		delete_current();
 	void 		createClass(std::string pathLib, Shared *shared);

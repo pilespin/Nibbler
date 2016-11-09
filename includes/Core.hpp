@@ -41,6 +41,12 @@ public:
 	};
 
 private:
+
+	void 	moveToLeft();
+	void 	moveToRight();
+	void 	moveToUp();
+	void 	moveToDown();
+
 	void		setOnMap(int x, int y, int value);
 	void		pushNewBlock(int y, int x);
 	void		MoveSnake();
@@ -54,6 +60,8 @@ private:
 	void 		pushNewIASnake();
 
 	bool 		IAcheckPosition(int y, int x);
+
+	std::map<eCommand, void (Core::*)()>	keymap;
 
 	int 	_val;
 	bool	IAalive;

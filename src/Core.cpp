@@ -32,6 +32,12 @@ static double  ft_utime()
 Core::Core() 						{	this->_val = 0;	}
 
 Core::Core(Shared	*shared) {
+	
+	this->keymap[eCommand::Left]	= &Core::moveToLeft;
+	this->keymap[eCommand::Right]	= &Core::moveToRight;
+	this->keymap[eCommand::Up]		= &Core::moveToUp;
+	this->keymap[eCommand::Down]	= &Core::moveToDown;
+
 	std::srand(time(NULL));
 	this->shared = shared;
 	this->shared->command = eCommand::Right;
@@ -215,19 +221,20 @@ void Core::MoveIASnake() {
 
 }
 
+///////////////////////////////   KEY   ///////////////////////////////////////
+void    Core::moveToLeft()           {	this->headX--;  }
+void    Core::moveToRight()          {   this->headX++;	}
+void    Core::moveToUp()             {   this->headY--;	}
+void    Core::moveToDown()           {   this->headY++;	}
+///////////////////////////////   KEY   ///////////////////////////////////////
+
 void Core::MoveSnake() {
 	
 	this->setOnMap(this->shared->snake.back().getY(), this->shared->snake.back().getX(), OFF);
 	this->shared->snake.pop_back();
 
-	if (this->shared->command == eCommand::Up)
-		this->headY--;
-	else if (this->shared->command == eCommand::Down)
-		this->headY++;
-	else if (this->shared->command == eCommand::Left)
-		this->headX--;
-	else if (this->shared->command == eCommand::Right)
-		this->headX++;
+	if (keymap[this->shared->command])
+		(this->*(keymap[this->shared->command]))();
 
 	this->setOnMap(this->headY, this->headX, SNAKE);
 	this->shared->snake.push_front(Object(this->headY, this->headX, SNAKE));
@@ -271,23 +278,10 @@ void	Core::start() {
 		(this->shared->command != this->shared->lastCommand && 
 			this->shared->lastCommand != this->getOpositeCommand(this->shared->command)))
 	{
-		////////////////////////////////debug//////
-			// std::cout << "----------------------" << std::endl;
-			// int j = -1;
-			// while (++j < this->shared->mapSizeY)
-			// {
-			// 	int i = -1;
-			// 	while (++i < this->shared->mapSizeX)
-			// 		std::cout << this->shared->map[j][i] << " ";
-			// 	std::cout << std::endl;
-			// }
-			// std::cout << "----------------------" << std::endl;
-    	////////////////////////////////debug//////
-
 		this->last_time = ft_utime();
 
 		this->ignoreOpositeCommand();
-		// this->MoveSnake();	
+		this->MoveSnake();	
 		this->MoveIASnake();
 
 		if (this->shared->command == eCommand::Escape)

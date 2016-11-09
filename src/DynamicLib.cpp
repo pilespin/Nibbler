@@ -52,6 +52,14 @@ std::ostream &operator<<(std::ostream &o, DynamicLib &c) {
 	o << "DynamicLib " << std::endl;
 	return (o);
 }
+
+void	DynamicLib::quit()
+{
+	if (this->graph == NULL)
+		throw Error("Dynamic Library not loaded.");
+	this->graph->quit();
+}
+
 void	DynamicLib::draw()
 {
 	if (this->graph == NULL)
@@ -76,7 +84,6 @@ void  DynamicLib::createClass(std::string pathLib, Shared *shared) {
 	this->lib = dlopen(pathLib.c_str(), RTLD_LAZY | RTLD_LOCAL);
 	if(this->lib == NULL)
 	{
-		// std::cout<< dlerror()<<std::endl;
 		throw Error("Error: an error occured when opening dynamic library");
 	}
 

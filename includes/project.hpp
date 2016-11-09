@@ -33,6 +33,6 @@ enum eChoseLib 	{Nope, Lib1, Lib2, Lib3};
 #define BLOCK	3
 #define APPLE	2
 #define SNAKE	1
-#define OFF 	0
+#define OFF 	8
 
 #endif

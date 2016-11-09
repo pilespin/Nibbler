@@ -22,8 +22,12 @@ Shared::Shared(int sizeX, int sizeY)	{
 
 	if (sizeX < 10)
 		throw Error("Error: Please enlarge your map");
+	if (sizeX > 90)
+		throw Error("Error: Please reduce your map");
 	if (sizeY < 10)
 		throw Error("Error: Please elongate your map");
+	if (sizeY > 50)
+		throw Error("Error: Please reduce your map");
 	
 	this->mapSizeX = sizeX;
 	this->mapSizeY = sizeY;
@@ -37,7 +41,7 @@ Shared::Shared(int sizeX, int sizeY)	{
 		this->map[i] = new int[sizeX];
 		int j = -1;
 		while (++j < sizeX)
-			this->map[i][j] = 0;
+			this->map[i][j] = OFF;
 	}
 }
 

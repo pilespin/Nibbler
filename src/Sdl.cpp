@@ -30,6 +30,17 @@ static double  ft_utime()
 	return (micro);
 }
 
+///////////////////////////////   KEY   ///////////////////////////////////////
+void 	Sdl::changeLibForLib1() 	{	this->shared->setLib(eChoseLib::Lib1);		}
+void 	Sdl::changeLibForLib2() 	{	this->shared->setLib(eChoseLib::Lib2);		}
+void 	Sdl::changeLibForLib3() 	{	this->shared->setLib(eChoseLib::Lib3);		}
+void 	Sdl::moveToLeft() 			{	this->shared->setCommand(eCommand::Left);	}
+void 	Sdl::moveToRight() 			{	this->shared->setCommand(eCommand::Right);	}
+void 	Sdl::moveToUp() 			{	this->shared->setCommand(eCommand::Up);		}
+void 	Sdl::moveToDown() 			{	this->shared->setCommand(eCommand::Down);	}
+void 	Sdl::moveToEscape() 		{	this->shared->setCommand(eCommand::Escape);	}
+///////////////////////////////   KEY   ///////////////////////////////////////
+
 Sdl::Sdl() {
 	this->_val = 0;
 	this->squareSize = 28;
@@ -43,14 +54,11 @@ Sdl::Sdl() {
 }
 
 Sdl::~Sdl() {
-
 	for (auto it = this->img.begin(); it != this->img.end(); it++) {
-		SDL_FreeSurface(it->second);
+		if (it->second)
+			SDL_FreeSurface(it->second);
 	}
-
-	SDL_DestroyRenderer(this->getRenderer());
-	SDL_DestroyWindow(this->getWindow());
-	SDL_Quit();
+	this->quit();
 }
 
 Sdl::Sdl(Sdl const &src)	{		
@@ -99,7 +107,6 @@ void			Sdl::setWindowName(std::string name) {
 	}
 	else
 		throw Error("Error: Bad name");
-
 }
 
 SDL_Surface		*Sdl::getImage(std::string name) {	
@@ -125,10 +132,19 @@ void			Sdl::setWindowSize(int x, int y) {
 
 void	Sdl::init() {
 
+	this->keymap[SDLK_1]				= &Sdl::changeLibForLib1;
+	this->keymap[SDLK_2]				= &Sdl::changeLibForLib2;
+	this->keymap[SDLK_3]				= &Sdl::changeLibForLib3;
+	this->keymap[SDL_SCANCODE_LEFT]		= &Sdl::moveToLeft;
+	this->keymap[SDL_SCANCODE_RIGHT]	= &Sdl::moveToRight;
+	this->keymap[SDL_SCANCODE_UP]		= &Sdl::moveToUp;
+	this->keymap[SDL_SCANCODE_DOWN]		= &Sdl::moveToDown;
+	this->keymap[SDLK_ESCAPE]			= &Sdl::moveToEscape;
+
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 	this->setWindowSize(this->shared->mapSizeX * this->squareSize, this->shared->mapSizeY * this->squareSize);
-	this->setWindowName("Nibbler");
+	this->setWindowName("Nibbler SDL");
 	this->createWindow();
 	this->createRenderer();
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
@@ -143,46 +159,25 @@ void	Sdl::init() {
 }
 
 void	Sdl::quit() {
-
-	// for (auto it = this->img.begin(); it != this->img.end(); it++) {
-	// 	SDL_FreeSurface(it->second);
-	// }
-
-	// SDL_DestroyRenderer(this->getRenderer());
-
-	// if (!this->getWindow())
-	// 	return;
-	// SDL_DestroyWindow(this->getWindow());
-	// SDL_Quit();
+	SDL_DestroyRenderer(this->getRenderer());
+	SDL_DestroyWindow(this->getWindow());
+	SDL_Quit();
 }
 
-int 	Sdl::getKey() {
+int 	Sdl::getKey(void) {
 
-	SDL_Event   event;
+	SDL_Event   e;
 
-	while (SDL_PollEvent(&event))
+	while (SDL_PollEvent(&e))
 	{
-		if (event.type == SDL_KEYDOWN)
+		if (e.type == SDL_QUIT)
 		{
-			if (event.window.event == SDL_WINDOWEVENT_CLOSE || 
-				event.key.keysym.sym == SDLK_ESCAPE)
-			{
-				shared->setCommand(eCommand::Escape);
-			}
-			else if (event.key.keysym.sym == SDLK_1)
-				shared->setLib(eChoseLib::Lib1);
-			else if (event.key.keysym.sym == SDLK_2)
-				shared->setLib(eChoseLib::Lib2);
-			else if (event.key.keysym.sym == SDLK_3)
-				shared->setLib(eChoseLib::Lib3);
-			else if (event.key.keysym.sym == SDLK_LEFT)
-				shared->setCommand(eCommand::Left);
-			else if (event.key.keysym.sym == SDLK_RIGHT)
-				shared->setCommand(eCommand::Right);
-			else if (event.key.keysym.sym == SDLK_UP)
-				shared->setCommand(eCommand::Up);
-			else if (event.key.keysym.sym == SDLK_DOWN)
-				shared->setCommand(eCommand::Down);
+			shared->setCommand(eCommand::Escape);
+		}
+		else if (e.type == SDL_KEYDOWN)
+		{
+			if (keymap[e.key.keysym.sym])
+				(this->*(keymap[e.key.keysym.sym]))();
 		}
 	}
 	return (this->shared->command);

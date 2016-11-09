@@ -54,20 +54,18 @@ std::ostream &operator<<(std::ostream &o, Sfml &c) {
 ///////////////////////////////////////////////////////////////////////////////
 int		Sfml::getValue() const			{	return (this->_val);	}
 void	Sfml::setShared(Shared *shared)	{	
-    std::cout<<"abc"<<std::endl;
     this->shared = shared;		
-    std::cout<<"abc"<<std::endl;
 }
 ///////////////////////////////////////////////////////////////////////////////
 
 void	Sfml::init() {
 
     // sf::RenderWindow window(sf::VideoMode(this->shared->mapSizeX * this->squareSize, this->shared->mapSizeY * this->squareSize), "SFML works!");
-    std::cout << this->shared->mapSizeX * this->squareSize << "  "<< this->shared->mapSizeY * this->squareSize << std::endl;
-    std::cout << this->squareSize << "  "<< this->squareSize << std::endl;
-    std::cout << this->shared->mapSizeX << "  "<< this->shared->mapSizeY << std::endl;
+    // std::cout << this->shared->mapSizeX * this->squareSize << "  "<< this->shared->mapSizeY * this->squareSize << std::endl;
+    // std::cout << this->squareSize << "  "<< this->squareSize << std::endl;
+    // std::cout << this->shared->mapSizeX << "  "<< this->shared->mapSizeY << std::endl;
     // std::exit(0);
-    this->window.create(sf::VideoMode(this->shared->mapSizeX * this->squareSize, this->shared->mapSizeY * this->squareSize), "SFML works!");
+    this->window.create(sf::VideoMode(this->shared->mapSizeX * this->squareSize, this->shared->mapSizeY * this->squareSize), "Nibbler SFML");
     // sf::CircleShape shape(100.f);
     // shape.setFillColor(sf::Color::Green);
 
